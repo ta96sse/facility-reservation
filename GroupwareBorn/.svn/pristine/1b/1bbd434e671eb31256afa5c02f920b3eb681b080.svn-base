@@ -1,0 +1,10 @@
+spring.mvc.view.prefix=/WEB-INF/views/
+spring.mvc.view.suffix=.jsp
+
+spring.devtools.restart.additional-paths = src/main/webapp/WEB-INF/views/
+
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://localhost:3306/db_facility_reservation_system?characterEncoding=UTF-8&serverTimezone=JST
+spring.datasource.username=ginga
+spring.datasource.password=souken
+

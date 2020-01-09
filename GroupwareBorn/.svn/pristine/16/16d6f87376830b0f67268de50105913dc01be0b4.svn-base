@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>メニュー</title>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="../../../../resources/static/css/style.css" />
+</head>
+<body>
+    <div id="base">
+        <div id="header">
+            <h1 >
+                銀河ソフトウェア&nbsp;&nbsp;施設予約システム
+            </h1>
+            <ul id="header-bolock">
+				<li><p>〇〇さん&nbsp;こんにちは</p></li>
+				<li><input type="button" value="ログアウト"onClick="location.href='../authority/login.html'" /></li>
+			</ul>
+        </div>
+        <div id="contents">
+	        <div id="view-title">メニュー</div>
+
+
+	        <!--
+            <ul class="msgs">
+                <li>エラーメッセージ表示エリア</li>
+            </ul>
+             -->
+			<p id="contents-title">機能を選択してください。</p>
+			<form>
+				<ul id="menu">
+					<li class="menu-list"><input type="button" value="施設予約" onClick="location.href='../facilityreservation/facility-list.html'" /></li>
+					<li class="menu-list"><input type="button" value="施設情報管理" onClick="location.href='../facility/facility-management.html'" /></li>
+					<li class="menu-list"><input type="button" value="ユーザー情報管理" onClick="location.href='../user/user-management.html'" /></li>
+					<li class="menu-list"><input type="button" value="データ初期化" onClick="location.href='init.html'" /></li>
+				</ul>
+            </form>
+        </div>
+        <div id="footer">
+            <p class="copyright">(C) 2003 Ginga Software, All Rights Reserved..</p>
+        </div>
+    </div>
+</body>
+</html>
