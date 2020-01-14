@@ -95,7 +95,7 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- ▲▲▲ h2 ▲▲▲ -->
-	
+
 	</dependencies>
 
 	<build>
