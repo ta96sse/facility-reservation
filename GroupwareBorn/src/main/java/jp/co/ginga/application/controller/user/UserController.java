@@ -29,7 +29,7 @@ import jp.co.ginga.domain.service.UserService;
 
 /**
  * ユーザーコントローラー
- * 
+ *
  * @author yoshi
  *
  */
@@ -53,7 +53,7 @@ public class UserController {
 
 	/**
 	 * ユーザーコントローラー内で使用するセッションオブジェクトの生成処理
-	 * 
+	 *
 	 * @return
 	 */
 	@ModelAttribute(value = "userFormSession")
@@ -63,7 +63,7 @@ public class UserController {
 
 	/**
 	 * ユーザー一覧画面遷移処理
-	 * 
+	 *
 	 * @return
 	 * @throws SQLException
 	 */
@@ -90,7 +90,7 @@ public class UserController {
 
 	/**
 	 * ユーザー登録画面遷移処理
-	 * 
+	 *
 	 * @return
 	 */
 	@RequestMapping(path = "/user/add", method = RequestMethod.GET)
@@ -112,7 +112,7 @@ public class UserController {
 
 	/**
 	 * ユーザー詳細情報画面遷移処理
-	 * 
+	 *
 	 * @return
 	 */
 	@RequestMapping(path = "/user/detail/{loginId}", method = RequestMethod.GET)
@@ -139,12 +139,12 @@ public class UserController {
 
 	/**
 	 * ユーザー情報確認画面遷移処理
-	 * 
+	 *
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(path = "/user/confilm", params = "add", method = RequestMethod.POST)
-	public String createUserConfilmeAddPost(@ModelAttribute(FORM_NAME) @Valid UserForm session, BindingResult result,
+	@RequestMapping(path = "/user/confirm", params = "add", method = RequestMethod.POST)
+	public String createUserConfirmAddPost(@ModelAttribute(FORM_NAME) @Valid UserForm session, BindingResult result,
 			Model model, RedirectAttributes ra) throws Exception {
 
 		// バリデータチェック処理
@@ -169,11 +169,11 @@ public class UserController {
 
 	/**
 	 * ユーザー情報確認画面遷移処理
-	 * 
+	 *
 	 * @return
 	 */
-	@RequestMapping(path = "/user/confilm", params = "update", method = RequestMethod.POST)
-	public String createUserConfilmeUpdatePost(@ModelAttribute(FORM_NAME) @Validated UserForm session,
+	@RequestMapping(path = "/user/confirm", params = "update", method = RequestMethod.POST)
+	public String createUserConfirmUpdatePost(@ModelAttribute(FORM_NAME) @Validated UserForm session,
 			BindingResult result, Model model, RedirectAttributes ra) {
 
 		if (result.hasErrors()) {
@@ -189,7 +189,7 @@ public class UserController {
 
 	/**
 	 * ユーザー情報登録完了画面遷移処理
-	 * 
+	 *
 	 * @return
 	 */
 	@RequestMapping(path = "/user/complete", params = "add", method = RequestMethod.POST)
@@ -213,7 +213,7 @@ public class UserController {
 
 	/**
 	 * ユーザー情報更新完了画面遷移処理
-	 * 
+	 *
 	 * @return
 	 */
 	@RequestMapping(path = "/user/complete", params = "update", method = RequestMethod.POST)
@@ -236,7 +236,7 @@ public class UserController {
 
 	/**
 	 * ユーザー情報削除完了画面遷移処理
-	 * 
+	 *
 	 * @return
 	 */
 	@RequestMapping(path = "/user/complete", params = "delete", method = RequestMethod.POST)
@@ -260,7 +260,7 @@ public class UserController {
 
 	/**
 	 * ユーザー戻るボタン遷移処理
-	 * 
+	 *
 	 * @return
 	 */
 	@RequestMapping(path = "/user/back/{name}", method = RequestMethod.GET)
@@ -276,7 +276,7 @@ public class UserController {
 
 	/**
 	 * ajaxユーザ-重複チェック非同期処理
-	 * 
+	 *
 	 * @return
 	 */
 	@RequestMapping(path = "/userCheck", method = RequestMethod.POST)

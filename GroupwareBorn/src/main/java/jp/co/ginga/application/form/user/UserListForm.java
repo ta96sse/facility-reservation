@@ -3,8 +3,7 @@ package jp.co.ginga.application.form.user;
 import java.io.Serializable;
 import java.util.List;
 
-public class UserListForm implements Serializable{
-
+public class UserListForm implements Serializable {
 
 	/**
 	 * ユーザー一覧情報
@@ -19,7 +18,7 @@ public class UserListForm implements Serializable{
 	}
 
 	public void setUserList(List<UserForm> userFormList) {
-		this.userList =userFormList;
+		this.userList = userFormList;
 	}
 
 }

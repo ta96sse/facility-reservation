@@ -10,6 +10,7 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css" href="/css/style.css" />
 <script type="text/javascript">
+
 </script>
 </head>
 <body>
@@ -23,7 +24,9 @@
             </ul>
              -->
 			<p id="contents-title">ユーザー情報の登録が完了しました。</p>
-			<p id="contents-title"><a href="/menu">メニューに戻る</a></p>
+			<p id="contents-title">
+				<a href="/menu">メニューに戻る</a>
+			</p>
 		</div>
 		<div id="footer">
 			<p class="copyright">(C) 2003 Ginga Software, All Rights

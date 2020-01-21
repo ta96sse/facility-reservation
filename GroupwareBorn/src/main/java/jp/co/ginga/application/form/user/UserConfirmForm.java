@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @author yoshi
  *
  */
-public class UserConfilmForm implements Serializable{
+public class UserConfirmForm implements Serializable{
 
 	/**
 	 * システムエラーメッセージ

@@ -38,9 +38,9 @@
 			<div id="view-title">ユーザー情報管理</div>
 
 			<form:errors path="errors" />
-			
 
-			<form:form modelAttribute="userFormSession" action="/user/confilm"
+
+			<form:form modelAttribute="userFormSession" action="/user/confirm"
 				method="post">
 
 				<p id="contents-title">ユーザー情報を入力してください</p>
@@ -89,22 +89,22 @@
 		</div>
 		<jsp:include page="/WEB-INF/views/footer/footer.jsp" flush="true" />
 	</div>
-	
+
 	<!-- javascriptの記述 -->
 	<script type="text/javascript">
 		$('.addButton').click(function(){
 				resetMessage();
-		
+
 				var pass1 = $('#password1').val();
 				var pass2 = $('#password2').val();
 				var userId = $('#loginName').val();
-				
+
 				var flag = false;
 				if(pass1 != pass2){
 					$('.passCheck').text('パスワード不一致');
 					return false;
-				} 
-				
+				}
+
 				check(userId).done(function(result){
 					if(result == 0){
 						flag = true;
@@ -115,8 +115,8 @@
 				});
 				return flag;
 			});
-	
-			
+
+
 		function check(userId){
 			return $.ajax({
 				url :'/userCheck',
@@ -126,9 +126,9 @@
 				contentType : 'application/json ; charset=utf-8',
 				async : false
 		});
-			
+
 		}
-		
+
 		function resetMessage(){
 			$('a').text('');
 		}

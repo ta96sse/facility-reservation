@@ -41,19 +41,17 @@
 						<td><a href="/user/detail/${user.loginName}">${user.loginName}</a></td>
 						<td><c:out value="${user.password1}" /></td>
 
-						<td>
-							<c:choose>
+						<td><c:choose>
 								<c:when test="${user.parmissionLevel == 1}">管理者</c:when>
 								<c:when test="${user.parmissionLevel == 2}">ユーザー</c:when>
-							</c:choose>
-						</td>
+							</c:choose></td>
 						<td><c:out value="${user.note}" /></td>
 					</tr>
 				</c:forEach>
 			</table>
-			
+
 			<div id="return-display">
-			<a style="font-size:18px;" href="/menu">メニューに戻る</a>
+				<a style="font-size: 18px;" href="/menu">メニューに戻る</a>
 			</div>
 		</div>
 		<div id="footer">
