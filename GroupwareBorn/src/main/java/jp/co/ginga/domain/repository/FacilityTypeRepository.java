@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
@@ -29,6 +31,11 @@ public interface FacilityTypeRepository {
 	 * @return
 	 */
 	@Select("select * from facility_type where id=#{id}")
+	@Results({
+			@Result(property = "insertDate", column = "insert_date"),
+			@Result(property = "updateDate", column = "update_date"),
+			@Result(property = "userId", column = "user_id")
+	})
 	public FacilityTypeEntity findOneById(int id);
 
 	/**
@@ -39,6 +46,11 @@ public interface FacilityTypeRepository {
 	 * @throws Exception
 	 */
 	@Select("select * from facility_type")
+	@Results({
+			@Result(property = "insertDate", column = "insert_date"),
+			@Result(property = "updateDate", column = "update_date"),
+			@Result(property = "userId", column = "user_id")
+	})
 	public List<FacilityTypeEntity> findAll();
 
 	/**

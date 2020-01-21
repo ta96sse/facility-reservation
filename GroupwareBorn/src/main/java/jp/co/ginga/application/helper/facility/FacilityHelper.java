@@ -44,7 +44,7 @@ public class FacilityHelper {
 	 * @return
 	 */
 	public FacilityForm convertFromFacilityEntityToFacilityForm(FacilityEntity facility) {
-		return new FacilityForm(facility.getId(), facility.getName(), facility.getTypeId(),
+		return new FacilityForm(facility.getId(), facility.getName(),
 				facility.getCapacity(), new FacilityTypeForm(facility.getFacilityTypeEntity().getId(),
 						facility.getFacilityTypeEntity().getName()));
 	}
@@ -57,7 +57,7 @@ public class FacilityHelper {
 	 */
 	public FacilityEntity convertEntityFacilityForm(FacilityForm session,
 			AccountSessionForm accountSessionForm) {
-		return new FacilityEntity(session.getId(), session.getName(), session.getTypeId(),
+		return new FacilityEntity(session.getId(), session.getName(),
 				new FacilityTypeEntity(session.getFacilityTypeForm().getId(), session.getFacilityTypeForm().getName()),
 				session.getCapacity(), accountSessionForm.getAccountName());
 	}
@@ -73,9 +73,14 @@ public class FacilityHelper {
 		return convertList;
 	}
 
-	//	FacilityEntityからFacilityFormへのコンバート処理
+	//	FacilityTypeEntityからFacilityTypeFormへのコンバート処理
 	public FacilityTypeForm convertFromTypeEntityToTypeForm(FacilityTypeEntity facilityType) {
 		return new FacilityTypeForm(facilityType.getId(), facilityType.getName());
+	}
+
+	//	FacilityTypeFormからFacilityTypeEntityへのコンバート処理
+	public FacilityTypeEntity convertFromTypeFormToTypeEntity(FacilityTypeForm facilityType) {
+		return new FacilityTypeEntity(facilityType.getId());
 	}
 
 }

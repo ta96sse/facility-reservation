@@ -34,7 +34,12 @@ public interface FacilityRepository {
 	 */
 	@Select("select * from facility where id=#{id}")
 	@Results({
-			@Result(property = "facilityTypeEntity", column = "type_id", one = @One(select = "jp.co.ginga.domain.repository.FacilityTypeRepository.findOneById", fetchType = FetchType.EAGER)) })
+			@Result(property = "facilityTypeEntity", column = "type_id", one = @One(select = "jp.co.ginga.domain.repository.FacilityTypeRepository.findOneById", fetchType = FetchType.EAGER)),
+			@Result(property = "typeId", column = "type_id"),
+			@Result(property = "insertDate", column = "insert_date"),
+			@Result(property = "updateDate", column = "update_date"),
+			@Result(property = "userId", column = "user_id")
+	})
 	public FacilityEntity findOneById(int id);
 
 	/**
@@ -44,9 +49,12 @@ public interface FacilityRepository {
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	@Select("select id, name, type_id, capacity from facility")
+	@Select("select * from facility")
 	@Results({
 			@Result(property = "facilityTypeEntity", column = "type_id", one = @One(select = "jp.co.ginga.domain.repository.FacilityTypeRepository.findOneById", fetchType = FetchType.EAGER)),
+			@Result(property = "typeId", column = "type_id"),
+			@Result(property = "insertDate", column = "insert_date"),
+			@Result(property = "updateDate", column = "update_date"),
 			@Result(property = "userId", column = "user_id")
 	})
 	public List<FacilityEntity> findAll();

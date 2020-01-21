@@ -1,5 +1,7 @@
 package jp.co.ginga.domain.entity;
 
+import java.sql.Date;
+
 /**
  * 施設テーブルEntity
  * @author yoshi
@@ -11,6 +13,8 @@ public class FacilityEntity {
 	private String name;
 	private int typeId;
 	private String capacity;
+	private Date insertDate;
+	private Date updateDate;
 	private String userId;
 	private FacilityTypeEntity facilityTypeEntity;
 
@@ -46,6 +50,22 @@ public class FacilityEntity {
 		this.capacity = capacity;
 	}
 
+	public Date getInsertDate() {
+		return insertDate;
+	}
+
+	public void setInsertDate(Date insertDate) {
+		this.insertDate = insertDate;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+
 	public String getUserId() {
 		return userId;
 	}
@@ -76,12 +96,11 @@ public class FacilityEntity {
 		this.capacity = capacity;
 	}
 
-	public FacilityEntity(int id, String name, int typeId, FacilityTypeEntity facilityTypeEntity, String capacity,
+	public FacilityEntity(int id, String name, FacilityTypeEntity facilityTypeEntity, String capacity,
 			String userId) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.typeId = typeId;
 		this.facilityTypeEntity = facilityTypeEntity;
 		this.capacity = capacity;
 		this.userId = userId;

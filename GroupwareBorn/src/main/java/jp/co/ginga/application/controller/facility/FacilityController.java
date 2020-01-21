@@ -83,7 +83,6 @@ public class FacilityController {
 		// データ変換処理
 		List<FacilityForm> facilityFormList = helper
 				.convertFromFacilityEntityListToFacilityFormList(facilityEntityList);
-		System.out.println(facilityFormList.get(1).getTypeId());
 
 		// ビューへの値設定処理
 		model.addAttribute("facilityListForm", facilityFormList);
@@ -178,11 +177,16 @@ public class FacilityController {
 
 		// ModelオブジェクトへFormオブジェクトを登録する処理
 
-		List<FacilityTypeEntity> list = typeService.getFacilityTypeList();
+		FacilityTypeEntity entityType = typeService.getFacilityType(session.getFacilityTypeForm().getId());
+		FacilityTypeForm formType = helper.convertFromTypeEntityToTypeForm(entityType);
 
-		List<FacilityTypeForm> typeFormList = helper.convertFromTypeEntityListToTypeFormList(list);
+		model.addAttribute("typeForm", formType);
 
-		model.addAttribute("typeListForm", typeFormList);
+		//		List<FacilityTypeEntity> list = typeService.getFacilityTypeList();
+		//
+		//		List<FacilityTypeForm> typeFormList = helper.convertFromTypeEntityListToTypeFormList(list);
+		//
+		//		model.addAttribute("typeListForm", typeFormList);
 
 		model.addAttribute("facilityFormSession", session);
 
@@ -205,11 +209,16 @@ public class FacilityController {
 			return "redirect:/facility/detail/" + session.getId() + "";
 		}
 
-		List<FacilityTypeEntity> list = typeService.getFacilityTypeList();
+		FacilityTypeEntity entityType = typeService.getFacilityType(session.getFacilityTypeForm().getId());
+		FacilityTypeForm formType = helper.convertFromTypeEntityToTypeForm(entityType);
 
-		List<FacilityTypeForm> typeFormList = helper.convertFromTypeEntityListToTypeFormList(list);
+		model.addAttribute("typeForm", formType);
 
-		model.addAttribute("typeListForm", typeFormList);
+		//		List<FacilityTypeEntity> list = typeService.getFacilityTypeList();
+		//
+		//		List<FacilityTypeForm> typeFormList = helper.convertFromTypeEntityListToTypeFormList(list);
+		//
+		//		model.addAttribute("typeListForm", typeFormList);
 
 		model.addAttribute("facilityFormSession", session);
 
