@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>予約内容確認</title>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="../../../../resources/static/css/style.css" />
+</head>
+<body>
+	<div id="base">
+		<div id="header">
+			<h1>銀河ソフトウェア&nbsp;&nbsp;施設予約システム</h1>
+			<ul id="header-bolock">
+				<li><p>〇〇さん&nbsp;こんにちは</p></li>
+				<li><input type="button" value="ログアウト"
+					onClick="location.href='../authority/login.html'" /></li>
+			</ul>
+		</div>
+		<div id="contents">
+			<div id="view-title">予約内容確認</div>
+			<p id="contents-title">以下の内容で予約します。よろしいですか？</p>
+			<form>
+				<table id="reservation-check" border="1">
+					<tr>
+						<th>予約施設</th>
+						<td>会議室001</td>
+					</tr>
+					<tr>
+						<th>予約日</th>
+						<td>2017年10月1日</td>
+					</tr>
+					<tr>
+						<th>予約時間</th>
+						<td>10:00~11:00</td>
+					</tr>
+				</table>
+
+                <p><input type="button" value="戻る"
+                    onClick="location.href='facility-reservation.html'">
+
+				<input type="button" value="確定"
+					onClick="location.href='facility-reservation-completion.html'"></p>
+			</form>
+		</div>
+		<div id="footer">
+			<p class="copyright">(C) 2003 Ginga Software, All Rights
+				Reserved..</p>
+		</div>
+
+	</div>
+</body>
+</html>
