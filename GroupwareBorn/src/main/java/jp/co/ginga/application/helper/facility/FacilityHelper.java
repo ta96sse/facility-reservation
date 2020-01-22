@@ -55,10 +55,9 @@ public class FacilityHelper {
 	 * @param Facility
 	 * @return
 	 */
-	public FacilityEntity convertEntityFacilityForm(FacilityForm session,
+	public FacilityEntity convertFromFormToEntity(FacilityForm session,
 			AccountSessionForm accountSessionForm) {
-		return new FacilityEntity(session.getId(), session.getName(),
-				new FacilityTypeEntity(session.getFacilityTypeForm().getId(), session.getFacilityTypeForm().getName()),
+		return new FacilityEntity(session.getId(), session.getName(), session.getTypeId(),
 				session.getCapacity(), accountSessionForm.getAccountName());
 	}
 
@@ -82,5 +81,55 @@ public class FacilityHelper {
 	public FacilityTypeEntity convertFromTypeFormToTypeEntity(FacilityTypeForm facilityType) {
 		return new FacilityTypeEntity(facilityType.getId());
 	}
+
+	//	/**
+	//	 * FacilitySessionFormからFacilityEntityへのコンバート処理
+	//	 *
+	//	 * @param Facility
+	//	 * @return
+	//	 */
+	//	public FacilityEntity convertFromSessionFormToEntity(FacilityForm session,
+	//			AccountSessionForm accountSessionForm) {
+	//		return new FacilityEntity(session.getId(), session.getName(), session.getFacilityTypeForm().getId(),
+	//				session.getCapacity(), accountSessionForm.getAccountName());
+	//	}
+	//
+	//	//	FacilitySessionFormへのコンバート処理
+	//	public FacilitySessionForm convertToFacilitySessionForm(FacilityEntity facility, List<FacilityTypeEntity> list) {
+	//		FacilitySessionForm form = new FacilitySessionForm();
+	//
+	//		//FacilityEntityからFacilityFormへの変換
+	//		form.setFacilityForm(new FacilityForm(facility.getId(), facility.getName(), facility.getCapacity(),
+	//				new FacilityTypeForm(facility.getFacilityTypeEntity().getId(),
+	//						facility.getFacilityTypeEntity().getName())));
+	//
+	//		//		List<FacilityTypeEntity>からList<FacilityTypeForm>への変換
+	//		form.setFacilityTypeList(convertFromTypeEntityListToTypeFormList(list));
+	//
+	//		//		List<FacilityTypeForm> formList = new ArrayList<FacilityTypeForm>();
+	//		//		for (FacilityTypeEntity val : list) {
+	//		//
+	//		//			formList.add(new FacilityTypeForm(val.getId(), val.getName()));
+	//		//
+	//		//		}
+	//
+	//		return form;
+	//	}
+	//
+	//	public List<FacilityTypeForm> convertFromEntityListToFacilitySessionForm(List<FacilityTypeEntity> list) {
+	//		FacilitySessionForm form = new FacilitySessionForm();
+	//
+	//		//List<FacilityTypeEntity>からList<FacilityTypeForm>への変換
+	//		List<FacilityTypeForm> formList = new ArrayList<FacilityTypeForm>();
+	//		for (FacilityTypeEntity val : list) {
+	//
+	//			formList.add(new FacilityTypeForm(val.getId(), val.getName()));
+	//
+	//		}
+	//
+	//		//		form.setFacilityTypeList(formList);
+	//
+	//		return formList;
+	//	}
 
 }

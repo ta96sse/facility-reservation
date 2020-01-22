@@ -6,8 +6,6 @@ package jp.co.ginga.application.controller.facility;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -105,12 +103,9 @@ public class FacilityController {
 		} else {
 			model.addAttribute("facilityFormSession", session);
 		}
-		System.out.println();
 
 		List<FacilityTypeEntity> list = typeService.getFacilityTypeList();
-
 		List<FacilityTypeForm> typeFormList = helper.convertFromTypeEntityListToTypeFormList(list);
-
 		model.addAttribute("typeListForm", typeFormList);
 
 		// セッションオブジェクトを設定する処理
@@ -129,23 +124,21 @@ public class FacilityController {
 
 		String key = BindingResult.MODEL_KEY_PREFIX + FORM_NAME;
 
-		// 施設IDから施設情報の取得
 		FacilityEntity facility = service.getFacility(id);
+		List<FacilityTypeEntity> list = typeService.getFacilityTypeList();
 
-		// データ変換処理
-		FacilityForm facilityForm = helper.convertFromFacilityEntityToFacilityForm(facility);
+		FacilityForm form = helper.convertFromFacilityEntityToFacilityForm(facility);
+		List<FacilityTypeForm> typeFormList = helper.convertFromTypeEntityListToTypeFormList(list);
+
+		//		FacilitySessionForm session = helper.convertToFacilitySessionForm(facility, list);
+
+		model.addAttribute("typeListForm", typeFormList);
 
 		if (model.containsKey("errors")) {
 			model.addAttribute(key, model.get("errors"));
 		} else {
-			model.addAttribute("facilityFormSession", facilityForm);
+			model.addAttribute("facilityFormSession", form);
 		}
-
-		List<FacilityTypeEntity> list = typeService.getFacilityTypeList();
-
-		List<FacilityTypeForm> typeFormList = helper.convertFromTypeEntityListToTypeFormList(list);
-
-		model.addAttribute("typeListForm", typeFormList);
 
 		// ModelオブジェクトへFormオブジェクトを登録する処理
 		return "facility/facility-detail";
@@ -159,7 +152,7 @@ public class FacilityController {
 	 * @throws Exception
 	 */
 	@RequestMapping(path = "/facility/confirm", params = "add", method = RequestMethod.POST)
-	public String createFacilityConfirmAddPost(@ModelAttribute(FORM_NAME) @Valid FacilityForm session,
+	public String createFacilityConfirmAddPost(@ModelAttribute(FORM_NAME) @Validated FacilityForm session,
 			BindingResult result,
 			Model model, RedirectAttributes ra) throws Exception {
 
@@ -168,19 +161,9 @@ public class FacilityController {
 			ra.addFlashAttribute("errors", result);
 			return "redirect:/facility/add";
 		}
-		//		// passwordチェック処理
-		//		if (!helper.checkPassword(session)) {
-		//
-		//		}
 
-		// 確認画面表示オブジェクト生成処理
-
-		// ModelオブジェクトへFormオブジェクトを登録する処理
-
-		FacilityTypeEntity entityType = typeService.getFacilityType(session.getFacilityTypeForm().getId());
-		FacilityTypeForm formType = helper.convertFromTypeEntityToTypeForm(entityType);
-
-		model.addAttribute("typeForm", formType);
+		FacilityTypeEntity entityType = typeService.getFacilityType(session.getTypeId());
+		session.setFacilityTypeForm(helper.convertFromTypeEntityToTypeForm(entityType));
 
 		//		List<FacilityTypeEntity> list = typeService.getFacilityTypeList();
 		//
@@ -209,10 +192,8 @@ public class FacilityController {
 			return "redirect:/facility/detail/" + session.getId() + "";
 		}
 
-		FacilityTypeEntity entityType = typeService.getFacilityType(session.getFacilityTypeForm().getId());
-		FacilityTypeForm formType = helper.convertFromTypeEntityToTypeForm(entityType);
-
-		model.addAttribute("typeForm", formType);
+		FacilityTypeEntity entityType = typeService.getFacilityType(session.getTypeId());
+		session.setFacilityTypeForm(helper.convertFromTypeEntityToTypeForm(entityType));
 
 		//		List<FacilityTypeEntity> list = typeService.getFacilityTypeList();
 		//
@@ -237,7 +218,7 @@ public class FacilityController {
 	public String createFacilityCompleteGet(FacilityForm session,
 			SessionStatus sessionStatus, Model model) {
 
-		FacilityEntity facility = helper.convertEntityFacilityForm(session, accountSessionForm);
+		FacilityEntity facility = helper.convertFromFormToEntity(session, accountSessionForm);
 
 		int result = service.add(facility);
 		if (result != 1) {
@@ -262,7 +243,7 @@ public class FacilityController {
 	public String createFacilityCompleteUpdatePost(FacilityForm session,
 			SessionStatus sessionStatus, Model model) {
 
-		FacilityEntity facility = helper.convertEntityFacilityForm(session, accountSessionForm);
+		FacilityEntity facility = helper.convertFromFormToEntity(session, accountSessionForm);
 
 		int result = service.update(facility);
 		if (result != 1) {
@@ -286,7 +267,7 @@ public class FacilityController {
 	public String createFacilityCompleteDeletePost(FacilityForm session,
 			SessionStatus sessionStatus, Model model) {
 
-		FacilityEntity facility = helper.convertEntityFacilityForm(session, accountSessionForm);
+		FacilityEntity facility = helper.convertFromFormToEntity(session, accountSessionForm);
 		int result = service.delete(facility.getId());
 
 		if (result != 1) {

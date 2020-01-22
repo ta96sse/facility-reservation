@@ -96,12 +96,12 @@ public class FacilityEntity {
 		this.capacity = capacity;
 	}
 
-	public FacilityEntity(int id, String name, FacilityTypeEntity facilityTypeEntity, String capacity,
+	public FacilityEntity(int id, String name, int typeId, String capacity,
 			String userId) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.facilityTypeEntity = facilityTypeEntity;
+		this.typeId = typeId;
 		this.capacity = capacity;
 		this.userId = userId;
 	}
