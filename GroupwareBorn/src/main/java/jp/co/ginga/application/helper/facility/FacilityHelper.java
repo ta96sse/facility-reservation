@@ -27,12 +27,12 @@ public class FacilityHelper {
 	 * @param list
 	 * @return
 	 */
-	public List<FacilityForm> convertFromFacilityEntityListToFacilityFormList(List<FacilityEntity> list) {
+	public List<FacilityForm> convertFromEntityListToFormList(List<FacilityEntity> list) {
 		List<FacilityForm> convertList = new ArrayList<FacilityForm>();
 
 		for (FacilityEntity entity : list) {
 
-			convertList.add(convertFromFacilityEntityToFacilityForm(entity));
+			convertList.add(convertFromEntityToForm(entity));
 		}
 		return convertList;
 	}
@@ -43,7 +43,7 @@ public class FacilityHelper {
 	 * @param Facility
 	 * @return
 	 */
-	public FacilityForm convertFromFacilityEntityToFacilityForm(FacilityEntity facility) {
+	public FacilityForm convertFromEntityToForm(FacilityEntity facility) {
 		return new FacilityForm(facility.getId(), facility.getName(),
 				facility.getCapacity(), new FacilityTypeForm(facility.getFacilityTypeEntity().getId(),
 						facility.getFacilityTypeEntity().getName()));
@@ -57,7 +57,9 @@ public class FacilityHelper {
 	 */
 	public FacilityEntity convertFromFormToEntity(FacilityForm session,
 			AccountSessionForm accountSessionForm) {
-		return new FacilityEntity(session.getId(), session.getName(), session.getTypeId(),
+		return new FacilityEntity(session.getId(), session.getName(),
+				new FacilityTypeEntity(session.getFacilityTypeForm().getId(),
+						session.getFacilityTypeForm().getName()),
 				session.getCapacity(), accountSessionForm.getAccountName());
 	}
 

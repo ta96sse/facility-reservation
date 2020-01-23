@@ -19,8 +19,6 @@ public class FacilityForm implements Serializable {
 	@Size(message = "1文字以上20文字以下で入力してください。", min = 1, max = 20)
 	private String name;
 
-	private int typeId;
-
 	/**
 	 * 定員
 	 */
@@ -89,14 +87,6 @@ public class FacilityForm implements Serializable {
 	 */
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public int getTypeId() {
-		return typeId;
-	}
-
-	public void setTypeId(int typeId) {
-		this.typeId = typeId;
 	}
 
 	/**

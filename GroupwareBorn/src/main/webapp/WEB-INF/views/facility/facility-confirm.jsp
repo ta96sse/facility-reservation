@@ -17,20 +17,20 @@
 			<div id="view-title">施設情報 確認画面</div>
 
 			<p id="contents-title">施設情報を確認してください。</p>
-			<form:form modelAttribute="facilityFormSession"
+			<form:form modelAttribute="facilitySessionForm"
 				action="/facility/complete" method="post">
 				<spring:eval var="accountSessionForm"
 					expression="@accountSessionForm" />
 				<table id="facility-info">
 					<tr>
 						<th class="facility-info-th">施設名</th>
-						<td><c:out value="${facilityFormSession.name}" /></td>
+						<td><c:out value="${facilitySessionForm.facilityForm.name}" /></td>
 					</tr>
 					<tr>
 						<th class="facility-info-th">種別</th>
 
 						<td><c:out
-								value="${facilityFormSession.facilityTypeForm.name}" /></td>
+								value="${facilitySessionForm.facilityForm.facilityTypeForm.name}" /></td>
 
 						<!--
 						<td><c:forEach var="facilityType" items="${typeListForm}"
@@ -48,17 +48,17 @@
 					</tr>
 					<tr>
 						<th class="facility-info-th">定員</th>
-						<td><c:out value="${facilityFormSession.capacity}" /></td>
+						<td><c:out value="${facilitySessionForm.facilityForm.capacity}" /></td>
 					</tr>
 				</table>
-				<input type="hidden" id="id" name="id"
-					value="${facilityFormSession.id}" />
-				<input type="hidden" id="name" name="name"
-					value="${facilityFormSession.name}" />
-				<input type="hidden" id="typeId" name="typeId"
-					value="${facilityFormSession.facilityTypeForm.id}" />
-				<input type="hidden" id="capacity" name="capacity"
-					value="${facilityFormSession.capacity}" />
+				<input type="hidden" id="facilityForm.id" name="facilityForm.id"
+					value="${facilitySessionForm.facilityForm.id}" />
+				<input type="hidden" id="facilityForm.name" name="facilityForm.name"
+					value="${facilitySessionForm.facilityForm.name}" />
+				<input type="hidden" id="facilityForm.facilityTypeForm.id" name="facilityForm.facilityTypeForm.id"
+					value="${facilitySessionForm.facilityForm.facilityTypeForm.id}" />
+				<input type="hidden" id="facilityForm.capacity" name="facilityForm.capacity"
+					value="${facilitySessionForm.facilityForm.capacity}" />
 
 				<input type="submit" name="${btnAction}" value="${btnName}" />
 				<input type="button" class="back" value="戻る"

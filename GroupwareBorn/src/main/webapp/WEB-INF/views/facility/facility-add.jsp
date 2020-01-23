@@ -38,40 +38,42 @@
 		<div id="contents">
 			<div id="view-title">施設情報管理</div>
 
-			<form:errors path="errors" />
 
 
-			<form:form modelAttribute="facilityFormSession"
+			<form:form modelAttribute="facilitySessionForm"
 				action="/facility/confirm" method="post">
+
+				<form:errors path="systemMsg" />
 
 				<p id="contents-title">施設情報を入力してください</p>
 				<table id="facility-info">
 					<tr>
 						<th class="facility-info-th">施設名</th>
-						<td><a style="color: red"><form:errors path="name" /></a> <form:input
-								id="name" path="name" /></td>
+						<td><a style="color: red"><form:errors path="facilityForm.name" /></a>
+						 <form:input path="facilityForm.name" /></td>
 					</tr>
 					<tr>
 						<th class="facility-info-th">種別</th>
 
-						<td><c:forEach var="facilityType" items="${typeListForm}"
+						<td><c:forEach var="facilityType" items="${facilitySessionForm.facilityTypeList}"
 								varStatus="status">
 
-								<c:if test="${1 == status.count}">
-									<input type="radio" name="typeId" value="${facilityType.id}"
-										checked="checked">${facilityType.name}
+								<c:if test="${facilitySessionForm.facilityForm.facilityTypeForm.id == facilityType.id}">
+									<input type="radio" name="facilityForm.facilityTypeForm.id" value="${facilityType.id}" checked="checked">${facilityType.name}
+									<input type="hidden" name="facilityForm.facilityTypeForm.name" value="${facilityType.name}"/>
 								</c:if>
-								<c:if test="${1 != status.count}">
-									<input type="radio" name="typeId" value="${facilityType.id}">${facilityType.name}
+								<c:if test="${facilitySessionForm.facilityForm.facilityTypeForm.id != facilityType.id}">
+									<input type="radio" name="facilityForm.facilityTypeForm.id" value="${facilityType.id}">${facilityType.name}
 								</c:if>
 
-							</c:forEach></td>
+							</c:forEach>
+					</td>
 
 					</tr>
 					<tr>
 						<th class="facility-info-th">定員</th>
-						<td><a style="color: red"><form:errors path="capacity" /></a>
-							<form:input id="capacity" path="capacity" /></td>
+						<td><a style="color: red"><form:errors path="facilityForm.capacity" /></a>
+							<form:input path="facilityForm.capacity" /></td>
 					</tr>
 				</table>
 				<input type="submit" class="addButton" name="add" value="確認" />

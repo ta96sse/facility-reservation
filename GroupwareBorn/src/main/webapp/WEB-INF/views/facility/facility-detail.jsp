@@ -47,7 +47,7 @@
 				<table style="margin: auto;">
 					<tr>
 						<th>facility :</th>
-						<td><font size="5">${facilityFormSession.name}</font></td>
+						<td><font size="5">${facilitySessionForm.facilityForm.name}</font></td>
 					</tr>
 				</table>
 			</div>
@@ -59,14 +59,14 @@
             </ul>
              -->
 			<p id="contents-title">施設情報の更新、削除を行えます</p>
-			<form:form modelAttribute="facilityFormSession"
+			<form:form modelAttribute="facilitySessionForm"
 				action="/facility/confirm" method="post">
 				<table id="facility-info">
 					<tr>
 						<th class="facility-info-th">施設名</th>
 						<td><a class="facilityCheck" style="color: red"></a> <a
-							style="color: red"><form:errors path="name" /></a> <form:input
-								class="name" path="name" /></td>
+							style="color: red"><form:errors path="facilityForm.name" /></a>
+							<form:input class="facilityForm.name" path="facilityForm.name" /></td>
 					</tr>
 					<tr>
 						<th class="facility-info-th">種別</th>
@@ -74,24 +74,26 @@
 						<td><c:forEach var="facilityType" items="${typeListForm}">
 
 								<c:if
-									test="${facilityFormSession.facilityTypeForm.id == facilityType.id}">
-									<input type="radio" name="typeId" value="${facilityType.id}"
-										checked="checked">${facilityType.name}
+									test="${facilitySessionForm.facilityForm.facilityTypeForm.id == facilityType.id}">
+									<input type="radio" name="facilityForm.facilityTypeForm.id"
+										value="${facilityType.id}" checked="checked">${facilityType.name}
 								</c:if>
 								<c:if
-									test="${facilityFormSession.facilityTypeForm.id != facilityType.id}">
-									<input type="radio" name="typeId" value="${facilityType.id}">${facilityType.name}
+									test="${facilitySessionForm.facilityForm.facilityTypeForm.id != facilityType.id}">
+									<input type="radio" name="facilityForm.facilityTypeForm.id"
+										value="${facilityType.id}">${facilityType.name}
 								</c:if>
 							</c:forEach></td>
 					<tr>
 						<th class="facility-info-th">定員</th>
 						<td><a class="capacityCheck" style="color: red"></a> <a
-							style="color: red"><form:errors path="capacity" /></a> <form:input
-								class="capacity" path="capacity" /></td>
+							style="color: red"><form:errors path="facilityForm.capacity" /></a>
+							<form:input class="facilityForm.capacity"
+								path="facilityForm.capacity" /></td>
 					</tr>
 				</table>
-				<input type="hidden" id="id" name="id"
-					value="${facilityFormSession.id}" />
+				<input type="hidden" id="facilityForm.id" name="facilityForm.id"
+					value="${facilitySessionForm.facilityForm.id}" />
 				<input type="submit" class="update" name="update" value="更新">
 				<input type="button" class="delete" name="delete" value="削除">
 				<input type="button" value="戻る"

@@ -88,20 +88,19 @@ public class FacilityEntity {
 	public FacilityEntity() {
 	}
 
-	public FacilityEntity(int id, String name, int typeId, String capacity) {
+	public FacilityEntity(int id, String name, String capacity) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.typeId = typeId;
 		this.capacity = capacity;
 	}
 
-	public FacilityEntity(int id, String name, int typeId, String capacity,
+	public FacilityEntity(int id, String name, FacilityTypeEntity facilityTypeEntity, String capacity,
 			String userId) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.typeId = typeId;
+		this.facilityTypeEntity = facilityTypeEntity;
 		this.capacity = capacity;
 		this.userId = userId;
 	}

@@ -64,7 +64,7 @@ public interface FacilityRepository {
 	 *
 	 * @throws SQLException
 	 */
-	@Insert("insert into facility (name,type_id,capacity,insert_date,update_date,user_id) values (#{name},#{typeId},#{capacity},now(),now(),#{userId}) ")
+	@Insert("insert into facility (name,type_id,capacity,insert_date,update_date,user_id) values (#{name},#{facilityTypeEntity.id},#{capacity},now(),now(),#{userId}) ")
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	public boolean add(FacilityEntity facility);
 
@@ -73,7 +73,7 @@ public interface FacilityRepository {
 	 *
 	 * @throws Exception
 	 */
-	@Update("update facility set name = #{name}, type_id = #{typeId}, capacity = #{capacity}, update_date = now() ,user_id = #{userId} where id = #{id}")
+	@Update("update facility set name = #{name}, type_id = #{facilityTypeEntity.id}, capacity = #{capacity}, update_date = now() ,user_id = #{userId} where id = #{id}")
 	public boolean update(FacilityEntity facility);
 
 	/**
