@@ -141,8 +141,6 @@ public class FacilityController {
 
 		FacilitySessionForm session = new FacilitySessionForm(form, typeListForm);
 
-		//		FacilitySessionForm session = helper.convertToFacilitySessionForm(facility, list);
-
 		if (model.containsKey("errors")) {
 			model.addAttribute(key, model.get("errors"));
 		} else {
@@ -207,9 +205,7 @@ public class FacilityController {
 		session.getFacilityForm().setFacilityTypeForm(helper.convertFromTypeEntityToTypeForm(typeEntity));
 
 		//		List<FacilityTypeEntity> list = typeService.getFacilityTypeList();
-		//
 		//		List<FacilityTypeForm> typeFormList = helper.convertFromTypeEntityListToTypeFormList(list);
-		//
 		//		model.addAttribute("typeListForm", typeFormList);
 
 		model.addAttribute("facilitySessionForm", session);

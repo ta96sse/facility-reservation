@@ -51,10 +51,8 @@
 				<a style="font-size: 18px;" href="/menu">メニューに戻る</a>
 			</div>
 		</div>
-		<div id="footer">
-			<p class="copyright">(C) 2003 Ginga Software, All Rights
-				Reserved..</p>
-		</div>
+		<jsp:include page="/WEB-INF/views/footer/footer.jsp" flush="true" />
+
 	</div>
 </body>
 </html>

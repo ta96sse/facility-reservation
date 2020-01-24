@@ -49,31 +49,36 @@
 				<table id="facility-info">
 					<tr>
 						<th class="facility-info-th">施設名</th>
-						<td><a style="color: red"><form:errors path="facilityForm.name" /></a>
-						 <form:input path="facilityForm.name" /></td>
+						<td><a style="color: red"><form:errors
+									path="facilityForm.name" /></a> <form:input
+								path="facilityForm.name" /></td>
 					</tr>
 					<tr>
 						<th class="facility-info-th">種別</th>
 
-						<td><c:forEach var="facilityType" items="${facilitySessionForm.facilityTypeList}"
+						<td><c:forEach var="facilityType"
+								items="${facilitySessionForm.facilityTypeList}"
 								varStatus="status">
 
-								<c:if test="${facilitySessionForm.facilityForm.facilityTypeForm.id == facilityType.id}">
-									<input type="radio" name="facilityForm.facilityTypeForm.id" value="${facilityType.id}" checked="checked">${facilityType.name}
-									<input type="hidden" name="facilityForm.facilityTypeForm.name" value="${facilityType.name}"/>
+								<c:if test="${1 == status.count}">
+									<form:radiobutton path="facilityForm.facilityTypeForm.id"
+										value="${facilityType.id}" label="${facilityType.name}"
+										checked="checked" />
 								</c:if>
-								<c:if test="${facilitySessionForm.facilityForm.facilityTypeForm.id != facilityType.id}">
-									<input type="radio" name="facilityForm.facilityTypeForm.id" value="${facilityType.id}">${facilityType.name}
+								<c:if test="${1 != status.count}">
+									<form:radiobutton path="facilityForm.facilityTypeForm.id"
+										value="${facilityType.id}" label="${facilityType.name}" />
 								</c:if>
 
-							</c:forEach>
-					</td>
+							</c:forEach></td>
+
 
 					</tr>
 					<tr>
 						<th class="facility-info-th">定員</th>
-						<td><a style="color: red"><form:errors path="facilityForm.capacity" /></a>
-							<form:input path="facilityForm.capacity" /></td>
+						<td><a style="color: red"><form:errors
+									path="facilityForm.capacity" /></a> <form:input
+								path="facilityForm.capacity" /></td>
 					</tr>
 				</table>
 				<input type="submit" class="addButton" name="add" value="確認" />

@@ -71,20 +71,22 @@
 					<tr>
 						<th class="facility-info-th">種別</th>
 
-						<td><c:forEach var="facilityType" items="${typeListForm}">
+						<td><c:forEach var="facilityType"
+								items="${facilitySessionForm.facilityTypeList}">
 
 								<c:if
 									test="${facilitySessionForm.facilityForm.facilityTypeForm.id == facilityType.id}">
-									<input type="radio" name="facilityForm.facilityTypeForm.id"
-										value="${facilityType.id}" checked="checked">${facilityType.name}
+									<form:radiobutton path="facilityForm.facilityTypeForm.id"
+										value="${facilityType.id}" label="${facilityType.name}"
+										checked="checked" />
 								</c:if>
 								<c:if
 									test="${facilitySessionForm.facilityForm.facilityTypeForm.id != facilityType.id}">
-									<input type="radio" name="facilityForm.facilityTypeForm.id"
-										value="${facilityType.id}">${facilityType.name}
+									<form:radiobutton path="facilityForm.facilityTypeForm.id"
+										value="${facilityType.id}" label="${facilityType.name}" />
 								</c:if>
 							</c:forEach></td>
-					<tr>
+						<tr>
 						<th class="facility-info-th">定員</th>
 						<td><a class="capacityCheck" style="color: red"></a> <a
 							style="color: red"><form:errors path="facilityForm.capacity" /></a>
@@ -100,10 +102,8 @@
 					onClick="location.href='/facility/list'" />
 			</form:form>
 		</div>
-		<div id="footer">
-			<p class="copyright">(C) 2003 Ginga Software, All Rights
-				Reserved..</p>
-		</div>
+		<jsp:include page="/WEB-INF/views/footer/footer.jsp" flush="true" />
+
 	</div>
 	<!-- javascriptの記述 -->
 	<script type="text/javascript">
@@ -133,5 +133,5 @@
 
 		});
 	</script>
-	</ bo dy>
-</html>
+						</ bo
+					dy></html>
