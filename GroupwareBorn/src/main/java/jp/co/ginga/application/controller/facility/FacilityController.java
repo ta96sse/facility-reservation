@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -74,7 +75,7 @@ public class FacilityController {
 	 * @throws SQLException
 	 */
 	@RequestMapping(path = "/facility/list", method = RequestMethod.GET)
-	public String createFacilityListFormGet(Model model) throws SQLException {
+	public String createFacilityListFormGet(Model model, Integer page) throws SQLException {
 
 		// 施設一覧データ取得処理
 		List<FacilityEntity> listEntity = service.getFacilityList();
@@ -84,6 +85,21 @@ public class FacilityController {
 
 		// ビューへの値設定処理
 		model.addAttribute("facilityListForm", listForm);
+
+		// ページネーション
+		PagedListHolder<FacilityForm> pagedListHolder = new PagedListHolder<>(listForm);
+		pagedListHolder.setPageSize(10); // 10件毎に表示
+		model.addAttribute("maxPages", pagedListHolder.getPageCount());
+		if (page == null || page < 1 || page > pagedListHolder.getPageCount())
+			page = 1;
+		model.addAttribute("page", page);
+		if (page == null || page < 1 || page > pagedListHolder.getPageCount()) {
+			pagedListHolder.setPage(0);
+			model.addAttribute("facilityListForm", pagedListHolder.getPageList());
+		} else if (page <= pagedListHolder.getPageCount()) {
+			pagedListHolder.setPage(page - 1);
+			model.addAttribute("facilityListForm", pagedListHolder.getPageList());
+		}
 
 		return "facility/facility-list";
 	}
