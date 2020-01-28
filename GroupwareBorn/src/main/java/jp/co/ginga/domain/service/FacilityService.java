@@ -9,6 +9,8 @@ public interface FacilityService {
 
 	public List<FacilityEntity> getFacilityList();
 
+	public List<FacilityEntity> getFacilityList(int typeId);
+
 	public FacilityEntity getFacility(int id);
 
 	public int delete(int id);

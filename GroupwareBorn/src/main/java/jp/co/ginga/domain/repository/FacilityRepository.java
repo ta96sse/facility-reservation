@@ -60,6 +60,23 @@ public interface FacilityRepository {
 	public List<FacilityEntity> findAll();
 
 	/**
+	 * 種別IDによる検索処理
+	 *
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	@Select("select * from facility where type_id = #{facilityTypeEntity.id}")
+	@Results({
+		@Result(property = "facilityTypeEntity", column = "type_id", one = @One(select = "jp.co.ginga.domain.repository.FacilityTypeRepository.findOneById", fetchType = FetchType.EAGER)),
+		@Result(property = "typeId", column = "type_id"),
+		@Result(property = "insertDate", column = "insert_date"),
+		@Result(property = "updateDate", column = "update_date"),
+		@Result(property = "userId", column = "user_id")
+	})
+	public List<FacilityEntity> findListByTypeId(int typeId);
+
+	/**
 	 * 施設新規登録処理
 	 *
 	 * @throws SQLException

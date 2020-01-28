@@ -29,6 +29,14 @@ public class FacilityServiceImp implements FacilityService {
 	}
 
 	/**
+	 * 種別IDからのリスト取得処理
+	 */
+	@Override
+	public List<FacilityEntity> getFacilityList(int typeId) {
+		return repoFacility.findListByTypeId(typeId);
+	}
+
+	/**
 	 * 指定した施設IDから施設情報を取得する処理
 	 */
 	@Override

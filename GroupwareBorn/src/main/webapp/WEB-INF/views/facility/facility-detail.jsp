@@ -86,7 +86,7 @@
 										value="${facilityType.id}" label="${facilityType.name}" />
 								</c:if>
 							</c:forEach></td>
-						<tr>
+					<tr>
 						<th class="facility-info-th">定員</th>
 						<td><a class="capacityCheck" style="color: red"></a> <a
 							style="color: red"><form:errors path="facilityForm.capacity" /></a>
@@ -133,5 +133,5 @@
 
 		});
 	</script>
-						</ bo
-					dy></html>
+	</ bo dy>
+</html>

@@ -25,9 +25,9 @@ public class FacilitySessionForm implements Serializable {
 	public FacilitySessionForm() {
 	}
 
-	public FacilitySessionForm(FacilityForm facilityForm, List<FacilityTypeForm> list) {
+	public FacilitySessionForm(FacilityForm facilityForm, List<FacilityTypeForm> facilityTypeList) {
 		this.facilityForm = facilityForm;
-		this.facilityTypeList = list;
+		this.facilityTypeList = facilityTypeList;
 	}
 
 	public FacilityForm getFacilityForm() {
