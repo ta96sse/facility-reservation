@@ -121,7 +121,7 @@ public class FacilityController {
 
 		} else {
 			List<FacilityTypeEntity> typeListEntity = typeService.getFacilityTypeList();
-			
+
 			List<FacilityTypeForm> typeListForm = helper.convertFromTypeEntityListToTypeFormList(typeListEntity);
 			session.setFacilityTypeList(typeListForm);
 
@@ -187,6 +187,7 @@ public class FacilityController {
 
 		model.addAttribute("facilitySessionForm", session);
 
+		model.addAttribute("title", "施設情報登録");
 		model.addAttribute("btnName", "登録");
 		model.addAttribute("btnAction", "add");
 		return "facility/facility-confirm";
@@ -212,6 +213,7 @@ public class FacilityController {
 
 		model.addAttribute("facilitySessionForm", session);
 
+		model.addAttribute("title", "施設情報更新");
 		model.addAttribute("btnName", "更新");
 		model.addAttribute("btnAction", "update");
 
@@ -237,6 +239,7 @@ public class FacilityController {
 			return "error/error";
 		}
 
+		model.addAttribute("title", "施設情報登録完了");
 		// セッションの破棄
 		sessionStatus.setComplete();
 
@@ -262,6 +265,7 @@ public class FacilityController {
 			return "error/error";
 		}
 
+		model.addAttribute("title", "施設情報更新完了");
 		// セッションの破棄
 		sessionStatus.setComplete();
 
@@ -287,6 +291,7 @@ public class FacilityController {
 			return "error/error";
 		}
 
+		model.addAttribute("title", "施設情報削除完了");
 		// セッションの破棄
 		sessionStatus.setComplete();
 

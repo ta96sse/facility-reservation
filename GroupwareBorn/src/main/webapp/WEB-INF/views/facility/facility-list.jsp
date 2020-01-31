@@ -17,12 +17,12 @@
 		<div id="contents">
 			<div id="view-title">施設情報管理</div>
 
-
 			<!--
             <ul class="msgs">
                 <li>エラーメッセージ表示エリア</li>
             </ul>
              -->
+
 			<p id="contents-title">施設一覧</p>
 			<div id="return-display">
 				<a style="font-size: 18px;" href="/menu">メニューに戻る</a>

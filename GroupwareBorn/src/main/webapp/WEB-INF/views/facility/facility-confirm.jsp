@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>施設情報登録</title>
+<title>${title}</title>
 <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css" href="/css/style.css" />
 </head>

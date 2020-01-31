@@ -38,8 +38,6 @@
 		<div id="contents">
 			<div id="view-title">施設情報管理</div>
 
-
-
 			<form:form modelAttribute="facilitySessionForm"
 				action="/facility/confirm" method="post">
 
@@ -71,8 +69,6 @@
 								</c:if>
 
 							</c:forEach></td>
-
-
 					</tr>
 					<tr>
 						<th class="facility-info-th">定員</th>
@@ -89,34 +85,5 @@
 		<jsp:include page="/WEB-INF/views/footer/footer.jsp" flush="true" />
 	</div>
 
-
-	<!-- javascriptの記述
-	<script type="text/javascript">
-		$('.addButton').click(function() {
-			resetMessage();
-
-			var facilityName = $('#facilityName').val();
-
-			var flag = false;
-
-		function check(facilityName) {
-			return $.ajax({
-				url : '/facilityCheck',
-				type : 'post',
-				data : JSON.stringify({
-					"facilityName" : facilityName
-				}),
-				dataType : 'json',
-				contentType : 'application/json ; charset=utf-8',
-				async : false
-			});
-
-		}
-
-		function resetMessage() {
-			$('a').text('');
-		}
-	</script>
-	-->
 </body>
 </html>

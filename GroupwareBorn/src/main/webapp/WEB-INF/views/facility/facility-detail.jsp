@@ -52,12 +52,12 @@
 				</table>
 			</div>
 
-
 			<!--
             <ul class="msgs">
                 <li>エラーメッセージ表示エリア</li>
             </ul>
              -->
+
 			<p id="contents-title">施設情報の更新、削除を行えます</p>
 			<form:form modelAttribute="facilitySessionForm"
 				action="/facility/confirm" method="post">

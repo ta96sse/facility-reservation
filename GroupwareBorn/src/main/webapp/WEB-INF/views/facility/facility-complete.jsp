@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>施設情報登録</title>
+<title>${title}</title>
 <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css" href="/css/style.css" />
 <script type="text/javascript">
@@ -23,7 +23,7 @@
                 <li>エラーメッセージ表示エリア</li>
             </ul>
              -->
-			<p id="contents-title">施設情報の登録が完了しました。</p>
+			<p id="contents-title">${title}</p>
 			<p id="contents-title">
 				<a href="/menu">メニューに戻る</a>
 			</p>
