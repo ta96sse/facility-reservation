@@ -56,7 +56,8 @@
 							<ul class="calendar-cell-ui">
 								<li class="calendar-cell-li">${day.date}</li>
 								<c:forEach var="reservation" items="${day.reservationFormList}">
-									<li class="calendar-cell-li"><a>${reservation.startTime}～${reservation.endTime}<br>(${reservation.userId})
+									<li class="calendar-cell-li"><a
+										href="/facilityreservation/${statusForm.facilityForm.id}/${reservation.id}">${reservation.startTime}～${reservation.endTime}<br>(${reservation.userId})
 									</a></li>
 								</c:forEach>
 								<c:if test="${day.date != '-'}">
