@@ -1,6 +1,7 @@
 package jp.co.ginga.domain.service.imp;
 
-import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,23 @@ public class ReservationServiceImp implements ReservationService {
 	}
 
 	@Override
-	public List<ReservationEntity> getReservationList(int facilityId, Date yearMonth) {
+	public List<ReservationEntity> getReservationList(int facilityId) {
 
-		return reservationRepository.findListByFacilityId(facilityId, yearMonth);
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		System.out.println(sdf.format(cal.getTime()));
+
+		return reservationRepository.findListByFacilityId(facilityId, sdf.format(cal.getTime()));
+	}
+
+	@Override
+	public List<ReservationEntity> getReservationList(int facilityId, int month) {
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);
+		cal.set(year,month);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		System.out.println(sdf.format(cal.getTime()));
+		return reservationRepository.findListByFacilityId(facilityId, "202003");
 	}
 
 	@Override

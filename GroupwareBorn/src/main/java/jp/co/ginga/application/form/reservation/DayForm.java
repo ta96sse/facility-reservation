@@ -7,18 +7,16 @@ public class DayForm implements Serializable {
 
 	private String date;
 	private List<ReservationForm> reservationFormList;
-	private String button;
 
 	public DayForm(String date) {
 		super();
 		this.date = date;
 	}
 
-	public DayForm(String date, List<ReservationForm> reservationFormList, String button) {
+	public DayForm(String date, List<ReservationForm> reservationFormList) {
 		super();
 		this.date = date;
 		this.reservationFormList = reservationFormList;
-		this.button = button;
 	}
 
 	public String getDate() {
@@ -35,14 +33,6 @@ public class DayForm implements Serializable {
 
 	public void setReservationFormList(List<ReservationForm> reservationFormList) {
 		this.reservationFormList = reservationFormList;
-	}
-
-	public String getButton() {
-		return button;
-	}
-
-	public void setButton(String button) {
-		this.button = button;
 	}
 
 }

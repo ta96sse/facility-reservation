@@ -9,14 +9,16 @@ public class ReservationForm implements Serializable {
 	private String endTime;
 	private int facilityId;
 	private String userId;
+	private int startDate;
 
-	public ReservationForm(int id, String startTime, String endTime, int facilityId, String userId) {
+	public ReservationForm(int id, String startTime, String endTime, int facilityId, String userId, int startDate) {
 		super();
 		this.id = id;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.facilityId = facilityId;
 		this.userId = userId;
+		this.startDate = startDate;
 	}
 
 	public int getId() {
@@ -57,6 +59,14 @@ public class ReservationForm implements Serializable {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public int getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(int startDate) {
+		this.startDate = startDate;
 	}
 
 }

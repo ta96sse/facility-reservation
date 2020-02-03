@@ -36,7 +36,7 @@
 			<p id="contents-title">${statusForm.facilityForm.name}</p>
 			<div id="calendar-menu">
 				${statusForm.calendarForm.year}年${statusForm.calendarForm.month + 1}月
-				<input type="button" value="次月">
+				<button id="next-month" value="${statusForm.calendarForm.month + 2}">次月</button>
 			</div>
 
 			<table id="calendar">
@@ -79,40 +79,29 @@
 	</div>
 
 	<script type="text/javascript">
-		$("#calendar-menu")
-				.click(
-						function() {
-							var typeId = $(this).val();
-							console.log(typeId);
-							$(function() {
-								$
-										.ajax(
-												{
-													url : "/facilityreservation-{id}",
-													type : "POST",
-													data : JSON.stringify({
-														"id" : typeId
-													}),
-													dataType : "json",
-													contentType : "application/json ; charset=utf-8"
-												})
-										.done(
-												function(result, status, jqxhr) {
-													console.log("☆☆☆☆☆");
-													$("#facility").empty();
-													var typeResult;
-													for ( var i in result) {
-														typeResult = '<li class="facility-list"><a class="function-button" href="/facilityreservation/'+result[i].id+'">'
-																+ result[i].name
-																+ '：定員'
-																+ result[i].capacity
-																+ '人</a></li>';
-														$('#facility').append(
-																typeResult);
-													}
-												})
-							})
-						})
+		$("#next-month").click(function() {
+			var month = $(this).val();
+			console.log(month);
+			$(function() {
+				$.ajax({
+					url : "/facilityreservation",
+					type : "POST",
+					data : JSON.stringify({"month" : month}),
+					dataType : "json",
+					contentType : "application/json ; charset=utf-8"
+				})
+				.done(function(result, status, jqxhr) {
+					console.log("☆☆☆☆☆");
+
+					var nextMonth;
+					for ( var i in result) {
+						console.log(result[i]);
+						nextMonth = 12345
+					}
+
+				})
+			})
+		})
 	</script>
 
 </body>

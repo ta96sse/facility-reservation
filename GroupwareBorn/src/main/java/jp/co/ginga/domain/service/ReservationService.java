@@ -1,6 +1,5 @@
 package jp.co.ginga.domain.service;
 
-import java.util.Date;
 import java.util.List;
 
 import jp.co.ginga.domain.entity.ReservationEntity;
@@ -10,7 +9,9 @@ public interface ReservationService {
 
 	public List<ReservationEntity> getReservationList();
 
-	public List<ReservationEntity> getReservationList(int facilityId, Date yearMonth);
+	public List<ReservationEntity> getReservationList(int facilityId);
+
+	public List<ReservationEntity> getReservationList(int facilityId, int month);
 
 	public ReservationEntity getReservation(int id);
 
@@ -21,4 +22,5 @@ public interface ReservationService {
 	public int add(ReservationEntity reservation);
 
 	public void setReservationRepository(ReservationRepository reservationRepository);
+
 }

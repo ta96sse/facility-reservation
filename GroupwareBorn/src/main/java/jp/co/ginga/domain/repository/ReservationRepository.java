@@ -1,7 +1,6 @@
 package jp.co.ginga.domain.repository;
 
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
@@ -62,14 +61,14 @@ public interface ReservationRepository {
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	@Select("select * from reservation where facility_id = #{facilityId}")
+	@Select("select * from reservation where facility_id = #{facilityId} and DATE_FORMAT(start_time, '%Y%m') = #{yearMonth};")
 	@Results({
 			@Result(property = "startTime", column = "start_time"),
 			@Result(property = "endTime", column = "end_time"),
 			@Result(property = "facilityId", column = "facility_id"),
 			@Result(property = "userId", column = "user_id")
 	})
-	public List<ReservationEntity> findListByFacilityId(int facilityId, Date yearMonth);
+	public List<ReservationEntity> findListByFacilityId(int facilityId, String yearMonth);
 
 	/**
 	 * 新規予約処理

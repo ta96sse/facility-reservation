@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import jp.co.ginga.application.form.facility.FacilityForm;
 import jp.co.ginga.application.form.facility.FacilityListForm;
+import jp.co.ginga.application.form.reservation.CalendarForm;
+import jp.co.ginga.application.form.reservation.ReservationForm;
 import jp.co.ginga.application.form.reservation.ReservationStatusForm;
 import jp.co.ginga.application.helper.facility.FacilityHelper;
 import jp.co.ginga.application.helper.reservation.ReservationHelper;
@@ -96,14 +98,9 @@ public class ReservationController {
 	public String createCalendarListGet(@PathVariable int facilityId, Model model) {
 
 		FacilityEntity entity = facilityService.getFacility(facilityId);
-		List<ReservationEntity> reservationEntityList = reservationService.getReservationList(facilityId, null);
+		List<ReservationEntity> reservationEntityList = reservationService.getReservationList(facilityId);
 
 		ReservationStatusForm statusForm = reservationHelper.createStatusForm(entity, reservationEntityList);
-
-		//		List<ReservationForm> reservationFormList = reservationHelper
-		//				.convertFromEntityListToFormList(reservationEntityList);
-		//
-		//		statusForm.setCalendarForm(reservationHelper.createCalendarForm(entity));
 
 		model.addAttribute("statusForm", statusForm);
 		return "reservation/reservation-status";
@@ -114,22 +111,19 @@ public class ReservationController {
 	 * @param facilityForm
 	 * @return
 	 */
-	@RequestMapping(path = "/facilityreservation-{facilityId}", method = RequestMethod.POST)
+	@RequestMapping(path = "/facilityreservation", method = RequestMethod.POST)
 	@ResponseBody
-	public List<FacilityForm> remakeCalendarList(@RequestBody FacilityForm session) {
+	public List<ReservationForm> remakeCalendarList(@RequestBody CalendarForm session) {
 
-		System.out.println(session.getFacilityTypeForm().getId());
+		System.out.println(session.getMonth());
 
-		List<FacilityEntity> listEntity;
+		List<ReservationEntity> reservationEntityList = reservationService.getReservationList(1,
+				session.getMonth());
 
-		if (session.getFacilityTypeForm().getId() == 0) {
-			listEntity = facilityService.getFacilityList();
-		} else {
-			listEntity = facilityService.getFacilityList(session.getFacilityTypeForm().getId());
-		}
+		List<ReservationForm> reservationFormList = reservationHelper
+				.convertFromReservEntityListToReservFormList(reservationEntityList);
 
-		List<FacilityForm> listForm = facilityHelper.convertFromEntityListToFormList(listEntity);
-		return listForm;
+		return reservationFormList;
 	}
 
 	//		// ページネーション

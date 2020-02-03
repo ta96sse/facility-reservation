@@ -28,13 +28,14 @@ public class ReservationHelper {
 	 * ReservationStatusForm
 	 */
 	public ReservationStatusForm createStatusForm(FacilityEntity entity, List<ReservationEntity> entityList) {
-		return new ReservationStatusForm(convertFromEntityToForm(entity), createCalendarForm(entityList));
+		return new ReservationStatusForm(convertFromFacilityEntityToFacilityForm(entity),
+				createCalendarForm(entityList));
 	}
 
 	/*
 	 * FacilityForm
 	 */
-	public FacilityForm convertFromEntityToForm(FacilityEntity entity) {
+	public FacilityForm convertFromFacilityEntityToFacilityForm(FacilityEntity entity) {
 		return new FacilityForm(entity.getId(), entity.getName(), entity.getCapacity(),
 				new FacilityTypeForm(entity.getFacilityTypeEntity().getId(), entity.getFacilityTypeEntity().getName()));
 	}
@@ -60,6 +61,7 @@ public class ReservationHelper {
 	public List<DayForm> createDayFormList(List<ReservationEntity> entityList) {
 
 		List<DayForm> dayFormList = new ArrayList<DayForm>();
+		List<ReservationForm> reservationFormList = convertFromReservEntityListToReservFormList(entityList);
 
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
@@ -79,8 +81,13 @@ public class ReservationHelper {
 			}
 		}
 		for (int day = 1; day <= monthEndDay; day++) {
-			dayFormList
-					.add(new DayForm(String.valueOf(day), convertFromEntityListToFormList(entityList), "/img/add.png"));
+			List<ReservationForm> dayReservList = new ArrayList<ReservationForm>();
+			dayFormList.add(new DayForm(String.valueOf(day), dayReservList));
+			for (int i = 0; i < reservationFormList.size(); i++) {
+				if (day == reservationFormList.get(i).getStartDate()) {
+					dayReservList.add(reservationFormList.get(i));
+				}
+			}
 		}
 		while (dayFormList.size() % 7 != 0) {
 			dayFormList.add(new DayForm("-"));
@@ -92,53 +99,19 @@ public class ReservationHelper {
 	/*
 	 * DayForm
 	 */
-	//	public DayForm createDayForm(List<ReservationEntity> entityList) {
-	//
-	//		Calendar cal = Calendar.getInstance();
-	//		int year = cal.get(Calendar.YEAR);
-	//		int month = cal.get(Calendar.MONTH);
-	//
-	//		cal.set(year, month, 1);
-	//		int week = cal.get(Calendar.DAY_OF_WEEK);
-	//		int monthEndDay = cal.getActualMaximum(Calendar.DATE);
-	//
-	//		if (week == 1) {
-	//			for (int i = 1; i < week + 6; i++) {
-	//				new DayForm("-", null);
-	//			}
-	//		} else {
-	//			for (int i = 1; i < week - 1; i++) {
-	//				new DayForm("-", null);
-	//			}
-	//		}
-	//		for (int day = 1; day <= monthEndDay; day++) {
-	//			new DayForm(String.valueOf(day), convertFromEntityListToFormList(entityList));
-	//		}
-	//		if (week == 1) {
-	//			for (int i = 1; i < week + 6; i++) {
-	//				new DayForm("-", null);
-	//			}
-	//		} else {
-	//			for (int i = 1; i < week - 1; i++) {
-	//				new DayForm("-", null);
-	//			}
-	//		}
-	//		while (dayFormList.size() % 7 != 0) {
-	//			new DayForm("-", null);
-	//		}
-	//
-	//		return null;
-	//	}
+	public DayForm createDayForm(List<ReservationEntity> entityList) {
+		return null;
+	}
 
 	/*
 	 * List<ReservationForm>
 	 */
-	public List<ReservationForm> convertFromEntityListToFormList(List<ReservationEntity> entityList) {
+	public List<ReservationForm> convertFromReservEntityListToReservFormList(List<ReservationEntity> entityList) {
 
 		List<ReservationForm> formList = new ArrayList<ReservationForm>();
 
 		for (ReservationEntity entity : entityList) {
-			formList.add(convertFromEntityToForm(entity));
+			formList.add(convertFromReservEntityToReservForm(entity));
 		}
 
 		return formList;
@@ -147,14 +120,13 @@ public class ReservationHelper {
 	/*
 	 * ReservationForm
 	 */
-	public ReservationForm convertFromEntityToForm(ReservationEntity entity) {
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-		sdf.format(entity.getStartTime());
-		sdf.format(entity.getEndTime());
+	public ReservationForm convertFromReservEntityToReservForm(ReservationEntity entity) {
+		SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("d");
 
-		return new ReservationForm(entity.getId(), sdf.format(entity.getStartTime()), sdf.format(entity.getEndTime()),
+		return new ReservationForm(entity.getId(), sdf1.format(entity.getStartTime()), sdf1.format(entity.getEndTime()),
 				entity.getFacilityId(),
-				entity.getUserId());
+				entity.getUserId(), Integer.parseInt(sdf2.format(entity.getStartTime())));
 	}
 
 }
