@@ -29,7 +29,7 @@
 					expression="@accountSessionForm" />
 				<ul id="menu">
 					<li class="menu-list">
-						<a class="function-button" href="/facilityreservation/list">施設予約</a>
+						<a class="function-button" href="/facility-reservation/list">施設予約</a>
 					<c:if test="${accountSessionForm.permissionLevel == 1}">
 						<li class="menu-list">
 						<a class="function-button" href="/facility/list">施設情報管理</a>

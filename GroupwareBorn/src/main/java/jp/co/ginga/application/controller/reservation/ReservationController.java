@@ -1,5 +1,6 @@
 package jp.co.ginga.application.controller.reservation;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import jp.co.ginga.application.form.facility.FacilityForm;
 import jp.co.ginga.application.form.facility.FacilityListForm;
-import jp.co.ginga.application.form.reservation.CalendarForm;
-import jp.co.ginga.application.form.reservation.ReservationForm;
 import jp.co.ginga.application.form.reservation.ReservationStatusForm;
 import jp.co.ginga.application.helper.facility.FacilityHelper;
 import jp.co.ginga.application.helper.reservation.ReservationHelper;
@@ -52,7 +51,7 @@ public class ReservationController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(path = "/facilityreservation/list", method = RequestMethod.GET)
+	@RequestMapping(path = "/facility-reservation/list", method = RequestMethod.GET)
 	public String createFacilityList(Model model) {
 
 		//施設一覧取得
@@ -73,7 +72,7 @@ public class ReservationController {
 	 * @param facilityForm
 	 * @return
 	 */
-	@RequestMapping(path = "/facilityreservation-list", method = RequestMethod.POST)
+	@RequestMapping(path = "/facility-reservation-list", method = RequestMethod.POST)
 	@ResponseBody
 	public List<FacilityForm> remakeFacilityList(@RequestBody FacilityForm session) {
 
@@ -94,11 +93,14 @@ public class ReservationController {
 	/*
 	 * カレンダー表示
 	 */
-	@RequestMapping(path = "/facilityreservation/{facilityId}", method = RequestMethod.GET)
+	@RequestMapping(path = "/facility-reservation/{facilityId}", method = RequestMethod.GET)
 	public String createCalendarListGet(@PathVariable int facilityId, Model model) {
 
+		Calendar cal = Calendar.getInstance();
+
 		FacilityEntity entity = facilityService.getFacility(facilityId);
-		List<ReservationEntity> reservationEntityList = reservationService.getReservationList(facilityId);
+		List<ReservationEntity> reservationEntityList = reservationService.getReservationList(facilityId,
+				cal.get(Calendar.YEAR), cal.get(Calendar.MONTH));
 
 		ReservationStatusForm statusForm = reservationHelper.createStatusForm(entity, reservationEntityList);
 
@@ -111,19 +113,20 @@ public class ReservationController {
 	 * @param facilityForm
 	 * @return
 	 */
-	@RequestMapping(path = "/facilityreservation", method = RequestMethod.POST)
+	@RequestMapping(path = "/facility-reservation/change-calendar", method = RequestMethod.POST)
 	@ResponseBody
-	public List<ReservationForm> remakeCalendarList(@RequestBody CalendarForm session) {
+	public ReservationStatusForm remakeCalendarList(@RequestBody ReservationStatusForm session) {
 
-		System.out.println(session.getMonth());
+		System.out.println(session.getCalendarForm().getMonth());
 
-		List<ReservationEntity> reservationEntityList = reservationService.getReservationList(1,
-				session.getMonth());
+		FacilityEntity entity = facilityService.getFacility(session.getFacilityForm().getId());
+		List<ReservationEntity> reservationEntityList = reservationService.getReservationList(
+				session.getFacilityForm().getId(), session.getCalendarForm().getYear(),
+				session.getCalendarForm().getMonth());
 
-		List<ReservationForm> reservationFormList = reservationHelper
-				.convertFromReservEntityListToReservFormList(reservationEntityList);
+		ReservationStatusForm statusForm = reservationHelper.createStatusForm(entity, reservationEntityList);
 
-		return reservationFormList;
+		return statusForm;
 	}
 
 	//		// ページネーション

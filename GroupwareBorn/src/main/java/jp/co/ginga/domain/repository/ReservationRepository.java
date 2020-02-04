@@ -61,14 +61,14 @@ public interface ReservationRepository {
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	@Select("select * from reservation where facility_id = #{facilityId} and DATE_FORMAT(start_time, '%Y%m') = #{yearMonth};")
+	@Select("select * from reservation where facility_id = #{facilityId} and year(start_time) = #{year} and month(start_time) = #{month}+1 order by start_time asc;")
 	@Results({
 			@Result(property = "startTime", column = "start_time"),
 			@Result(property = "endTime", column = "end_time"),
 			@Result(property = "facilityId", column = "facility_id"),
 			@Result(property = "userId", column = "user_id")
 	})
-	public List<ReservationEntity> findListByFacilityId(int facilityId, String yearMonth);
+	public List<ReservationEntity> findListByFacilityId(int facilityId, int year, int month);
 
 	/**
 	 * 新規予約処理

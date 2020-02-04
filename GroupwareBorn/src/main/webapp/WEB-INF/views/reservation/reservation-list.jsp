@@ -48,7 +48,7 @@
 				<ul id="facility">
 					<c:forEach var="facility" items="${facilityListForm.facilityList}">
 						<li class="facility-list"><a class="function-button"
-							href="/facilityreservation/${facility.id}">${facility.name}：定員${facility.capacity}人</a></li>
+							href="/facility-reservation/${facility.id}">${facility.name}：定員${facility.capacity}人</a></li>
 					</c:forEach>
 				</ul>
 			</form>
@@ -65,7 +65,7 @@
 			console.log(typeId);
 			$(function() {
 				$.ajax({
-					url : "/facilityreservation-list",
+					url : "/facility-reservation-list",
 					type : "POST",
 					data : JSON.stringify({"facilityTypeForm" : {"id" : typeId}}),
 					dataType : "json",
@@ -75,7 +75,7 @@
 						$("#facility").empty();
 						var typeResult;
 						for ( var i in result) {
-							typeResult = '<li class="facility-list"><a class="function-button" href="/facilityreservation/'+result[i].id+'">'+ result[i].name+ '：定員'+ result[i].capacity+ '人</a></li>';
+							typeResult = '<li class="facility-list"><a class="function-button" href="/facility-reservation/'+result[i].id+'">'+ result[i].name+ '：定員'+ result[i].capacity+ '人</a></li>';
 							$('#facility').append(typeResult);
 						}
 					})

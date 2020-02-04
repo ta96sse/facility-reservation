@@ -11,7 +11,7 @@ public interface ReservationService {
 
 	public List<ReservationEntity> getReservationList(int facilityId);
 
-	public List<ReservationEntity> getReservationList(int facilityId, int month);
+	public List<ReservationEntity> getReservationList(int facilityId, int year, int month);
 
 	public ReservationEntity getReservation(int id);
 
