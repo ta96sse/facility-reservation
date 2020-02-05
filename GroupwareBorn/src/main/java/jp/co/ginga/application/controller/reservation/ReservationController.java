@@ -98,13 +98,13 @@ public class ReservationController {
 	public String createCalendarListGet(@PathVariable int facilityId, Model model) {
 
 		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH) + 1;
 
 		FacilityEntity entity = facilityService.getFacility(facilityId);
-		List<ReservationEntity> reservationEntityList = reservationService.getReservationList(facilityId,
-				cal.get(Calendar.YEAR), cal.get(Calendar.MONTH));
+		List<ReservationEntity> reservEntityList = reservationService.getReservationList(facilityId, year, month);
 
-		ReservationStatusForm statusForm = reservationHelper.createStatusForm(entity, reservationEntityList,
-				cal.get(Calendar.YEAR), cal.get(Calendar.MONTH));
+		ReservationStatusForm statusForm = reservationHelper.createStatusForm(entity, reservEntityList, year, month);
 
 		model.addAttribute("statusForm", statusForm);
 		return "reservation/reservation-status";
@@ -119,20 +119,38 @@ public class ReservationController {
 	@ResponseBody
 	public ReservationStatusForm changeCalendarList(@RequestBody ReservationStatusForm session) {
 
-		YearAndMonthForm yearAndMonthForm = reservationHelper.setYearAndMonthFormByFlag(
+		YearAndMonthForm yearAndMonthForm = reservationHelper.setYearAndMonthByFlag(
 				session.getCalendarForm().getYear(), session.getCalendarForm().getMonth(),
 				session.getCalendarForm().getChangeCalFlag());
 
 		System.out.println(yearAndMonthForm.getMonth());
 
 		FacilityEntity entity = facilityService.getFacility(session.getFacilityForm().getId());
-		List<ReservationEntity> reservationEntityList = reservationService.getReservationList(
+		List<ReservationEntity> reservEntityList = reservationService.getReservationList(
 				session.getFacilityForm().getId(), yearAndMonthForm.getYear(), yearAndMonthForm.getMonth());
 
-		ReservationStatusForm statusForm = reservationHelper.createStatusForm(entity, reservationEntityList,
+		ReservationStatusForm statusForm = reservationHelper.createStatusForm(entity, reservEntityList,
 				yearAndMonthForm.getYear(), yearAndMonthForm.getMonth());
 
 		return statusForm;
+	}
+
+	/*
+	 * 新規予約
+	 */
+	@RequestMapping(path = "/facility-reservation/{facilityId}/add", method = RequestMethod.GET)
+	public String createReservAddFormGet(@PathVariable int facilityId, int year, int month, int date,
+			ReservationStatusForm session, Model model) {
+		System.out.println(facilityId);
+		System.out.println(year);
+		System.out.println(month);
+		System.out.println(date);
+
+		model.addAttribute("facilityId", facilityId);
+		model.addAttribute("year", year);
+		model.addAttribute("month", month);
+
+		return "reservation/reservation-add";
 	}
 
 	//		// ページネーション

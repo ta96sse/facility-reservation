@@ -38,7 +38,7 @@
 			<input type="hidden" id="facilityId" name="facilityId"
 				value="${statusForm.facilityForm.id}">
 			<div id="calendar-menu">
-				<input type="button" id="last-month" value="前月"> <span>${statusForm.calendarForm.year}年${statusForm.calendarForm.month+1}月
+				<input type="button" id="last-month" value="前月"> <span>${statusForm.calendarForm.year}年${statusForm.calendarForm.month}月
 				</span> <input type="button" id="next-month" value="次月"> <input
 					type="hidden" id="year" name="year"
 					value="${statusForm.calendarForm.year}"> <input
@@ -95,9 +95,15 @@
 			var facilityId = $("#facilityId").val();
 			var year = $("#year").val();
 			var month = $("#month").val();
+			var intYear = parseInt(year);
+			var nextMonth = parseInt(month) + 1;
+			if (nextMonth == 13) {
+				intYear++;
+				nextMonth = 1;
+			}
 			var changeCalFlag = true;
 			var data = {"facilityForm" : {"id" : facilityId},
-						"calendarForm" : {"year" : year,"month" : month,"changeCalFlag" : changeCalFlag},
+						"calendarForm" : {"year" : year, "month" : month, "changeCalFlag" : changeCalFlag},
 						};
 			calendar(data);
 		});
@@ -106,9 +112,15 @@
 			var facilityId = $("#facilityId").val();
 			var year = $("#year").val();
 			var month = $("#month").val();
+			var intYear = parseInt(year);
+			var lastMonth = parseInt(month) - 1;
+			if (lastMonth == 0) {
+				intYear--;
+				lastMonth = 12;
+			}
 			var changeCalFlag = false;
 			var data = {"facilityForm" : {"id" : facilityId},
-						"calendarForm" : {"year" : year,"month" : month,"changeCalFlag" : changeCalFlag},
+						"calendarForm" : {"year" : year, "month" : month, "changeCalFlag" : changeCalFlag},
 						};
 			calendar(data);
 		});
@@ -126,7 +138,7 @@
 				console.log("☆☆☆☆☆");
 				console.log(data);
 				console.log(result);
-				$("span").text(result.calendarForm.year + "年" + Number(result.calendarForm.month+1) + "月");
+				$("span").text(result.calendarForm.year + "年" + Number(result.calendarForm.month) + "月");
 				$("#year").val(result.calendarForm.year);
 				$("#month").val(result.calendarForm.month);
 				$("table#calendar tbody").empty();

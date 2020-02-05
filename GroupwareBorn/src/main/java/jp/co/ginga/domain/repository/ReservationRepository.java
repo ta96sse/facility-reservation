@@ -61,7 +61,7 @@ public interface ReservationRepository {
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	@Select("select * from reservation where facility_id = #{facilityId} and year(start_time) = #{year} and month(start_time) = #{month}+1 order by start_time asc;")
+	@Select("select * from reservation where facility_id = #{facilityId} and year(start_time) = #{year} and month(start_time) = #{month} order by start_time asc;")
 	@Results({
 			@Result(property = "startTime", column = "start_time"),
 			@Result(property = "endTime", column = "end_time"),

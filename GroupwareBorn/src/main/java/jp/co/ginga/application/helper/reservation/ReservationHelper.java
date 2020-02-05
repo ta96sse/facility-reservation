@@ -76,7 +76,7 @@ public class ReservationHelper {
 		}
 
 		Calendar cal = Calendar.getInstance();
-		cal.set(year, month, 1);
+		cal.set(year, month - 1, 1);
 		int week = cal.get(Calendar.DAY_OF_WEEK);
 		int monthEndDay = cal.getActualMaximum(Calendar.DATE);
 
@@ -137,19 +137,19 @@ public class ReservationHelper {
 				Integer.parseInt(sdfDate.format(entity.getStartTime())));
 	}
 
-	public YearAndMonthForm setYearAndMonthFormByFlag(int year, int month, boolean changeCalFlag) {
+	public YearAndMonthForm setYearAndMonthByFlag(int year, int month, boolean changeCalFlag) {
 
 		if (changeCalFlag == true) {
-			if (month == 11) {
+			if (month == 12) {
 				year++;
-				month = 0;
+				month = 1;
 			} else {
 				month++;
 			}
 		} else if (changeCalFlag == false) {
-			if (month == 0) {
+			if (month == 1) {
 				year--;
-				month = 11;
+				month = 12;
 			} else {
 				month--;
 			}
