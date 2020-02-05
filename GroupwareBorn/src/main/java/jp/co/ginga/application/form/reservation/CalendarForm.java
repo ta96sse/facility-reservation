@@ -9,9 +9,13 @@ public class CalendarForm implements Serializable {
 	private int month;
 	private String[] weekName;
 	private List<DayForm> dayFormList;
+	private boolean changeCalFlag;
+
+	public CalendarForm() {
+
+	}
 
 	public CalendarForm(int year, int month, String[] weekName, List<DayForm> dayFormList) {
-		super();
 		this.year = year;
 		this.month = month;
 		this.weekName = weekName;
@@ -48,6 +52,14 @@ public class CalendarForm implements Serializable {
 
 	public void setDayFormList(List<DayForm> dayFormList) {
 		this.dayFormList = dayFormList;
+	}
+
+	public boolean getChangeCalFlag() {
+		return changeCalFlag;
+	}
+
+	public void setChangeCalFlag(boolean changeCalFlag) {
+		this.changeCalFlag = changeCalFlag;
 	}
 
 }

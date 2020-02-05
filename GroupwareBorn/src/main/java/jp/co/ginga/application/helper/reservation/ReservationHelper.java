@@ -15,6 +15,7 @@ import jp.co.ginga.application.form.reservation.CalendarForm;
 import jp.co.ginga.application.form.reservation.DayForm;
 import jp.co.ginga.application.form.reservation.ReservationForm;
 import jp.co.ginga.application.form.reservation.ReservationStatusForm;
+import jp.co.ginga.application.form.reservation.YearAndMonthForm;
 import jp.co.ginga.domain.entity.FacilityEntity;
 import jp.co.ginga.domain.entity.ReservationEntity;
 
@@ -29,38 +30,29 @@ public class ReservationHelper {
 	/*
 	 * ReservationStatusForm
 	 */
-	public ReservationStatusForm createStatusForm(FacilityEntity entity, List<ReservationEntity> entityList) {
-		return new ReservationStatusForm(convertFromFacilityEntityToFacilityForm(entity),
-				createCalendarForm(entityList));
-	}
+	public ReservationStatusForm createStatusForm(FacilityEntity entity, List<ReservationEntity> entityList, int year,
+			int month) {
 
-	/*
-	 * FacilityForm
-	 */
-	public FacilityForm convertFromFacilityEntityToFacilityForm(FacilityEntity entity) {
-		return new FacilityForm(entity.getId(), entity.getName(), entity.getCapacity(),
+		/*
+		//	 * FacilityForm
+		//	 */
+		FacilityForm facilityForm = new FacilityForm(entity.getId(), entity.getName(), entity.getCapacity(),
 				new FacilityTypeForm(entity.getFacilityTypeEntity().getId(), entity.getFacilityTypeEntity().getName()));
-	}
 
-	/*
-	 * CalendarForm
-	 */
-	public CalendarForm createCalendarForm(List<ReservationEntity> entityList) {
-
-		Calendar cal = Calendar.getInstance();
-
-		int year = cal.get(Calendar.YEAR);
-		int month = cal.get(Calendar.MONTH);
+		/*
+		//	 * CalendarForm
+		//	 */
 		String[] weekName = { "月", "火", "水", "木", "金", "土", "日" };
-		List<DayForm> dayFormList = createDayFormList(entityList);
+		List<DayForm> dayFormList = createDayFormList(entityList, year, month);
+		CalendarForm calendarForm = new CalendarForm(year, month, weekName, dayFormList);
 
-		return new CalendarForm(year, month + 1, weekName, dayFormList);
+		return new ReservationStatusForm(facilityForm, calendarForm);
 	}
 
 	/*
 	 * List<DayForm>
 	 */
-	public List<DayForm> createDayFormList(List<ReservationEntity> entityList) {
+	public List<DayForm> createDayFormList(List<ReservationEntity> entityList, int year, int month) {
 
 		List<DayForm> dayFormList = new ArrayList<DayForm>();
 		List<ReservationForm> reservationFormList = convertFromReservEntityListToReservFormList(entityList);
@@ -84,7 +76,7 @@ public class ReservationHelper {
 		}
 
 		Calendar cal = Calendar.getInstance();
-		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 1);
+		cal.set(year, month, 1);
 		int week = cal.get(Calendar.DAY_OF_WEEK);
 		int monthEndDay = cal.getActualMaximum(Calendar.DATE);
 
@@ -100,6 +92,7 @@ public class ReservationHelper {
 		while (dayFormList.size() % 7 != 0) {
 			dayFormList.add(new DayForm("-"));
 		}
+
 		//					List<ReservationForm> dayReservList = new ArrayList<ReservationForm>();
 		//					dayFormList.add(new DayForm(String.valueOf(day), dayReservList));
 		//					for (int i = 0; i < reservationFormList.size(); i++) {
@@ -111,12 +104,12 @@ public class ReservationHelper {
 		return dayFormList;
 	}
 
-	/*
-	 * DayForm
-	 */
-	public DayForm createDayForm(List<ReservationEntity> entityList) {
-		return null;
-	}
+	//	/*
+	//	 * DayForm
+	//	 */
+	//	public DayForm createDayForm(List<ReservationEntity> entityList) {
+	//		return null;
+	//	}
 
 	/*
 	 * List<ReservationForm>
@@ -144,4 +137,24 @@ public class ReservationHelper {
 				Integer.parseInt(sdfDate.format(entity.getStartTime())));
 	}
 
+	public YearAndMonthForm setYearAndMonthFormByFlag(int year, int month, boolean changeCalFlag) {
+
+		if (changeCalFlag == true) {
+			if (month == 11) {
+				year++;
+				month = 0;
+			} else {
+				month++;
+			}
+		} else if (changeCalFlag == false) {
+			if (month == 0) {
+				year--;
+				month = 11;
+			} else {
+				month--;
+			}
+		}
+
+		return new YearAndMonthForm(year, month);
+	}
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jp.co.ginga.application.form.facility.FacilityForm;
 import jp.co.ginga.application.form.facility.FacilityListForm;
 import jp.co.ginga.application.form.reservation.ReservationStatusForm;
+import jp.co.ginga.application.form.reservation.YearAndMonthForm;
 import jp.co.ginga.application.helper.facility.FacilityHelper;
 import jp.co.ginga.application.helper.reservation.ReservationHelper;
 import jp.co.ginga.domain.entity.FacilityEntity;
@@ -102,7 +103,8 @@ public class ReservationController {
 		List<ReservationEntity> reservationEntityList = reservationService.getReservationList(facilityId,
 				cal.get(Calendar.YEAR), cal.get(Calendar.MONTH));
 
-		ReservationStatusForm statusForm = reservationHelper.createStatusForm(entity, reservationEntityList);
+		ReservationStatusForm statusForm = reservationHelper.createStatusForm(entity, reservationEntityList,
+				cal.get(Calendar.YEAR), cal.get(Calendar.MONTH));
 
 		model.addAttribute("statusForm", statusForm);
 		return "reservation/reservation-status";
@@ -115,16 +117,20 @@ public class ReservationController {
 	 */
 	@RequestMapping(path = "/facility-reservation/change-calendar", method = RequestMethod.POST)
 	@ResponseBody
-	public ReservationStatusForm remakeCalendarList(@RequestBody ReservationStatusForm session) {
+	public ReservationStatusForm changeCalendarList(@RequestBody ReservationStatusForm session) {
 
-		System.out.println(session.getCalendarForm().getMonth());
+		YearAndMonthForm yearAndMonthForm = reservationHelper.setYearAndMonthFormByFlag(
+				session.getCalendarForm().getYear(), session.getCalendarForm().getMonth(),
+				session.getCalendarForm().getChangeCalFlag());
+
+		System.out.println(yearAndMonthForm.getMonth());
 
 		FacilityEntity entity = facilityService.getFacility(session.getFacilityForm().getId());
 		List<ReservationEntity> reservationEntityList = reservationService.getReservationList(
-				session.getFacilityForm().getId(), session.getCalendarForm().getYear(),
-				session.getCalendarForm().getMonth());
+				session.getFacilityForm().getId(), yearAndMonthForm.getYear(), yearAndMonthForm.getMonth());
 
-		ReservationStatusForm statusForm = reservationHelper.createStatusForm(entity, reservationEntityList);
+		ReservationStatusForm statusForm = reservationHelper.createStatusForm(entity, reservationEntityList,
+				yearAndMonthForm.getYear(), yearAndMonthForm.getMonth());
 
 		return statusForm;
 	}

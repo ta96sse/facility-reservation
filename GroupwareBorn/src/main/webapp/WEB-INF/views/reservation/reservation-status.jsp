@@ -38,7 +38,7 @@
 			<input type="hidden" id="facilityId" name="facilityId"
 				value="${statusForm.facilityForm.id}">
 			<div id="calendar-menu">
-				<input type="button" id="last-month" value="前月"> <span>${statusForm.calendarForm.year}年${statusForm.calendarForm.month}月
+				<input type="button" id="last-month" value="前月"> <span>${statusForm.calendarForm.year}年${statusForm.calendarForm.month+1}月
 				</span> <input type="button" id="next-month" value="次月"> <input
 					type="hidden" id="year" name="year"
 					value="${statusForm.calendarForm.year}"> <input
@@ -67,7 +67,7 @@
 									<li class="calendar-cell-li">${day.date}</li>
 									<c:forEach var="reservation" items="${day.reservationFormList}">
 										<li class="calendar-cell-li"><a
-											href="/facility-reservation/detail/${statusForm.facilityForm.id}/${reservation.id}">${reservation.startTime}～${reservation.endTime}<br>(${reservation.userId})
+											href="/facility-reservation/${statusForm.facilityForm.id}/detail/${reservation.id}">${reservation.startTime}～${reservation.endTime}<br>(${reservation.userId})
 										</a></li>
 									</c:forEach>
 									<c:if test="${day.date != '-'}">
@@ -90,57 +90,75 @@
 	</div>
 
 	<script type="text/javascript">
+
 		$("#next-month").click(function() {
 			var facilityId = $("#facilityId").val();
 			var year = $("#year").val();
 			var month = $("#month").val();
-			$(function() {
-				$.ajax({
-					url : "/facility-reservation/change-calendar",
-					type : "POST",
-					data : JSON.stringify({
-						"facilityForm" : {
-							"id" : facilityId
-						},
-						"calendarForm" : {
-							"year" : year,
-							"month" : month
-						}
-					}),
-					dataType : "json",
-					contentType : "application/json ; charset=utf-8"
-				}).done(function(result, status, jqxhr) {
-					console.log("☆☆☆☆☆");
-					$("span").text(result.calendarForm.year + "年" + result.calendarForm.month + "月");
-					$("#year").val(result.year);
-					$("#month").val(result.month);
-					$("table#calendar tbody").empty();
-					var htmlData = "<tr>";
-					var dayForm = result.calendarForm.dayFormList;
-					for (var i in dayForm) {
+			var changeCalFlag = true;
+			var data = {"facilityForm" : {"id" : facilityId},
+						"calendarForm" : {"year" : year,"month" : month,"changeCalFlag" : changeCalFlag},
+						};
+			calendar(data);
+		});
 
-						if (i % 7 == 0) {
-							htmlData += "<tr>"
-						}
+		$("#last-month").click(function() {
+			var facilityId = $("#facilityId").val();
+			var year = $("#year").val();
+			var month = $("#month").val();
+			var changeCalFlag = false;
+			var data = {"facilityForm" : {"id" : facilityId},
+						"calendarForm" : {"year" : year,"month" : month,"changeCalFlag" : changeCalFlag},
+						};
+			calendar(data);
+		});
 
-						htmlData  += '<td><ul class="calendar-cell-ui"><li class="calendar-cell-li">' + dayForm[i].date + "</li>"
 
-						var reservationForm = dayForm[i].reservationFormList;
-						for (var j in reservationForm) {
-							htmlData += '<li class="calendar-cell-li"><a href="/facility-reservation/detail/' + result.facilityForm.id + "/" + reservationForm[j].id + '">'
-										+ reservationForm[j].startTime + "～" + reservationForm[j].endTime + "<br>" + "(" + reservationForm[j].userId + ")</a></li>";
-						}
-
-						if (dayForm[i].date != "-") {
-							htmlData += '<li class="calendar-cell-li"><input type="image" src="/img/add.png" alt="新規予約" title="新規予約" onclick=location.href=' + '"/facility-reservation/'
-										+ result.facilityForm.id + "/add/?year=" + result.calendarForm.year + "&month=" + result.calendarForm.month + "&date=" + dayForm[i].date + '"></li>';
-						}
-					}
-					htmlData += "</tr>";
-					$('table#calendar tbody').append(htmlData);
-				})
+		function calendar(data) {
+			$.ajax({
+				url : "/facility-reservation/change-calendar",
+				type : "POST",
+				data : JSON.stringify(data),
+				dataType : "json",
+				contentType : "application/json ; charset=utf-8"
 			})
-		})
+			.done(function(result, status, jqxhr) {
+				console.log("☆☆☆☆☆");
+				console.log(data);
+				console.log(result);
+				$("span").text(result.calendarForm.year + "年" + Number(result.calendarForm.month+1) + "月");
+				$("#year").val(result.calendarForm.year);
+				$("#month").val(result.calendarForm.month);
+				$("table#calendar tbody").empty();
+				var htmlData = "<tr>";
+				var dayForm = result.calendarForm.dayFormList;
+				for (var i in dayForm) {
+
+					if (i % 7 == 0) {
+						htmlData += "<tr>"
+					}
+
+					htmlData  += '<td><ul class="calendar-cell-ui"><li class="calendar-cell-li">' + dayForm[i].date + "</li>"
+
+					var reservationForm = dayForm[i].reservationFormList;
+					for (var j in reservationForm) {
+						htmlData += '<li class="calendar-cell-li"><a href="/facility-reservation/' + result.facilityForm.id + "/detail/" + reservationForm[j].id + '">'
+									+ reservationForm[j].startTime + "～" + reservationForm[j].endTime + "<br>" + "(" + reservationForm[j].userId + ")</a></li>";
+					}
+
+					if (dayForm[i].date != "-") {
+						htmlData += '<li class="calendar-cell-li"><input type="image" src="/img/add.png" alt="新規予約" title="新規予約" onclick=location.href=' + '"/facility-reservation/'
+									+ result.facilityForm.id + "/add/?year=" + result.calendarForm.year + "&month=" + result.calendarForm.month + "&date=" + dayForm[i].date + '"></li>';
+					}
+				}
+				htmlData += "</tr>";
+				$('table#calendar tbody').append(htmlData);
+			})
+			.fail(function(jqXHR, textStatus, errorThrown){
+				 console.log('エラー');
+			})
+		}
+
 	</script>
 
 </body>

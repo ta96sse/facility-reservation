@@ -71,14 +71,14 @@
 					dataType : "json",
 					contentType : "application/json ; charset=utf-8"
 				})
-					.done(function(result, status, jqxhr) {
-						$("#facility").empty();
-						var typeResult;
-						for ( var i in result) {
-							typeResult = '<li class="facility-list"><a class="function-button" href="/facility-reservation/'+result[i].id+'">'+ result[i].name+ '：定員'+ result[i].capacity+ '人</a></li>';
-							$('#facility').append(typeResult);
-						}
-					})
+				.done(function(result, status, jqxhr) {
+					$("#facility").empty();
+					var typeResult;
+					for ( var i in result) {
+						typeResult = '<li class="facility-list"><a class="function-button" href="/facility-reservation/'+result[i].id+'">'+ result[i].name+ '：定員'+ result[i].capacity+ '人</a></li>';
+						$('#facility').append(typeResult);
+					}
+				})
 			})
 		})
 	</script>
