@@ -3,6 +3,7 @@ package jp.co.ginga.application.helper.reservation;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,10 @@ public class ReservationHelper {
 		//	 */
 		String[] weekName = { "月", "火", "水", "木", "金", "土", "日" };
 		List<DayForm> dayFormList = createDayFormList(entityList, year, month);
-		CalendarForm calendarForm = new CalendarForm(year, month, weekName, dayFormList);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		int today = Integer.parseInt(sdf.format(new Date()));
+
+		CalendarForm calendarForm = new CalendarForm(year, month, weekName, dayFormList, today);
 
 		return new ReservationStatusForm(facilityForm, calendarForm);
 	}
@@ -79,7 +83,7 @@ public class ReservationHelper {
 		cal.set(year, month - 1, 1);
 		int week = cal.get(Calendar.DAY_OF_WEEK);
 		int monthEndDay = cal.getActualMaximum(Calendar.DATE);
-
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		if (week == 1) {
 			week = 8;
 		}
@@ -87,7 +91,9 @@ public class ReservationHelper {
 			dayFormList.add(new DayForm("-"));
 		}
 		for (int day = 1; day <= monthEndDay; day++) {
-			dayFormList.add(new DayForm(String.valueOf(day), dayMap.get(day)));
+			cal.set(year, month - 1, day);
+			dayFormList.add(
+					new DayForm(String.valueOf(day), dayMap.get(day), Integer.parseInt(sdf.format(cal.getTime()))));
 		}
 		while (dayFormList.size() % 7 != 0) {
 			dayFormList.add(new DayForm("-"));

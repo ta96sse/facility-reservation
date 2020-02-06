@@ -10,7 +10,7 @@
 <title>予約状況詳細</title>
 <meta charset="UTF-8">
 
-<link rel="stylesheet" type="text/css" href="/css/style.css" />
+<link rel="stylesheet" type="text/css" href="/css/style-new.css" />
 <link rel="stylesheet" type="text/css" href="/css/a.css" />
 <!-- jQueryの読み込み -->
 <script
@@ -50,8 +50,18 @@
 				<thead>
 					<tr>
 						<c:forEach var="weekName"
-							items="${statusForm.calendarForm.weekName}" step="1">
-							<th class="calendar-th"><c:out value="${weekName}" /></th>
+							items="${statusForm.calendarForm.weekName}" varStatus="loop">
+							<c:choose>
+								<c:when test="${loop.count == 6}">
+									<th class="saturday-th"><c:out value="${weekName}" /></th>
+								</c:when>
+								<c:when test="${loop.count == 7}">
+									<th class="sunday-th"><c:out value="${weekName}" /></th>
+								</c:when>
+								<c:otherwise>
+									<th class="weekday-th"><c:out value="${weekName}" /></th>
+								</c:otherwise>
+							</c:choose>
 						</c:forEach>
 					</tr>
 				</thead>
@@ -70,7 +80,8 @@
 											href="/facility-reservation/${statusForm.facilityForm.id}/detail/${reservation.id}">${reservation.startTime}～${reservation.endTime}<br>(${reservation.userId})
 										</a></li>
 									</c:forEach>
-									<c:if test="${day.date != '-'}">
+									<c:if
+										test="${day.date != '-' && day.yearMonthDate >= statusForm.calendarForm.today}">
 										<li class="calendar-cell-li"><input type="image"
 											src="/img/add.png" alt="新規予約" title="新規予約"
 											onclick="location.href='${statusForm.facilityForm.id}/add/?year=${statusForm.calendarForm.year}&month=${statusForm.calendarForm.month}&date=${day.date}'"></li>
@@ -90,7 +101,6 @@
 	</div>
 
 	<script type="text/javascript">
-
 		$("#next-month").click(function() {
 			var facilityId = $("#facilityId").val();
 			var year = $("#year").val();
@@ -102,9 +112,16 @@
 				nextMonth = 1;
 			}
 			var changeCalFlag = true;
-			var data = {"facilityForm" : {"id" : facilityId},
-						"calendarForm" : {"year" : year, "month" : month, "changeCalFlag" : changeCalFlag},
-						};
+			var data = {
+				"facilityForm" : {
+					"id" : facilityId
+				},
+				"calendarForm" : {
+					"year" : year,
+					"month" : month,
+					"changeCalFlag" : changeCalFlag
+				},
+			};
 			calendar(data);
 		});
 
@@ -119,12 +136,18 @@
 				lastMonth = 12;
 			}
 			var changeCalFlag = false;
-			var data = {"facilityForm" : {"id" : facilityId},
-						"calendarForm" : {"year" : year, "month" : month, "changeCalFlag" : changeCalFlag},
-						};
+			var data = {
+				"facilityForm" : {
+					"id" : facilityId
+				},
+				"calendarForm" : {
+					"year" : year,
+					"month" : month,
+					"changeCalFlag" : changeCalFlag
+				},
+			};
 			calendar(data);
 		});
-
 
 		function calendar(data) {
 			$.ajax({
@@ -134,43 +157,40 @@
 				dataType : "json",
 				contentType : "application/json ; charset=utf-8"
 			})
-			.done(function(result, status, jqxhr) {
-				console.log("☆☆☆☆☆");
-				console.log(data);
-				console.log(result);
-				$("span").text(result.calendarForm.year + "年" + Number(result.calendarForm.month) + "月");
-				$("#year").val(result.calendarForm.year);
-				$("#month").val(result.calendarForm.month);
-				$("table#calendar tbody").empty();
-				var htmlData = "<tr>";
-				var dayForm = result.calendarForm.dayFormList;
-				for (var i in dayForm) {
-
-					if (i % 7 == 0) {
-						htmlData += "<tr>"
+			.done(
+				function(result, status, jqxhr) {
+					console.log("☆☆☆☆☆");
+					console.log(data);
+					console.log(result);
+					$("span").text(result.calendarForm.year + "年" + Number(result.calendarForm.month) + "月");
+					$("#year").val(result.calendarForm.year);
+					$("#month").val(result.calendarForm.month);
+					$("table#calendar tbody").empty();
+					var htmlData = "<tr>";
+					var dayForm = result.calendarForm.dayFormList;
+					for ( var i in dayForm) {
+						if (i % 7 == 0) {
+							htmlData += "<tr>"
+						}
+						htmlData += '<td><ul class="calendar-cell-ui"><li class="calendar-cell-li">' + dayForm[i].date + "</li>"
+						var reservationForm = dayForm[i].reservationFormList;
+						for ( var j in reservationForm) {
+							htmlData += '<li class="calendar-cell-li"><a href="/facility-reservation/' + result.facilityForm.id + "/detail/" + reservationForm[j].id + '">'
+										+ reservationForm[j].startTime + "～" + reservationForm[j].endTime
+										+ "<br>" + "(" + reservationForm[j].userId + ")</a></li>";
+						}
+						if (dayForm[i].date != "-" && dayForm[i].yearMonthDate >= result.calendarForm.today) {
+							htmlData += '<li class="calendar-cell-li"><input type="image" src="/img/add.png" alt="新規予約" title="新規予約" onclick=location.href='
+										+ '"/facility-reservation/'	+ result.facilityForm.id + "/add/?year=" + result.calendarForm.year
+										+ "&month="	+ result.calendarForm.month	+ "&date=" + dayForm[i].date + '"></li>';
+						}
 					}
-
-					htmlData  += '<td><ul class="calendar-cell-ui"><li class="calendar-cell-li">' + dayForm[i].date + "</li>"
-
-					var reservationForm = dayForm[i].reservationFormList;
-					for (var j in reservationForm) {
-						htmlData += '<li class="calendar-cell-li"><a href="/facility-reservation/' + result.facilityForm.id + "/detail/" + reservationForm[j].id + '">'
-									+ reservationForm[j].startTime + "～" + reservationForm[j].endTime + "<br>" + "(" + reservationForm[j].userId + ")</a></li>";
-					}
-
-					if (dayForm[i].date != "-") {
-						htmlData += '<li class="calendar-cell-li"><input type="image" src="/img/add.png" alt="新規予約" title="新規予約" onclick=location.href=' + '"/facility-reservation/'
-									+ result.facilityForm.id + "/add/?year=" + result.calendarForm.year + "&month=" + result.calendarForm.month + "&date=" + dayForm[i].date + '"></li>';
-					}
-				}
-				htmlData += "</tr>";
-				$('table#calendar tbody').append(htmlData);
-			})
-			.fail(function(jqXHR, textStatus, errorThrown){
-				 console.log('エラー');
+					htmlData += "</tr>";
+					$('table#calendar tbody').append(htmlData);
+				}).fail(function(jqXHR, textStatus, errorThrown) {
+					console.log('エラー');
 			})
 		}
-
 	</script>
 
 </body>

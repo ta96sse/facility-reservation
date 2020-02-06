@@ -11,6 +11,10 @@ public class ReservationForm implements Serializable {
 	private String userId;
 	private int startDate;
 
+	public ReservationForm() {
+
+	}
+
 	public ReservationForm(int id, String startTime, String endTime, int facilityId, String userId, int startDate) {
 		super();
 		this.id = id;

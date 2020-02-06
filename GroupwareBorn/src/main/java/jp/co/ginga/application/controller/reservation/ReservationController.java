@@ -105,7 +105,11 @@ public class ReservationController {
 		List<ReservationEntity> reservEntityList = reservationService.getReservationList(facilityId, year, month);
 
 		ReservationStatusForm statusForm = reservationHelper.createStatusForm(entity, reservEntityList, year, month);
-
+		//		System.out.println(statusForm.getCalendarForm().getToday());
+		//		System.out.println(statusForm.getCalendarForm().getDayFormList().get(10).getYearMonthDate());
+		//		for (DayForm dayForm : statusForm.getCalendarForm().getDayFormList()) {
+		//			System.out.println(dayForm.getYearMonthDate());
+		//		}
 		model.addAttribute("statusForm", statusForm);
 		return "reservation/reservation-status";
 	}
