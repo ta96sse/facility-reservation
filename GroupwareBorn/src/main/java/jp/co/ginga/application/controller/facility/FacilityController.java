@@ -110,7 +110,7 @@ public class FacilityController {
 	 * @return
 	 */
 	@RequestMapping(path = "/facility/add", method = RequestMethod.GET)
-	public String createFacilityAddFormGet(@ModelAttribute(FORM_NAME) FacilitySessionForm session, ModelMap model) {
+	public String createFacilityAddFormGet(FacilitySessionForm session, ModelMap model) {
 
 		String key = BindingResult.MODEL_KEY_PREFIX + FORM_NAME;
 
@@ -138,8 +138,7 @@ public class FacilityController {
 	 * @return
 	 */
 	@RequestMapping(path = "/facility/detail/{id}", method = RequestMethod.GET)
-	public String createFacilityDetailGet(@PathVariable int id, @ModelAttribute(FORM_NAME) FacilitySessionForm session,
-			ModelMap model) {
+	public String createFacilityDetailGet(@PathVariable int id, FacilitySessionForm session, ModelMap model) {
 
 		String key = BindingResult.MODEL_KEY_PREFIX + FORM_NAME;
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import jp.co.ginga.application.form.facility.FacilityForm;
 import jp.co.ginga.application.form.facility.FacilityListForm;
+import jp.co.ginga.application.form.reservation.ReservationForm;
 import jp.co.ginga.application.form.reservation.ReservationStatusForm;
 import jp.co.ginga.application.form.reservation.YearAndMonthForm;
 import jp.co.ginga.application.helper.facility.FacilityHelper;
@@ -143,16 +144,12 @@ public class ReservationController {
 	 * 新規予約
 	 */
 	@RequestMapping(path = "/facility-reservation/{facilityId}/add", method = RequestMethod.GET)
-	public String createReservAddFormGet(@PathVariable int facilityId, int year, int month, int date,
-			ReservationStatusForm session, Model model) {
-		System.out.println(facilityId);
-		System.out.println(year);
-		System.out.println(month);
-		System.out.println(date);
+	public String createReservAddFormGet(@PathVariable int facilityId, ReservationForm session, Model model) {
 
-		model.addAttribute("facilityId", facilityId);
-		model.addAttribute("year", year);
-		model.addAttribute("month", month);
+		FacilityForm facilityForm = facilityHelper.convertFromEntityToForm(facilityService.getFacility(facilityId));
+		session.setFacilityForm(facilityForm);
+
+		model.addAttribute("session", session);
 
 		return "reservation/reservation-add";
 	}

@@ -139,7 +139,9 @@ public class ReservationHelper {
 		SimpleDateFormat sdfDate = new SimpleDateFormat("dd");
 
 		return new ReservationForm(entity.getId(), sdfTime.format(entity.getStartTime()),
-				sdfTime.format(entity.getEndTime()), entity.getFacilityId(), entity.getUserId(),
+				sdfTime.format(entity.getEndTime()),
+				new FacilityForm(entity.getFacilityEntity().getId(), entity.getFacilityEntity().getName()),
+				entity.getUserId(),
 				Integer.parseInt(sdfDate.format(entity.getStartTime())));
 	}
 

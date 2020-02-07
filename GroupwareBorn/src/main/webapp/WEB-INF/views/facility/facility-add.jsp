@@ -72,9 +72,8 @@
 					</tr>
 					<tr>
 						<th class="facility-info-th">定員</th>
-						<td><a style="color: red"><form:errors
-									path="facilityForm.capacity" /></a> <form:input
-								path="facilityForm.capacity" /></td>
+						<td><a style="color: red"><form:errors path="facilityForm.capacity" /></a>
+							<form:input path="facilityForm.capacity" /></td>
 					</tr>
 				</table>
 				<input type="submit" class="addButton" name="add" value="確認" />

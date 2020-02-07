@@ -15,7 +15,7 @@ public class ReservationEntity {
 	private int id;
 	private Date startTime;
 	private Date endTime;
-	private int facilityId;
+	private FacilityEntity facilityEntity;
 	private String userId;
 
 	public ReservationEntity() {
@@ -46,12 +46,12 @@ public class ReservationEntity {
 		this.endTime = endTime;
 	}
 
-	public int getFacilityId() {
-		return facilityId;
+	public FacilityEntity getFacilityEntity() {
+		return facilityEntity;
 	}
 
-	public void setFacilityId(int facilityId) {
-		this.facilityId = facilityId;
+	public void setFacilityEntity(FacilityEntity facilityEntity) {
+		this.facilityEntity = facilityEntity;
 	}
 
 	public String getUserId() {

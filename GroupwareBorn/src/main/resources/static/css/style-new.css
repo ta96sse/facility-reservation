@@ -227,15 +227,15 @@ table#calendar th.sunday-th {
 	background-color: red;
 }
 
-table#calendar td {
-
+table#calendar td.calendar-td {
+	vertical-align: top;
 }
 
 table#calendar, table#calendar th, table#calendar td {
 	border: 1px #000000 solid;
 }
 
-ul.calendar-cell-ui {
+ul.calendar-cell-ul {
 	list-style: none;
 	padding-left: 0;
 	font-size: 14px;

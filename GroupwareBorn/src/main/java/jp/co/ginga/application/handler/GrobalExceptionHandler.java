@@ -24,8 +24,8 @@ public class GrobalExceptionHandler implements HandlerExceptionResolver {
 	public ModelAndView notSupported(Exception ex) {
 		String name = ex.getClass().getSimpleName();
 		String detail = ex.getMessage();
-		ex.printStackTrace();
-		System.out.println("★★★"+detail);
+		//		ex.printStackTrace();
+		//		System.out.println("★★★" + detail);
 
 		ModelAndView Mav = new ModelAndView();
 		Mav.addObject("message", "【" + name + "】");
@@ -40,7 +40,7 @@ public class GrobalExceptionHandler implements HandlerExceptionResolver {
 
 		String name = ex.getClass().getSimpleName();
 		String detail = ex.getMessage();
-		System.out.println("★★"+detail);
+		//		System.out.println("★★" + detail);
 
 		ModelAndView Mav = new ModelAndView();
 		Mav.addObject("message", "【" + name + "】");
