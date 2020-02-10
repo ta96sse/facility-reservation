@@ -88,11 +88,9 @@ public class FacilityEntity {
 	public FacilityEntity() {
 	}
 
-	public FacilityEntity(int id, String name, String capacity) {
+	public FacilityEntity(int id) {
 		super();
 		this.id = id;
-		this.name = name;
-		this.capacity = capacity;
 	}
 
 	public FacilityEntity(int id, String name, FacilityTypeEntity facilityTypeEntity, String capacity,

@@ -89,14 +89,15 @@
 												href="/facility-reservation/${statusForm.facilityForm.id}/detail/${reservation.id}">${reservation.startTime}～${reservation.endTime}<br>(${reservation.userId})
 											</a></li>
 										</c:forEach>
-									</ul> <c:if
-										test="${day.yearMonthDate >= statusForm.calendarForm.today}">
-										<ul class="calendar-cell-ul">
+										<c:if
+											test="${day.yearMonthDate >= statusForm.calendarForm.today}">
+
 											<li class="calendar-cell-li"><input type="image"
 												src="/img/add.png" alt="新規予約" title="新規予約"
 												onclick="location.href='${statusForm.facilityForm.id}/add/?year=${statusForm.calendarForm.year}&month=${statusForm.calendarForm.month}&date=${day.date}'"></li>
-										</ul>
-									</c:if>
+
+										</c:if>
+									</ul>
 								</td>
 							</c:if>
 						</c:forEach>
@@ -189,31 +190,39 @@
 									if (i % 7 == 0) {
 										htmlData += "<tr>"
 									}
-									htmlData += '<td><ul class="calendar-cell-ui"><li class="calendar-cell-li">'
-											+ dayForm[i].date + "</li>"
-									var reservationForm = dayForm[i].reservationFormList;
-									for ( var j in reservationForm) {
-										htmlData += '<li class="calendar-cell-li"><a href="/facility-reservation/' + result.facilityForm.id + "/detail/" + reservationForm[j].id + '">'
-												+ reservationForm[j].startTime
-												+ "～"
-												+ reservationForm[j].endTime
-												+ "<br>"
-												+ "("
-												+ reservationForm[j].userId
-												+ ")</a></li>";
-									}
-									if (dayForm[i].date != "-"
-											&& dayForm[i].yearMonthDate >= result.calendarForm.today) {
-										htmlData += '<li class="calendar-cell-li"><input type="image" src="/img/add.png" alt="新規予約" title="新規予約" onclick=location.href='
-												+ '"/facility-reservation/'
-												+ result.facilityForm.id
-												+ "/add/?year="
-												+ result.calendarForm.year
-												+ "&month="
-												+ result.calendarForm.month
-												+ "&date="
+									if (dayForm[i].date == "-") {
+										htmlData += '<td class="blank-td"><ul class="calendar-cell-ul"><li class="calendar-cell-li">'
 												+ dayForm[i].date
-												+ '"></li>';
+												+ "</li></ul></td>"
+									}
+									if (dayForm[i].date != "-") {
+										htmlData += '<td class="calendar-td"><ul class="calendar-cell-ul"><li class="calendar-cell-li">'
+												+ dayForm[i].date + "</li>"
+										var reservationForm = dayForm[i].reservationFormList;
+										for ( var j in reservationForm) {
+											htmlData += '<li class="calendar-cell-li"><a href="/facility-reservation/' + result.facilityForm.id + "/detail/" + reservationForm[j].id + '">'
+													+ reservationForm[j].startTime
+													+ "～"
+													+ reservationForm[j].endTime
+													+ "<br>"
+													+ "("
+													+ reservationForm[j].userId
+													+ ")</a></li>";
+										}
+
+										if (dayForm[i].yearMonthDate >= result.calendarForm.today) {
+											htmlData += '<li class="calendar-cell-li"><input type="image" src="/img/add.png" alt="新規予約" title="新規予約" onclick=location.href='
+													+ '"/facility-reservation/'
+													+ result.facilityForm.id
+													+ "/add/?year="
+													+ result.calendarForm.year
+													+ "&month="
+													+ result.calendarForm.month
+													+ "&date="
+													+ dayForm[i].date
+													+ '"></li>';
+										}
+										htmlData += "</ul></td>"
 									}
 								}
 								htmlData += "</tr>";

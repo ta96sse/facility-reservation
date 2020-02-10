@@ -13,7 +13,8 @@
 					<font color="red">値が存在しません。</font>
 				</c:out>さん&nbsp;こんにちは</li>
 			<li><input type="submit" value="ログアウト" /></li>
-
+			<li><input type="button" value="メニューに戻る"
+				onClick="location.href='/menu'"></li>
 		</ul>
 	</form>
 </div>

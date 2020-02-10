@@ -35,48 +35,52 @@
 				<p>${session.year}年${session.month}月${session.date}日</p>
 				<p>
 					予約開始時間
-					<form:select class="selectObj" path="startHour">
+					<form:select class="selectObj" path="startHour"
+						value="${session.startHour}">
 						<c:forEach var="startHour" begin="9" end="21">
 							<option>${startHour}</option>
 						</c:forEach>
 					</form:select>
 					時
-					<form:select class="selectObj" path="startMinute">
-						<c:forEach var="startMinute" begin="00" end="45" step="15">
-							<option>${startMinute}</option>
-						</c:forEach>
+					<form:select class="selectObj" path="startMinute"
+						value="${session.startMinute}">
+						<option>00</option>
+						<option>15</option>
+						<option>30</option>
+						<option>45</option>
 					</form:select>
 					分
 				</p>
 				<p>
 					予約終了時間
-					<form:select class="selectObj" path="endHour">
+					<form:select class="selectObj" path="endHour"
+						value="${session.endHour}">
 						<c:forEach var="endtHour" begin="9" end="21">
 							<option>${endtHour}</option>
 						</c:forEach>
 					</form:select>
 					時
-					<form:select class="selectObj" path="endMinute">
-						<c:forEach var="endMinute" begin="00" end="45" step="15">
-							<option>${endMinute}</option>
-						</c:forEach>
+					<form:select class="selectObj" path="endMinute"
+						value="${session.endMinute}">
+						<option>00</option>
+						<option>15</option>
+						<option>30</option>
+						<option>45</option>
 					</form:select>
 					分
 				</p>
 				<input type="submit" value="予約" />
+
 				<form:input type="hidden" path="facilityForm.id"
-					value="${reservationForm.facilityForm.id}" />
+					value="${session.facilityForm.id}" />
 				<form:input type="hidden" path="facilityForm.name"
-					value="${reservationForm.facilityForm.name}" />
-				<form:input type="hidden" path="year"
-					value="${reservationForm.year}" />
-				<form:input type="hidden" path="month"
-					value="${reservationForm.month}" />
-				<form:input type="hidden" path="date"
-					value="${reservationForm.date}" />
+					value="${session.facilityForm.name}" />
+				<form:input type="hidden" path="year" value="${session.year}" />
+				<form:input type="hidden" path="month" value="${session.month}" />
+				<form:input type="hidden" path="date" value="${session.date}" />
 			</form:form>
 			<div id="return-display">
-				<a href="/facility-reservation/${facilityId}">前のページに戻る</a>
+				<a href="/facility-reservation/${session.facilityForm.id}">前のページに戻る</a>
 			</div>
 			<jsp:include page="/WEB-INF/views/footer/footer.jsp" flush="true" />
 		</div>

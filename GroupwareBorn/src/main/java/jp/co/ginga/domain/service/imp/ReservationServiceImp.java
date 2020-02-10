@@ -54,7 +54,9 @@ public class ReservationServiceImp implements ReservationService {
 
 	@Override
 	public int add(ReservationEntity reservation) {
-
+		if (reservationRepository.add(reservation)) {
+			return 1;
+		}
 		return 0;
 	}
 

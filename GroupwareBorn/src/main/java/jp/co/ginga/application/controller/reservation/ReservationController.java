@@ -1,11 +1,13 @@
 package jp.co.ginga.application.controller.reservation;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,7 @@ import jp.co.ginga.application.form.facility.FacilityListForm;
 import jp.co.ginga.application.form.reservation.ReservationForm;
 import jp.co.ginga.application.form.reservation.ReservationStatusForm;
 import jp.co.ginga.application.form.reservation.YearAndMonthForm;
+import jp.co.ginga.application.form.session.AccountSessionForm;
 import jp.co.ginga.application.helper.facility.FacilityHelper;
 import jp.co.ginga.application.helper.reservation.ReservationHelper;
 import jp.co.ginga.domain.entity.FacilityEntity;
@@ -47,6 +50,9 @@ public class ReservationController {
 
 	@Autowired
 	FacilityTypeService typeService;
+
+	@Autowired
+	AccountSessionForm accountSession;
 
 	/**
 	 * 施設予約施設一覧表示
@@ -144,14 +150,52 @@ public class ReservationController {
 	 * 新規予約
 	 */
 	@RequestMapping(path = "/facility-reservation/{facilityId}/add", method = RequestMethod.GET)
-	public String createReservAddFormGet(@PathVariable int facilityId, ReservationForm session, Model model) {
+	public String createReservAddFormGet(@PathVariable int facilityId, @ModelAttribute ReservationForm session,
+			Model model) {
 
+		System.out.println(session.getYear());
 		FacilityForm facilityForm = facilityHelper.convertFromEntityToForm(facilityService.getFacility(facilityId));
 		session.setFacilityForm(facilityForm);
 
 		model.addAttribute("session", session);
 
 		return "reservation/reservation-add";
+	}
+
+	@RequestMapping(path = "/facility-reservation/confirm", method = RequestMethod.POST)
+	public String createReservConfirmPost(@ModelAttribute ReservationForm session, Model model) {
+
+		model.addAttribute("session", session);
+
+		return "reservation/reservation-confirm";
+	}
+
+	@RequestMapping(path = "/facility-reservation/complete", params = "add", method = RequestMethod.POST)
+	public String createReservCompleteAddPost(@ModelAttribute ReservationForm session, Model model)
+			throws ParseException {
+
+		ReservationEntity reservationEntity = reservationHelper.convertFromReservFormToReservEntity(session,
+				accountSession);
+		reservationService.add(reservationEntity);
+		model.addAttribute("title", "予約");
+
+		return "reservation/reservation-complete";
+	}
+
+	@RequestMapping(path = "/facility-reservation/complete", params = "update", method = RequestMethod.POST)
+	public String createReservCompleteUpdatePost(@ModelAttribute ReservationForm session, Model model) {
+
+		model.addAttribute("session", session);
+
+		return "reservation/reservation-complete";
+	}
+
+	@RequestMapping(path = "/facility-reservation/complete", params = "delete", method = RequestMethod.POST)
+	public String createReservCompleteDeletePost(@ModelAttribute ReservationForm session, Model model) {
+
+		model.addAttribute("session", session);
+
+		return "reservation/reservation-complete";
 	}
 
 	//		// ページネーション

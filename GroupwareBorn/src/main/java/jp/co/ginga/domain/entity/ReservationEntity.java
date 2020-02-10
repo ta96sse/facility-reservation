@@ -22,6 +22,13 @@ public class ReservationEntity {
 
 	}
 
+	public ReservationEntity(Date startTime, Date endTime, FacilityEntity facilityEntity, String userId) {
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.facilityEntity = facilityEntity;
+		this.userId = userId;
+	}
+
 	public int getId() {
 		return id;
 	}

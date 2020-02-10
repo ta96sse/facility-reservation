@@ -10,10 +10,10 @@ public class ReservationForm implements Serializable {
 	private int year;
 	private int month;
 	private int date;
-	private int startHour;
-	private int startMinute;
-	private int endHour;
-	private int endMinute;
+	private String startHour;
+	private String startMinute;
+	private String endHour;
+	private String endMinute;
 
 	private String startTime;
 	private String endTime;
@@ -68,35 +68,35 @@ public class ReservationForm implements Serializable {
 		this.date = date;
 	}
 
-	public int getStartHour() {
+	public String getStartHour() {
 		return startHour;
 	}
 
-	public void setStartHour(int startHour) {
+	public void setStartHour(String startHour) {
 		this.startHour = startHour;
 	}
 
-	public int getStartMinute() {
+	public String getStartMinute() {
 		return startMinute;
 	}
 
-	public void setStartMinute(int startMinute) {
+	public void setStartMinute(String startMinute) {
 		this.startMinute = startMinute;
 	}
 
-	public int getEndHour() {
+	public String getEndHour() {
 		return endHour;
 	}
 
-	public void setEndHour(int endHour) {
+	public void setEndHour(String endHour) {
 		this.endHour = endHour;
 	}
 
-	public int getEndMinute() {
+	public String getEndMinute() {
 		return endMinute;
 	}
 
-	public void setEndMinute(int endMinute) {
+	public void setEndMinute(String endMinute) {
 		this.endMinute = endMinute;
 	}
 

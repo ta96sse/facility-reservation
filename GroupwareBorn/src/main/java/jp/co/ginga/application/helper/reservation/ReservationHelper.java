@@ -1,5 +1,6 @@
 package jp.co.ginga.application.helper.reservation;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,6 +18,7 @@ import jp.co.ginga.application.form.reservation.DayForm;
 import jp.co.ginga.application.form.reservation.ReservationForm;
 import jp.co.ginga.application.form.reservation.ReservationStatusForm;
 import jp.co.ginga.application.form.reservation.YearAndMonthForm;
+import jp.co.ginga.application.form.session.AccountSessionForm;
 import jp.co.ginga.domain.entity.FacilityEntity;
 import jp.co.ginga.domain.entity.ReservationEntity;
 
@@ -110,13 +112,6 @@ public class ReservationHelper {
 		return dayFormList;
 	}
 
-	//	/*
-	//	 * DayForm
-	//	 */
-	//	public DayForm createDayForm(List<ReservationEntity> entityList) {
-	//		return null;
-	//	}
-
 	/*
 	 * List<ReservationForm>
 	 */
@@ -165,4 +160,18 @@ public class ReservationHelper {
 
 		return new YearAndMonthForm(year, month);
 	}
+
+	public ReservationEntity convertFromReservFormToReservEntity(ReservationForm form,
+			AccountSessionForm accountSession) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date startTime = sdf.parse(form.getYear() + "-" + form.getMonth() + "-" + form.getDate() + " "
+				+ form.getStartHour() + ":" + form.getStartMinute());
+		Date endTime = sdf.parse(form.getYear() + "-" + form.getMonth() + "-" + form.getDate() + " "
+				+ form.getEndHour() + ":" + form.getEndMinute());
+
+		return new ReservationEntity(startTime, endTime, new FacilityEntity(form.getFacilityForm().getId()),
+				accountSession.getAccountName());
+
+	}
+
 }

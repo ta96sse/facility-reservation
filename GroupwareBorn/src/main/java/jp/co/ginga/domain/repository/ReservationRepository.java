@@ -77,7 +77,7 @@ public interface ReservationRepository {
 	 *
 	 * @throws SQLException
 	 */
-	@Insert("insert into reservation (start_time,end_time,facility_id,,user_id) values (#{startTime},#{endTime},#{facilityId},#{userId}) ")
+	@Insert("insert into reservation (start_time,end_time,facility_id,user_id) values (#{startTime},#{endTime},#{facilityEntity.id},#{userId}) ")
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	public boolean add(ReservationEntity reservationEntity);
 

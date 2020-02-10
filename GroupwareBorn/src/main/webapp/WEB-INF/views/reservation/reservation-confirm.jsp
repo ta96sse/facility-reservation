@@ -8,50 +8,52 @@
 <head>
 <title>${title}</title>
 <meta charset="UTF-8">
-<link rel="stylesheet" type="text/css" href="/css/style.css" />
+<link rel="stylesheet" type="text/css" href="/css/style-new.css" />
 </head>
 <body>
 	<div id="base">
 		<jsp:include page="/WEB-INF/views/header/header.jsp" flush="true" />
 		<div id="contents">
-			<div id="view-title">施設情報 確認画面</div>
+			<div id="view-title">予約内容確認</div>
 
-			<p id="contents-title">施設情報を確認してください。</p>
-			<form:form modelAttribute="facilitySessionForm"
-				action="/facility/complete" method="post">
+			<p id="contents-title">以下の内容で予約します。よろしいですか？</p>
+			<form:form modelAttribute="session"
+				action="/facility-reservation/complete" method="post">
 				<spring:eval var="accountSessionForm"
 					expression="@accountSessionForm" />
-				<table id="facility-info">
+				<table id="reservation-info">
 					<tr>
-						<th class="facility-info-th">施設名</th>
-						<td><c:out value="${facilitySessionForm.facilityForm.name}" /></td>
+						<th class="reservation-info-th">予約施設</th>
+						<td><c:out value="${session.facilityForm.name}" /></td>
 					</tr>
 					<tr>
-						<th class="facility-info-th">種別</th>
+						<th class="reservation-info-th">予約日</th>
 
 						<td><c:out
-								value="${facilitySessionForm.facilityForm.facilityTypeForm.name}" /></td>
+								value="${session.year}年${session.month}月${session.date}日" /></td>
 					</tr>
 					<tr>
-						<th class="facility-info-th">定員</th>
+						<th class="reservation-info-th">予約時間</th>
 						<td><c:out
-								value="${facilitySessionForm.facilityForm.capacity}" /></td>
+								value="${session.startHour}:${session.startMinute}～${session.endHour}:${session.endMinute}" /></td>
 					</tr>
 				</table>
-				<input type="hidden" id="facilityForm.id" name="facilityForm.id"
-					value="${facilitySessionForm.facilityForm.id}" />
-				<input type="hidden" id="facilityForm.name" name="facilityForm.name"
-					value="${facilitySessionForm.facilityForm.name}" />
-				<input type="hidden" id="facilityForm.facilityTypeForm.id"
-					name="facilityForm.facilityTypeForm.id"
-					value="${facilitySessionForm.facilityForm.facilityTypeForm.id}" />
-				<input type="hidden" id="facilityForm.capacity"
-					name="facilityForm.capacity"
-					value="${facilitySessionForm.facilityForm.capacity}" />
+				<form:input type="hidden" path="facilityForm.id"
+					value="${session.facilityForm.id}" />
+				<form:input type="hidden" path="year" value="${session.year}" />
+				<form:input type="hidden" path="month" value="${session.month}" />
+				<form:input type="hidden" path="date" value="${session.date}" />
+				<form:input type="hidden" path="startHour"
+					value="${session.startHour}" />
+				<form:input type="hidden" path="startMinute"
+					value="${session.startMinute}" />
+				<form:input type="hidden" path="endHour" value="${session.endHour}" />
+				<form:input type="hidden" path="endMinute"
+					value="${session.endMinute}" />
 
-				<input type="submit" name="${btnAction}" value="${btnName}" />
 				<input type="button" class="back" value="戻る"
-					onClick="location.href='/facility/back/${btnAction}'" />
+					onClick="location.href='/facility-reservation/${session.facilityForm.id}/add'" />
+				<input type="submit" name="add" value="確定" />
 			</form:form>
 		</div>
 		<jsp:include page="/WEB-INF/views/footer/footer.jsp" flush="true" />
