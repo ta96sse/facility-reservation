@@ -35,7 +35,7 @@ public interface ReservationRepository {
 	@Results({
 			@Result(property = "startTime", column = "start_time"),
 			@Result(property = "endTime", column = "end_time"),
-			@Result(property = "facilityId", column = "facility_id"),
+			@Result(property = "facilityEntity", column = "facility_id", one = @One(select = "jp.co.ginga.domain.repository.FacilityRepository.findOneById", fetchType = FetchType.EAGER)),
 			@Result(property = "userId", column = "user_id")
 	})
 	public ReservationEntity findOneById(int id);

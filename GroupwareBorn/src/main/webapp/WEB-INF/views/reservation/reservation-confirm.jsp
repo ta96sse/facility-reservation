@@ -52,7 +52,7 @@
 					value="${session.endMinute}" />
 
 				<input type="button" class="back" value="戻る"
-					onClick="location.href='/facility-reservation/${session.facilityForm.id}/add'" />
+					onClick="location.href='/facility-reservation/${session.facilityForm.id}/add/?year=${session.year}&month=${session.month}&date=${session.date}'" />
 				<input type="submit" name="add" value="確定" />
 			</form:form>
 		</div>

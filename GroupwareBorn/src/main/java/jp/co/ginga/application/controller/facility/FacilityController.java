@@ -171,8 +171,7 @@ public class FacilityController {
 	 */
 	@RequestMapping(path = "/facility/confirm", params = "add", method = RequestMethod.POST)
 	public String createFacilityConfirmAddPost(@ModelAttribute(FORM_NAME) @Validated FacilitySessionForm session,
-			BindingResult result,
-			Model model, RedirectAttributes ra) throws Exception {
+			BindingResult result, Model model, RedirectAttributes ra) throws Exception {
 
 		// バリデータチェック処理
 		if (result.hasErrors()) {

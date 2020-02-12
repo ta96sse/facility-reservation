@@ -27,7 +27,7 @@
 		</div>
 		<div id="contents">
 			<div id="view-title">施設予約</div>
-			<form:form modelAttribute="reservationForm"
+			<form:form modelAttribute="session"
 				action="/facility-reservation/confirm" method="post">
 
 				<p id="contents-title">予約時間を選択してください。</p>

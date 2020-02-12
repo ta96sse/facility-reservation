@@ -37,7 +37,7 @@ public class ReservationServiceImp implements ReservationService {
 	@Override
 	public ReservationEntity getReservation(int id) {
 
-		return null;
+		return reservationRepository.findOneById(id);
 	}
 
 	@Override

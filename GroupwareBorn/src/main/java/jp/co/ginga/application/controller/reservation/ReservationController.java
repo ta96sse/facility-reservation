@@ -162,6 +162,22 @@ public class ReservationController {
 		return "reservation/reservation-add";
 	}
 
+	/*
+	 * 予約詳細
+	 */
+	@RequestMapping(path = "/facility-reservation/{facilityId}/detail/{reservationId}", method = RequestMethod.GET)
+	public String createReservDetailFormGet(@PathVariable int facilityId, @PathVariable int reservationId,
+			@ModelAttribute ReservationForm session, Model model) {
+
+		System.out.println(reservationId);
+		ReservationForm reservationForm = reservationHelper
+				.convertFromReservEntityToReservForm(reservationService.getReservation(reservationId));
+		System.out.println(reservationForm.getDate());
+		model.addAttribute("session", reservationForm);
+
+		return "reservation/reservation-detail";
+	}
+
 	@RequestMapping(path = "/facility-reservation/confirm", method = RequestMethod.POST)
 	public String createReservConfirmPost(@ModelAttribute ReservationForm session, Model model) {
 
@@ -185,7 +201,7 @@ public class ReservationController {
 	@RequestMapping(path = "/facility-reservation/complete", params = "update", method = RequestMethod.POST)
 	public String createReservCompleteUpdatePost(@ModelAttribute ReservationForm session, Model model) {
 
-		model.addAttribute("session", session);
+		model.addAttribute("title", "更新");
 
 		return "reservation/reservation-complete";
 	}
@@ -193,7 +209,7 @@ public class ReservationController {
 	@RequestMapping(path = "/facility-reservation/complete", params = "delete", method = RequestMethod.POST)
 	public String createReservCompleteDeletePost(@ModelAttribute ReservationForm session, Model model) {
 
-		model.addAttribute("session", session);
+		model.addAttribute("title", "削除");
 
 		return "reservation/reservation-complete";
 	}
