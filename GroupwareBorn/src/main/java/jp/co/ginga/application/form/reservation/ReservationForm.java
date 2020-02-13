@@ -25,15 +25,19 @@ public class ReservationForm implements Serializable {
 
 	}
 
-	public ReservationForm(int id, String startTime, String endTime, FacilityForm facilityForm, String userId,
-			int startDate) {
+	public ReservationForm(int id, int year, int month, int date, String startHour, String startMinute, String endHour,
+			String endMinute, FacilityForm facilityForm, String userId) {
 		super();
 		this.id = id;
-		this.startTime = startTime;
-		this.endTime = endTime;
+		this.year = year;
+		this.month = month;
+		this.date = date;
+		this.startHour = startHour;
+		this.startMinute = startMinute;
+		this.endHour = endHour;
+		this.endMinute = endMinute;
 		this.facilityForm = facilityForm;
 		this.userId = userId;
-		this.startDate = startDate;
 	}
 
 	public int getId() {

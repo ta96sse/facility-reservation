@@ -69,7 +69,7 @@ public class ReservationHelper {
 
 		int checkDay = 0;
 		for (ReservationForm reservationForm : reservationFormList) {
-			int day = reservationForm.getStartDate();
+			int day = reservationForm.getDate();
 			if (checkDay != day) {
 				dayList = new ArrayList<ReservationForm>();
 				dayList.add(reservationForm);
@@ -130,14 +130,19 @@ public class ReservationHelper {
 	 * ReservationForm
 	 */
 	public ReservationForm convertFromReservEntityToReservForm(ReservationEntity entity) {
-		SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
+		SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy");
+		SimpleDateFormat sdfMonth = new SimpleDateFormat("MM");
 		SimpleDateFormat sdfDate = new SimpleDateFormat("dd");
+		SimpleDateFormat sdfHour = new SimpleDateFormat("HH");
+		SimpleDateFormat sdfMinute = new SimpleDateFormat("mm");
 
-		return new ReservationForm(entity.getId(), sdfTime.format(entity.getStartTime()),
-				sdfTime.format(entity.getEndTime()),
+		return new ReservationForm(entity.getId(), Integer.parseInt(sdfYear.format(entity.getStartTime())),
+				Integer.parseInt(sdfMonth.format(entity.getStartTime())),
+				Integer.parseInt(sdfDate.format(entity.getStartTime())), sdfHour.format(entity.getStartTime()),
+				sdfMinute.format(entity.getStartTime()), sdfHour.format(entity.getEndTime()),
+				sdfMinute.format(entity.getEndTime()),
 				new FacilityForm(entity.getFacilityEntity().getId(), entity.getFacilityEntity().getName()),
-				entity.getUserId(),
-				Integer.parseInt(sdfDate.format(entity.getStartTime())));
+				entity.getUserId());
 	}
 
 	public YearAndMonthForm setYearAndMonthByFlag(int year, int month, boolean changeCalFlag) {

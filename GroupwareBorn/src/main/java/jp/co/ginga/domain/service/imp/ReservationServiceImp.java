@@ -41,20 +41,24 @@ public class ReservationServiceImp implements ReservationService {
 	}
 
 	@Override
-	public int delete(int id) {
-
+	public int add(ReservationEntity reservation) {
+		if (reservationRepository.add(reservation)) {
+			return 1;
+		}
 		return 0;
 	}
 
 	@Override
 	public int update(ReservationEntity reservation) {
-
+		if (reservationRepository.update(reservation)) {
+			return 1;
+		}
 		return 0;
 	}
 
 	@Override
-	public int add(ReservationEntity reservation) {
-		if (reservationRepository.add(reservation)) {
+	public int delete(int id) {
+		if (reservationRepository.delete(id)) {
 			return 1;
 		}
 		return 0;

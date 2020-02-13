@@ -46,8 +46,8 @@
 			<div id="dialog">
 				<table style="margin: auto;">
 					<tr>
-						<th>facility :</th>
-						<td><font size="5">${session.facilityForm.name}</font></td>
+						<th>reservation :</th>
+						<td><font size="5">${session.id}</font></td>
 					</tr>
 				</table>
 			</div>
@@ -109,8 +109,7 @@
 					</tr>
 				</table>
 
-				<input type="hidden" id="facilityForm.id" name="facilityForm.id"
-					value="${facilitySessionForm.facilityForm.id}" />
+				<form:input type="hidden" path="id" value="${session.id}" />
 				<input type="submit" class="update" name="update" value="更新">
 				<input type="button" class="delete" name="delete" value="削除">
 				<input type="button" value="戻る"
@@ -131,7 +130,7 @@
 					{
 						autoOpen : false,
 						modal : true,
-						title : 'DeleteFacility',
+						title : 'DeleteReservation',
 						buttons : {
 							'OK' : function() {
 								$(this).dialog('close');
@@ -147,8 +146,7 @@
 						}
 
 					});
-
 		});
 	</script>
-	</ bo dy>
+</body>
 </html>

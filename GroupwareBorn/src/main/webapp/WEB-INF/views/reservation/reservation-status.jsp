@@ -86,7 +86,7 @@
 										<c:forEach var="reservation"
 											items="${day.reservationFormList}">
 											<li class="calendar-cell-li"><a
-												href="/facility-reservation/${statusForm.facilityForm.id}/detail/${reservation.id}">${reservation.startTime}～${reservation.endTime}<br>(${reservation.userId})
+												href="/facility-reservation/${statusForm.facilityForm.id}/detail/${reservation.id}">${reservation.startHour}:${reservation.startMinute}～${reservation.endHour}:${reservation.endMinute}<br>(${reservation.userId})
 											</a></li>
 										</c:forEach>
 										<c:if
@@ -201,9 +201,13 @@
 										var reservationForm = dayForm[i].reservationFormList;
 										for ( var j in reservationForm) {
 											htmlData += '<li class="calendar-cell-li"><a href="/facility-reservation/' + result.facilityForm.id + "/detail/" + reservationForm[j].id + '">'
-													+ reservationForm[j].startTime
+													+ reservationForm[j].startHour
+													+ ":"
+													+ reservationForm[j].startMinute
 													+ "～"
-													+ reservationForm[j].endTime
+													+ reservationForm[j].endHour
+													+ ":"
+													+ reservationForm[j].endMinute
 													+ "<br>"
 													+ "("
 													+ reservationForm[j].userId

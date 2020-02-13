@@ -1,5 +1,6 @@
 package jp.co.ginga.application.controller.reservation;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.support.SessionStatus;
 
 import jp.co.ginga.application.form.facility.FacilityForm;
 import jp.co.ginga.application.form.facility.FacilityListForm;
@@ -153,11 +155,12 @@ public class ReservationController {
 	public String createReservAddFormGet(@PathVariable int facilityId, @ModelAttribute ReservationForm session,
 			Model model) {
 
-		System.out.println(session.getYear());
+		System.out.println(session.getStartHour());
 		FacilityForm facilityForm = facilityHelper.convertFromEntityToForm(facilityService.getFacility(facilityId));
 		session.setFacilityForm(facilityForm);
 
 		model.addAttribute("session", session);
+		System.out.println(session.getStartHour());
 
 		return "reservation/reservation-add";
 	}
@@ -169,10 +172,8 @@ public class ReservationController {
 	public String createReservDetailFormGet(@PathVariable int facilityId, @PathVariable int reservationId,
 			@ModelAttribute ReservationForm session, Model model) {
 
-		System.out.println(reservationId);
 		ReservationForm reservationForm = reservationHelper
 				.convertFromReservEntityToReservForm(reservationService.getReservation(reservationId));
-		System.out.println(reservationForm.getDate());
 		model.addAttribute("session", reservationForm);
 
 		return "reservation/reservation-detail";
@@ -187,29 +188,58 @@ public class ReservationController {
 	}
 
 	@RequestMapping(path = "/facility-reservation/complete", params = "add", method = RequestMethod.POST)
-	public String createReservCompleteAddPost(@ModelAttribute ReservationForm session, Model model)
+	public String createReservCompleteAddPost(ReservationForm session, SessionStatus sessionStatus, Model model)
 			throws ParseException {
 
 		ReservationEntity reservationEntity = reservationHelper.convertFromReservFormToReservEntity(session,
 				accountSession);
-		reservationService.add(reservationEntity);
+		int result = reservationService.add(reservationEntity);
+		if (result != 1) {
+			SQLException e = new SQLException();
+			model.addAttribute("message", e);
+			model.addAttribute("detail", "例外 : " + e.getMessage() + "");
+			return "error/error";
+		}
+
 		model.addAttribute("title", "予約");
+		sessionStatus.setComplete();
 
 		return "reservation/reservation-complete";
 	}
 
 	@RequestMapping(path = "/facility-reservation/complete", params = "update", method = RequestMethod.POST)
-	public String createReservCompleteUpdatePost(@ModelAttribute ReservationForm session, Model model) {
+	public String createReservCompleteUpdatePost(ReservationForm session, SessionStatus sessionStatus, Model model)
+			throws ParseException {
+
+		ReservationEntity reservationEntity = reservationHelper.convertFromReservFormToReservEntity(session,
+				accountSession);
+		int result = reservationService.update(reservationEntity);
+		if (result != 1) {
+			SQLException e = new SQLException();
+			model.addAttribute("message", e);
+			model.addAttribute("detail", "例外 : " + e.getMessage() + "");
+			return "error/error";
+		}
 
 		model.addAttribute("title", "更新");
+		sessionStatus.setComplete();
 
 		return "reservation/reservation-complete";
 	}
 
 	@RequestMapping(path = "/facility-reservation/complete", params = "delete", method = RequestMethod.POST)
-	public String createReservCompleteDeletePost(@ModelAttribute ReservationForm session, Model model) {
+	public String createReservCompleteDeletePost(ReservationForm session, SessionStatus sessionStatus, Model model) {
+
+		int result = reservationService.delete(session.getId());
+		if (result != 1) {
+			SQLException e = new SQLException();
+			model.addAttribute("message", e);
+			model.addAttribute("detail", "例外 : " + e.getMessage() + "");
+			return "error/error";
+		}
 
 		model.addAttribute("title", "削除");
+		sessionStatus.setComplete();
 
 		return "reservation/reservation-complete";
 	}

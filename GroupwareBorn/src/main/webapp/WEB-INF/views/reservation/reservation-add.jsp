@@ -35,10 +35,9 @@
 				<p>${session.year}年${session.month}月${session.date}日</p>
 				<p>
 					予約開始時間
-					<form:select class="selectObj" path="startHour"
-						value="${session.startHour}">
+					<form:select class="selectObj" path="startHour">
 						<c:forEach var="startHour" begin="9" end="21">
-							<option>${startHour}</option>
+							<option value="${startHour}">${startHour}</option>
 						</c:forEach>
 					</form:select>
 					時

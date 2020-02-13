@@ -86,7 +86,7 @@ public interface ReservationRepository {
 	 *
 	 * @throws Exception
 	 */
-	@Update("update reservation set start_time = #{startTime}, end_time = #{endTime}, facility_id = #{facilityId}, user_id = #{userId} where id = #{id}")
+	@Update("update reservation set start_time = #{startTime}, end_time = #{endTime}, facility_id = #{facilityEntity.id}, user_id = #{userId} where id = #{id}")
 	public boolean update(ReservationEntity reservationEntity);
 
 	/**
