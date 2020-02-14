@@ -15,11 +15,13 @@ public interface ReservationService {
 
 	public ReservationEntity getReservation(int id);
 
-	public int delete(int id);
+	public int check(int facilityId, int year, int month, int date);
+
+	public int add(ReservationEntity reservation);
 
 	public int update(ReservationEntity reservation);
 
-	public int add(ReservationEntity reservation);
+	public int delete(int id);
 
 	public void setReservationRepository(ReservationRepository reservationRepository);
 

@@ -86,8 +86,6 @@ public class ReservationController {
 	@ResponseBody
 	public List<FacilityForm> remakeFacilityList(@RequestBody FacilityForm session) {
 
-		System.out.println(session.getFacilityTypeForm().getId());
-
 		List<FacilityEntity> listEntity;
 
 		if (session.getFacilityTypeForm().getId() == 0) {
@@ -114,19 +112,12 @@ public class ReservationController {
 		List<ReservationEntity> reservEntityList = reservationService.getReservationList(facilityId, year, month);
 
 		ReservationStatusForm statusForm = reservationHelper.createStatusForm(entity, reservEntityList, year, month);
-		//		System.out.println(statusForm.getCalendarForm().getToday());
-		//		System.out.println(statusForm.getCalendarForm().getDayFormList().get(10).getYearMonthDate());
-		//		for (DayForm dayForm : statusForm.getCalendarForm().getDayFormList()) {
-		//			System.out.println(dayForm.getYearMonthDate());
-		//		}
 		model.addAttribute("statusForm", statusForm);
 		return "reservation/reservation-status";
 	}
 
-	/**
+	/*
 	 * カレンダー月変更
-	 * @param facilityForm
-	 * @return
 	 */
 	@RequestMapping(path = "/facility-reservation/change-calendar", method = RequestMethod.POST)
 	@ResponseBody
@@ -135,8 +126,6 @@ public class ReservationController {
 		YearAndMonthForm yearAndMonthForm = reservationHelper.setYearAndMonthByFlag(
 				session.getCalendarForm().getYear(), session.getCalendarForm().getMonth(),
 				session.getCalendarForm().getChangeCalFlag());
-
-		System.out.println(yearAndMonthForm.getMonth());
 
 		FacilityEntity entity = facilityService.getFacility(session.getFacilityForm().getId());
 		List<ReservationEntity> reservEntityList = reservationService.getReservationList(
@@ -155,12 +144,10 @@ public class ReservationController {
 	public String createReservAddFormGet(@PathVariable int facilityId, @ModelAttribute ReservationForm session,
 			Model model) {
 
-		System.out.println(session.getStartHour());
 		FacilityForm facilityForm = facilityHelper.convertFromEntityToForm(facilityService.getFacility(facilityId));
 		session.setFacilityForm(facilityForm);
 
 		model.addAttribute("session", session);
-		System.out.println(session.getStartHour());
 
 		return "reservation/reservation-add";
 	}
@@ -169,14 +156,29 @@ public class ReservationController {
 	 * 予約詳細
 	 */
 	@RequestMapping(path = "/facility-reservation/{facilityId}/detail/{reservationId}", method = RequestMethod.GET)
-	public String createReservDetailFormGet(@PathVariable int facilityId, @PathVariable int reservationId,
-			@ModelAttribute ReservationForm session, Model model) {
+	public String createReservDetailFormGet(@PathVariable int reservationId, @ModelAttribute ReservationForm session,
+			Model model) {
 
 		ReservationForm reservationForm = reservationHelper
 				.convertFromReservEntityToReservForm(reservationService.getReservation(reservationId));
 		model.addAttribute("session", reservationForm);
 
 		return "reservation/reservation-detail";
+	}
+
+	/*
+	 * 予約時間チェック
+	 */
+	@RequestMapping(path = "/facility-reservation/check-reservation", method = RequestMethod.POST)
+	@ResponseBody
+	public int checkReservation(@RequestBody ReservationForm session) {
+
+		int result = reservationService.check(session.getFacilityForm().getId(), session.getYear(), session.getMonth(), session.getDate());
+		if (result != 1) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 
 	@RequestMapping(path = "/facility-reservation/confirm", method = RequestMethod.POST)
@@ -191,7 +193,7 @@ public class ReservationController {
 	public String createReservCompleteAddPost(ReservationForm session, SessionStatus sessionStatus, Model model)
 			throws ParseException {
 
-		ReservationEntity reservationEntity = reservationHelper.convertFromReservFormToReservEntity(session,
+		ReservationEntity reservationEntity = reservationHelper.convertFromReservFormToReservEntityForAdd(session,
 				accountSession);
 		int result = reservationService.add(reservationEntity);
 		if (result != 1) {
@@ -211,8 +213,9 @@ public class ReservationController {
 	public String createReservCompleteUpdatePost(ReservationForm session, SessionStatus sessionStatus, Model model)
 			throws ParseException {
 
-		ReservationEntity reservationEntity = reservationHelper.convertFromReservFormToReservEntity(session,
+		ReservationEntity reservationEntity = reservationHelper.convertFromReservFormToReservEntityForUpdate(session,
 				accountSession);
+
 		int result = reservationService.update(reservationEntity);
 		if (result != 1) {
 			SQLException e = new SQLException();

@@ -166,7 +166,7 @@ public class ReservationHelper {
 		return new YearAndMonthForm(year, month);
 	}
 
-	public ReservationEntity convertFromReservFormToReservEntity(ReservationForm form,
+	public ReservationEntity convertFromReservFormToReservEntityForAdd(ReservationForm form,
 			AccountSessionForm accountSession) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Date startTime = sdf.parse(form.getYear() + "-" + form.getMonth() + "-" + form.getDate() + " "
@@ -176,6 +176,29 @@ public class ReservationHelper {
 
 		return new ReservationEntity(startTime, endTime, new FacilityEntity(form.getFacilityForm().getId()),
 				accountSession.getAccountName());
+
+	}
+
+	public ReservationEntity convertFromReservFormToReservEntityForUpdate(ReservationForm form,
+			AccountSessionForm accountSession) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date startTime = sdf.parse(form.getYear() + "-" + form.getMonth() + "-" + form.getDate() + " "
+				+ form.getStartHour() + ":" + form.getStartMinute());
+		Date endTime = sdf.parse(form.getYear() + "-" + form.getMonth() + "-" + form.getDate() + " "
+				+ form.getEndHour() + ":" + form.getEndMinute());
+
+		return new ReservationEntity(form.getId(), startTime, endTime, accountSession.getAccountName());
+
+	}
+
+	public boolean checkReservation(ReservationForm form) {
+
+		if (Integer.parseInt(form.getStartHour() + form.getStartMinute()) >= Integer
+				.parseInt(form.getEndHour() + form.getEndMinute())) {
+			return false;
+		} else {
+			return true;
+		}
 
 	}
 

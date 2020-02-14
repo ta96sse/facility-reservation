@@ -43,10 +43,18 @@
 		<div id="contents">
 			<div id="view-title">予約情報管理</div>
 
-			<div id="dialog">
+			<div id="update">
 				<table style="margin: auto;">
 					<tr>
-						<th>reservation :</th>
+						<th>予約ID：</th>
+						<td><font size="5">${session.id}</font></td>
+					</tr>
+				</table>
+			</div>
+			<div id="delete">
+				<table style="margin: auto;">
+					<tr>
+						<th>予約ID：</th>
 						<td><font size="5">${session.id}</font></td>
 					</tr>
 				</table>
@@ -63,6 +71,7 @@
 				action="/facility-reservation/confirm" method="post">
 				<p>${session.facilityForm.name}</p>
 				<p>${session.year}年${session.month}月${session.date}日</p>
+				<p class="timeCheck" style="color: red"></p>
 				<table id="facility-info">
 					<tr>
 						<th class="facility-info-th">最終更新者<br> <font size="1px"
@@ -110,7 +119,10 @@
 				</table>
 
 				<form:input type="hidden" path="id" value="${session.id}" />
-				<input type="submit" class="update" name="update" value="更新">
+				<form:input type="hidden" path="year" value="${session.year}" />
+				<form:input type="hidden" path="month" value="${session.month}" />
+				<form:input type="hidden" path="date" value="${session.date}" />
+				<input type="button" class="update" name="update" value="更新">
 				<input type="button" class="delete" name="delete" value="削除">
 				<input type="button" value="戻る"
 					onClick="location.href='/facility-reservation/${session.facilityForm.id}'" />
@@ -122,30 +134,59 @@
 	<!-- javascriptの記述 -->
 	<script type="text/javascript">
 		$(function() {
-			$('.delete').click(function() {
-				$('#dialog').dialog('open');
+			$('.update').click(function() {
+				var startTime = parseInt($('#startHour').val()
+						+ $('#startMinute').val());
+				var endTime = parseInt($('#endHour').val()
+						+ $('#endMinute').val());
+				console.log(startTime);
+				console.log(endTime);
+				if (startTime >= endTime) {
+					$('.timeCheck').text('終了時間は開始時間より遅く設定してください');
+				} else {
+					$('#update').dialog('open');
+				}
 			});
 
-			$('#dialog').dialog(
-					{
-						autoOpen : false,
-						modal : true,
-						title : 'DeleteReservation',
-						buttons : {
-							'OK' : function() {
-								$(this).dialog('close');
-								$('form').attr('action',
-										'/facility-reservation/complete');
-								$('.delete').attr('type', 'submit');
-								$('.delete').click();
-							},
-							'cancel' : function() {
-								$(this).dialog('close');
+			$('#update').dialog({
+				autoOpen : false,
+				modal : true,
+				title : '予約を更新します',
+				buttons : {
+					'OK' : function() {
+						$(this).dialog('close');
+						$('form').attr('action',
+								'/facility-reservation/complete');
+						$('.update').attr('type', 'submit');
+						$('.update').click();
+					},
+					'cancel' : function() {
+						$(this).dialog('close');
+					}
+				}
+			});
 
-							}
-						}
+			$('.delete').click(function() {
+				$('#delete').dialog('open');
+			});
 
-					});
+			$('#delete').dialog({
+				autoOpen : false,
+				modal : true,
+				title : '予約を削除します',
+				buttons : {
+					'OK' : function() {
+						$(this).dialog('close');
+						$('form').attr('action',
+								'/facility-reservation/complete');
+						$('.delete').attr('type', 'submit');
+						$('.delete').click();
+					},
+					'cancel' : function() {
+						$(this).dialog('close');
+					}
+				}
+			});
 		});
 	</script>
 </body>

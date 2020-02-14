@@ -68,7 +68,8 @@
 					</form:select>
 					分
 				</p>
-				<input type="submit" value="予約" />
+				<p class="timeCheck" style="color: red"></p>
+				<input type="button" class="add" value="予約" />
 
 				<form:input type="hidden" path="facilityForm.id"
 					value="${session.facilityForm.id}" />
@@ -85,7 +86,32 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-
+		$('.add').click(function() {
+			var startTime = parseInt($('#startHour').val()
+					+ $('#startMinute').val());
+			var endTime = parseInt($('#endHour').val()
+					+ $('#endMinute').val());
+			console.log(startTime);
+			console.log(endTime);
+			if (startTime >= endTime) {
+				$('.timeCheck').text('終了時間は開始時間より遅く設定してください');
+			} else {
+				$('.add').attr('type', 'submit');
+			}
+			$(function() {
+				$.ajax({
+					url : "/facility-reservation/check-reservation",
+					type : "POST",
+					data : JSON.stringify({"facilityTypeForm" : {"id" : typeId}}),
+					dataType : "json",
+					contentType : "application/json ; charset=utf-8"
+				})
+				.done(function(result, status, jqxhr) {
+					$("#facility").empty();
+					var typeResult;
+				})
+			})
+		});
 	</script>
 </body>
 </html>

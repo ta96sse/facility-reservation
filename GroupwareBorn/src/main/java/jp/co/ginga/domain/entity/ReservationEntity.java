@@ -29,6 +29,13 @@ public class ReservationEntity {
 		this.userId = userId;
 	}
 
+	public ReservationEntity(int id, Date startTime, Date endTime, String userId) {
+		this.id = id;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.userId = userId;
+	}
+
 	public int getId() {
 		return id;
 	}

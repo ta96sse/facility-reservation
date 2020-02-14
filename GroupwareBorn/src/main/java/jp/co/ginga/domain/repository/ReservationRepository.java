@@ -73,6 +73,14 @@ public interface ReservationRepository {
 	public List<ReservationEntity> findListByFacilityId(int facilityId, int year, int month);
 
 	/**
+	 * 施設ID、年月日による検索処理
+	 *
+	 * @throws SQLException
+	 */
+	@Select("select * from reservation")
+	public boolean check(int facilityId, int year, int month, int date);
+
+	/**
 	 * 新規予約処理
 	 *
 	 * @throws SQLException
@@ -86,7 +94,7 @@ public interface ReservationRepository {
 	 *
 	 * @throws Exception
 	 */
-	@Update("update reservation set start_time = #{startTime}, end_time = #{endTime}, facility_id = #{facilityEntity.id}, user_id = #{userId} where id = #{id}")
+	@Update("update reservation set start_time = #{startTime}, end_time = #{endTime}, user_id = #{userId} where id = #{id}")
 	public boolean update(ReservationEntity reservationEntity);
 
 	/**
