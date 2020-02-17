@@ -143,7 +143,6 @@ public class ReservationController {
 	@RequestMapping(path = "/facility-reservation/{facilityId}/add", method = RequestMethod.GET)
 	public String createReservAddFormGet(@PathVariable int facilityId, @ModelAttribute ReservationForm session,
 			Model model) {
-
 		FacilityForm facilityForm = facilityHelper.convertFromEntityToForm(facilityService.getFacility(facilityId));
 		session.setFacilityForm(facilityForm);
 
@@ -171,16 +170,21 @@ public class ReservationController {
 	 */
 	@RequestMapping(path = "/facility-reservation/check-reservation", method = RequestMethod.POST)
 	@ResponseBody
-	public int checkReservation(@RequestBody ReservationForm session) {
+	public int checkReservation(@RequestBody ReservationForm session) throws ParseException {
 
-		int result = reservationService.check(session.getFacilityForm().getId(), session.getYear(), session.getMonth(), session.getDate());
-		if (result != 1) {
+		ReservationEntity reservationEntity = reservationHelper.checkReservation(session);
+		int result = reservationService.check(reservationEntity);
+		System.out.println(result);
+		if (result == 1) {
 			return 1;
 		} else {
 			return 0;
 		}
 	}
 
+	/*
+	 * 確認画面
+	 */
 	@RequestMapping(path = "/facility-reservation/confirm", method = RequestMethod.POST)
 	public String createReservConfirmPost(@ModelAttribute ReservationForm session, Model model) {
 
@@ -189,6 +193,9 @@ public class ReservationController {
 		return "reservation/reservation-confirm";
 	}
 
+	/*
+	 *登録完了
+	 */
 	@RequestMapping(path = "/facility-reservation/complete", params = "add", method = RequestMethod.POST)
 	public String createReservCompleteAddPost(ReservationForm session, SessionStatus sessionStatus, Model model)
 			throws ParseException {
@@ -209,6 +216,9 @@ public class ReservationController {
 		return "reservation/reservation-complete";
 	}
 
+	/*
+	 * 更新完了
+	 */
 	@RequestMapping(path = "/facility-reservation/complete", params = "update", method = RequestMethod.POST)
 	public String createReservCompleteUpdatePost(ReservationForm session, SessionStatus sessionStatus, Model model)
 			throws ParseException {
@@ -230,6 +240,9 @@ public class ReservationController {
 		return "reservation/reservation-complete";
 	}
 
+	/*
+	 * 削除完了
+	 */
 	@RequestMapping(path = "/facility-reservation/complete", params = "delete", method = RequestMethod.POST)
 	public String createReservCompleteDeletePost(ReservationForm session, SessionStatus sessionStatus, Model model) {
 

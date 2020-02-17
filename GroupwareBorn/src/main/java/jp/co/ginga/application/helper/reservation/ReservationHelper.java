@@ -191,14 +191,15 @@ public class ReservationHelper {
 
 	}
 
-	public boolean checkReservation(ReservationForm form) {
+	public ReservationEntity checkReservation(ReservationForm form) throws ParseException {
 
-		if (Integer.parseInt(form.getStartHour() + form.getStartMinute()) >= Integer
-				.parseInt(form.getEndHour() + form.getEndMinute())) {
-			return false;
-		} else {
-			return true;
-		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date startTime = sdf.parse(form.getYear() + "-" + form.getMonth() + "-" + form.getDate() + " "
+				+ form.getStartHour() + ":" + form.getStartMinute());
+		Date endTime = sdf.parse(form.getYear() + "-" + form.getMonth() + "-" + form.getDate() + " "
+				+ form.getEndHour() + ":" + form.getEndMinute());
+
+		return new ReservationEntity(startTime, endTime, new FacilityEntity(form.getFacilityForm().getId()));
 
 	}
 

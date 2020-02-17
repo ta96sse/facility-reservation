@@ -41,8 +41,8 @@ public class ReservationServiceImp implements ReservationService {
 	}
 
 	@Override
-	public int check(int facilityId, int year, int month, int date) {
-		if (reservationRepository.check(facilityId, year, month, date)) {
+	public int check(ReservationEntity reservation) {
+		if (reservationRepository.check(reservation) != 0) {
 			return 1;
 		}
 		return 0;

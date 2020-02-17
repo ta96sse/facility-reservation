@@ -125,8 +125,7 @@
 				dataType : 'json',
 				contentType : 'application/json ; charset=utf-8',
 				async : false
-		});
-
+			});
 		}
 
 		function resetMessage(){

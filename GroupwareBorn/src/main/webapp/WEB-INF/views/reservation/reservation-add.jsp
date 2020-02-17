@@ -33,16 +33,17 @@
 				<p id="contents-title">予約時間を選択してください。</p>
 				<p>${session.facilityForm.name}</p>
 				<p>${session.year}年${session.month}月${session.date}日</p>
+				<p class="timeCheck1" style="color: red"></p>
+				<p class="timeCheck2" style="color: red"></p>
 				<p>
 					予約開始時間
-					<form:select class="selectObj" path="startHour">
+					<form:select path="startHour">
 						<c:forEach var="startHour" begin="9" end="21">
 							<option value="${startHour}">${startHour}</option>
 						</c:forEach>
 					</form:select>
 					時
-					<form:select class="selectObj" path="startMinute"
-						value="${session.startMinute}">
+					<form:select path="startMinute">
 						<option>00</option>
 						<option>15</option>
 						<option>30</option>
@@ -52,15 +53,13 @@
 				</p>
 				<p>
 					予約終了時間
-					<form:select class="selectObj" path="endHour"
-						value="${session.endHour}">
+					<form:select path="endHour">
 						<c:forEach var="endtHour" begin="9" end="21">
 							<option>${endtHour}</option>
 						</c:forEach>
 					</form:select>
 					時
-					<form:select class="selectObj" path="endMinute"
-						value="${session.endMinute}">
+					<form:select path="endMinute">
 						<option>00</option>
 						<option>15</option>
 						<option>30</option>
@@ -68,7 +67,6 @@
 					</form:select>
 					分
 				</p>
-				<p class="timeCheck" style="color: red"></p>
 				<input type="button" class="add" value="予約" />
 
 				<form:input type="hidden" path="facilityForm.id"
@@ -91,27 +89,43 @@
 					+ $('#startMinute').val());
 			var endTime = parseInt($('#endHour').val()
 					+ $('#endMinute').val());
-			console.log(startTime);
-			console.log(endTime);
+			var facilityId = $('#facilityForm.id').val();
+			console.log($('#facilityForm.id').val());
+			/*var facilityId = document.getElementById("facilityForm.id").value;*/
+			$('.timeCheck1').text('');
+			$('.timeCheck2').text('');
 			if (startTime >= endTime) {
-				$('.timeCheck').text('終了時間は開始時間より遅く設定してください');
+				$('.timeCheck1').text('終了時間は開始時間より遅く設定してください');
 			} else {
-				$('.add').attr('type', 'submit');
+				$(function(){
+					$.ajax({
+						url : "/facility-reservation/check-reservation",
+						type : "POST",
+						data : JSON.stringify({
+							"year" : $('#year').val(),
+							"month" : $('#month').val(),
+							"date" : $('#date').val(),
+							"startHour" : $('#startHour').val(),
+							"startMinute" : $('#startMinute').val(),
+							"endHour" : $('#endHour').val(),
+							"endMinute" : $('#endMinute').val(),
+							"facilityForm" : {"id" : facilityId}
+						}),
+						dataType : "json",
+						contentType : "application/json ; charset=utf-8"
+					})
+					.done(function(result, status, jqxhr) {
+						console.log(result);
+						if (result == 1) {
+							$('.timeCheck2').text('この時間はすでに予約されています');
+						} else {
+							$('.add').attr('type', 'submit');
+						}
+					})
+				})
 			}
-			$(function() {
-				$.ajax({
-					url : "/facility-reservation/check-reservation",
-					type : "POST",
-					data : JSON.stringify({"facilityTypeForm" : {"id" : typeId}}),
-					dataType : "json",
-					contentType : "application/json ; charset=utf-8"
-				})
-				.done(function(result, status, jqxhr) {
-					$("#facility").empty();
-					var typeResult;
-				})
-			})
 		});
+
 	</script>
 </body>
 </html>

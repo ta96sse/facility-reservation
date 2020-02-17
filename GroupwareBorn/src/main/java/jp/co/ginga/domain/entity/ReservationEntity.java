@@ -22,6 +22,12 @@ public class ReservationEntity {
 
 	}
 
+	public ReservationEntity(Date startTime, Date endTime, FacilityEntity facilityEntity) {
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.facilityEntity = facilityEntity;
+	}
+
 	public ReservationEntity(Date startTime, Date endTime, FacilityEntity facilityEntity, String userId) {
 		this.startTime = startTime;
 		this.endTime = endTime;
