@@ -172,9 +172,6 @@
 					})
 					.done(
 							function(result, status, jqxhr) {
-								console.log("☆☆☆☆☆");
-								console.log(data);
-								console.log(result);
 								$("span")
 										.text(
 												result.calendarForm.year

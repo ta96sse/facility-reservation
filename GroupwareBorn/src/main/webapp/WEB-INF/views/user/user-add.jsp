@@ -93,28 +93,29 @@
 	<!-- javascriptの記述 -->
 	<script type="text/javascript">
 		$('.addButton').click(function(){
-				resetMessage();
+			resetMessage();
 
-				var pass1 = $('#password1').val();
-				var pass2 = $('#password2').val();
-				var userId = $('#loginName').val();
+			var pass1 = $('#password1').val();
+			var pass2 = $('#password2').val();
+			var userId = $('#loginName').val();
+			var flag = false;
 
-				var flag = false;
-				if(pass1 != pass2){
-					$('.passCheck').text('パスワード不一致');
-					return false;
+			if(pass1 != pass2){
+				$('.passCheck').text('パスワード不一致');
+				return false;
+			}
+
+			check(userId).done(function(result){
+				if (result == 0) {
+					flag = true;
+				} else {
+					$('.userCheck').text('ユーザーIDが既に使用されています。');
+					flag = false;
 				}
-
-				check(userId).done(function(result){
-					if(result == 0){
-						flag = true;
-					}else{
-						$('.userCheck').text('ユーザーIDが既に使用されています。');
-						flag = false;
-					}
-				});
-				return flag;
 			});
+
+			return flag;
+		});
 
 
 		function check(userId){

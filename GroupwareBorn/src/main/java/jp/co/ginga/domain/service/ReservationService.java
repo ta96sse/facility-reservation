@@ -15,7 +15,9 @@ public interface ReservationService {
 
 	public ReservationEntity getReservation(int id);
 
-	public int check(ReservationEntity reservation);
+	public int checkAdd(ReservationEntity reservation);
+
+	public int checkUpdate(ReservationEntity reservation);
 
 	public int add(ReservationEntity reservation);
 

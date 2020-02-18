@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,6 +56,11 @@ public class ReservationController {
 
 	@Autowired
 	AccountSessionForm accountSession;
+
+	@ModelAttribute(value = "reservationForm")
+	public ReservationForm reservationForm() {
+		return new ReservationForm();
+	}
 
 	/**
 	 * 施設予約施設一覧表示
@@ -141,10 +147,12 @@ public class ReservationController {
 	 * 新規予約
 	 */
 	@RequestMapping(path = "/facility-reservation/{facilityId}/add", method = RequestMethod.GET)
-	public String createReservAddFormGet(@PathVariable int facilityId, @ModelAttribute ReservationForm session,
-			Model model) {
+	public String createReservAddFormGet(@PathVariable int facilityId, ReservationForm session, ModelMap model) {
+
 		FacilityForm facilityForm = facilityHelper.convertFromEntityToForm(facilityService.getFacility(facilityId));
 		session.setFacilityForm(facilityForm);
+
+		System.out.println(session.getStartHour());
 
 		model.addAttribute("session", session);
 
@@ -155,26 +163,41 @@ public class ReservationController {
 	 * 予約詳細
 	 */
 	@RequestMapping(path = "/facility-reservation/{facilityId}/detail/{reservationId}", method = RequestMethod.GET)
-	public String createReservDetailFormGet(@PathVariable int reservationId, @ModelAttribute ReservationForm session,
-			Model model) {
+	public String createReservDetailFormGet(@PathVariable int reservationId, ReservationForm session, ModelMap model) {
 
 		ReservationForm reservationForm = reservationHelper
 				.convertFromReservEntityToReservForm(reservationService.getReservation(reservationId));
+
 		model.addAttribute("session", reservationForm);
 
 		return "reservation/reservation-detail";
 	}
 
 	/*
-	 * 予約時間チェック
+	 * (登録)予約時間チェック
 	 */
-	@RequestMapping(path = "/facility-reservation/check-reservation", method = RequestMethod.POST)
+	@RequestMapping(path = "/facility-reservation/check-add", method = RequestMethod.POST)
 	@ResponseBody
-	public int checkReservation(@RequestBody ReservationForm session) throws ParseException {
+	public int checkReservationAdd(@RequestBody ReservationForm session) throws ParseException {
 
-		ReservationEntity reservationEntity = reservationHelper.checkReservation(session);
-		int result = reservationService.check(reservationEntity);
-		System.out.println(result);
+		ReservationEntity reservationEntity = reservationHelper.checkReservationAdd(session);
+		int result = reservationService.checkAdd(reservationEntity);
+		if (result == 1) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+
+	/*
+	 * (更新)予約時間チェック
+	 */
+	@RequestMapping(path = "/facility-reservation/check-update", method = RequestMethod.POST)
+	@ResponseBody
+	public int checkReservationUpdate(@RequestBody ReservationForm session) throws ParseException {
+
+		ReservationEntity reservationEntity = reservationHelper.checkReservationUpdate(session);
+		int result = reservationService.checkUpdate(reservationEntity);
 		if (result == 1) {
 			return 1;
 		} else {
@@ -187,7 +210,7 @@ public class ReservationController {
 	 */
 	@RequestMapping(path = "/facility-reservation/confirm", method = RequestMethod.POST)
 	public String createReservConfirmPost(@ModelAttribute ReservationForm session, Model model) {
-
+		System.out.println(session.getStartHour());
 		model.addAttribute("session", session);
 
 		return "reservation/reservation-confirm";

@@ -191,7 +191,7 @@ public class ReservationHelper {
 
 	}
 
-	public ReservationEntity checkReservation(ReservationForm form) throws ParseException {
+	public ReservationEntity checkReservationAdd(ReservationForm form) throws ParseException {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Date startTime = sdf.parse(form.getYear() + "-" + form.getMonth() + "-" + form.getDate() + " "
@@ -200,6 +200,18 @@ public class ReservationHelper {
 				+ form.getEndHour() + ":" + form.getEndMinute());
 
 		return new ReservationEntity(startTime, endTime, new FacilityEntity(form.getFacilityForm().getId()));
+
+	}
+
+	public ReservationEntity checkReservationUpdate(ReservationForm form) throws ParseException {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date startTime = sdf.parse(form.getYear() + "-" + form.getMonth() + "-" + form.getDate() + " "
+				+ form.getStartHour() + ":" + form.getStartMinute());
+		Date endTime = sdf.parse(form.getYear() + "-" + form.getMonth() + "-" + form.getDate() + " "
+				+ form.getEndHour() + ":" + form.getEndMinute());
+
+		return new ReservationEntity(form.getId(), startTime, endTime, new FacilityEntity(form.getFacilityForm().getId()));
 
 	}
 

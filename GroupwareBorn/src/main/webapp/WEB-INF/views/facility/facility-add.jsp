@@ -12,25 +12,6 @@
 <!-- jQueryの読み込み -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript">
-<!--
-	window.document.onkeypress = lineCheck;
-	function lineCheck(e) {
-		var ta = document.getElementById("facility-info-remarks");
-		var row = ta.getAttribute("rows");
-		var r = (ta.value.split("\n")).length;
-		if (document.all) {
-			if (r >= row && window.event.keyCode == 13) { //keyCode for IE
-				return false; //入力キーを無視
-			}
-		} else {
-			if (r >= row && e.which == 13) { //which for NN
-				return false;
-			}
-		}
-	}
-//-->
-</script>
 </head>
 <body>
 	<div id="base">
@@ -47,16 +28,16 @@
 				<table id="facility-info">
 					<tr>
 						<th class="facility-info-th">施設名</th>
-						<td><a style="color: red"><form:errors
-									path="facilityForm.name" /></a> <form:input
-								path="facilityForm.name" /></td>
+						<td>
+							<a style="color: red"><form:errors path="facilityForm.name" /></a>
+							<form:input path="facilityForm.name" />
+						</td>
 					</tr>
 					<tr>
 						<th class="facility-info-th">種別</th>
 
 						<td><c:forEach var="facilityType"
-								items="${facilitySessionForm.facilityTypeList}"
-								varStatus="status">
+								items="${facilitySessionForm.facilityTypeList}" varStatus="status">
 
 								<c:if test="${1 == status.count}">
 									<form:radiobutton path="facilityForm.facilityTypeForm.id"
@@ -67,7 +48,6 @@
 									<form:radiobutton path="facilityForm.facilityTypeForm.id"
 										value="${facilityType.id}" label="${facilityType.name}" />
 								</c:if>
-
 							</c:forEach></td>
 					</tr>
 					<tr>

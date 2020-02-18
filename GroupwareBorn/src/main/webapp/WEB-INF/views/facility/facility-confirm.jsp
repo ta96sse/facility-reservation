@@ -48,16 +48,17 @@
 					</tr>
 					<tr>
 						<th class="facility-info-th">定員</th>
-						<td><c:out value="${facilitySessionForm.facilityForm.capacity}" /></td>
+						<td><c:out
+								value="${facilitySessionForm.facilityForm.capacity}" /></td>
 					</tr>
 				</table>
-				<input type="hidden" id="facilityForm.id" name="facilityForm.id"
+				<form:input type="hidden" path="facilityForm.id"
 					value="${facilitySessionForm.facilityForm.id}" />
-				<input type="hidden" id="facilityForm.name" name="facilityForm.name"
+				<form:input type="hidden" path="facilityForm.name"
 					value="${facilitySessionForm.facilityForm.name}" />
-				<input type="hidden" id="facilityForm.facilityTypeForm.id" name="facilityForm.facilityTypeForm.id"
+				<form:input type="hidden" path="facilityForm.facilityTypeForm.id"
 					value="${facilitySessionForm.facilityForm.facilityTypeForm.id}" />
-				<input type="hidden" id="facilityForm.capacity" name="facilityForm.capacity"
+				<form:input type="hidden" path="facilityForm.capacity"
 					value="${facilitySessionForm.facilityForm.capacity}" />
 
 				<input type="submit" name="${btnAction}" value="${btnName}" />

@@ -17,25 +17,6 @@
 	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <link rel="stylesheet"
 	href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-<script type="text/javascript">
-<!--
-	window.document.onkeypress = lineCheck;
-	function lineCheck(e) {
-		var ta = document.getElementById("facility-info-remarks");
-		var row = ta.getAttribute("rows");
-		var r = (ta.value.split("\n")).length;
-		if (document.all) {
-			if (r >= row && window.event.keyCode == 13) { //keyCode for IE
-				return false; //入力キーを無視
-			}
-		} else {
-			if (r >= row && e.which == 13) { //which for NN
-				return false;
-			}
-		}
-	}
-//-->
-</script>
 </head>
 <body>
 	<div id="base">

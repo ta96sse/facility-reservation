@@ -17,25 +17,6 @@
 	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <link rel="stylesheet"
 	href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-<script type="text/javascript">
-<!--
-	window.document.onkeypress = lineCheck;
-	function lineCheck(e) {
-		var ta = document.getElementById("facility-info-remarks");
-		var row = ta.getAttribute("rows");
-		var r = (ta.value.split("\n")).length;
-		if (document.all) {
-			if (r >= row && window.event.keyCode == 13) { //keyCode for IE
-				return false; //入力キーを無視
-			}
-		} else {
-			if (r >= row && e.which == 13) { //which for NN
-				return false;
-			}
-		}
-	}
-//-->
-</script>
 </head>
 <body>
 	<div id="base">
@@ -68,10 +49,11 @@
 
 			<p id="contents-title">予約情報の更新、削除を行えます</p>
 			<form:form modelAttribute="session"
-				action="/facility-reservation/confirm" method="post">
+				action="/facility-reservation/complete" method="post">
 				<p>${session.facilityForm.name}</p>
 				<p>${session.year}年${session.month}月${session.date}日</p>
-				<p class="timeCheck" style="color: red"></p>
+				<p class="timeCheck1" style="color: red"></p>
+				<p class="timeCheck2" style="color: red"></p>
 				<table id="facility-info">
 					<tr>
 						<th class="facility-info-th">最終更新者<br> <font size="1px"
@@ -86,35 +68,63 @@
 						<th class="facility-info-th">予約開始時間</th>
 					</tr>
 					<tr>
-						<td><form:select class="selectObj" path="startHour"
-								value="${session.startHour}">
-								<c:forEach var="startHour" begin="9" end="21">
-									<option>${startHour}</option>
+						<td>
+							<form:select class="selectObj" path="startHour"
+								value="${session.startHour}" varStatus="status">
+								<c:forEach var="startHour" begin="09" end="21">
+									<c:if test="${session.startHour == startHour}">
+										<option selected="selected">${startHour}</option>
+									</c:if>
+									<c:if test="${session.startHour != startHour}">
+										<option>${startHour}</option>
+									</c:if>
 								</c:forEach>
-							</form:select> 時 <form:select class="selectObj" path="startMinute"
+							</form:select>
+							時
+							<form:select class="selectObj" path="startMinute"
 								value="${session.startMinute}">
-								<option>00</option>
-								<option>15</option>
-								<option>30</option>
-								<option>45</option>
-							</form:select> 分</td>
+								<c:forEach var="startMinute" begin="00" end="45" step="15">
+									<c:if test="${session.startMinute == startMinute}">
+										<option selected="selected">${startMinute}</option>
+									</c:if>
+									<c:if test="${session.startMinute != startMinute}">
+										<option>${startMinute}</option>
+									</c:if>
+								</c:forEach>
+							</form:select>
+							分
+						</td>
 					</tr>
 					<tr>
 						<th class="facility-info-th">予約終了時間</th>
 					</tr>
 					<tr>
-						<td><form:select class="selectObj" path="endHour"
+						<td>
+							<form:select class="selectObj" path="endHour"
 								value="${session.endHour}">
-								<c:forEach var="endtHour" begin="9" end="21">
-									<option>${endtHour}</option>
+								<c:forEach var="endHour" begin="09" end="21">
+									<c:if test="${session.endHour == endHour}">
+										<option selected="selected">${endHour}</option>
+									</c:if>
+									<c:if test="${session.endHour != endHour}">
+										<option>${endHour}</option>
+									</c:if>
 								</c:forEach>
-							</form:select> 時 <form:select class="selectObj" path="endMinute"
+							</form:select>
+							時
+							<form:select class="selectObj" path="endMinute"
 								value="${session.endMinute}">
-								<option>00</option>
-								<option>15</option>
-								<option>30</option>
-								<option>45</option>
-							</form:select> 分</td>
+								<c:forEach var="endMinute" begin="00" end="45" step="15">
+									<c:if test="${session.endMinute == endMinute}">
+										<option selected="selected">${endMinute}</option>
+									</c:if>
+									<c:if test="${session.endMinute != endMinute}">
+										<option>${endMinute}</option>
+									</c:if>
+								</c:forEach>
+							</form:select>
+							分
+						</td>
 					</tr>
 				</table>
 
@@ -122,6 +132,9 @@
 				<form:input type="hidden" path="year" value="${session.year}" />
 				<form:input type="hidden" path="month" value="${session.month}" />
 				<form:input type="hidden" path="date" value="${session.date}" />
+				<form:input type="hidden" path="facilityForm.id"
+					value="${session.facilityForm.id}" />
+
 				<input type="button" class="update" name="update" value="更新">
 				<input type="button" class="delete" name="delete" value="削除">
 				<input type="button" value="戻る"
@@ -139,13 +152,47 @@
 						+ $('#startMinute').val());
 				var endTime = parseInt($('#endHour').val()
 						+ $('#endMinute').val());
-				console.log(startTime);
-				console.log(endTime);
+				/*var facilityId = $('#facilityForm.id').val();*/
+				var facilityId = document.getElementById("facilityForm.id").value;
+				console.log(facilityId);
+
+				$('.timeCheck1').text('');
+				$('.timeCheck2').text('');
+
 				if (startTime >= endTime) {
-					$('.timeCheck').text('終了時間は開始時間より遅く設定してください');
+					$('.timeCheck1').text('終了時間は開始時間より遅く設定してください');
 				} else {
-					$('#update').dialog('open');
+
+					$(function(){
+						$.ajax({
+							url : "/facility-reservation/check-update",
+							type : "POST",
+							data : JSON.stringify({
+								"id" : $('#id').val(),
+								"year" : $('#year').val(),
+								"month" : $('#month').val(),
+								"date" : $('#date').val(),
+								"startHour" : $('#startHour').val(),
+								"startMinute" : $('#startMinute').val(),
+								"endHour" : $('#endHour').val(),
+								"endMinute" : $('#endMinute').val(),
+								"facilityForm" : {"id" : facilityId}
+							}),
+							dataType : "json",
+							contentType : "application/json ; charset=utf-8"
+						})
+						.done(function(result, status, jqxhr) {
+							console.log(result);
+							if (result == 1) {
+								$('.timeCheck2').text('この時間はすでに予約されています');
+							} else {
+								$('#update').dialog('open');
+							}
+						})
+
+					});
 				}
+
 			});
 
 			$('#update').dialog({
@@ -155,8 +202,6 @@
 				buttons : {
 					'OK' : function() {
 						$(this).dialog('close');
-						$('form').attr('action',
-								'/facility-reservation/complete');
 						$('.update').attr('type', 'submit');
 						$('.update').click();
 					},
@@ -177,8 +222,6 @@
 				buttons : {
 					'OK' : function() {
 						$(this).dialog('close');
-						$('form').attr('action',
-								'/facility-reservation/complete');
 						$('.delete').attr('type', 'submit');
 						$('.delete').click();
 					},
