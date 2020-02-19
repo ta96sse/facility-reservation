@@ -35,7 +35,8 @@ public class ReservationEntity {
 		this.facilityEntity = facilityEntity;
 	}
 
-	public ReservationEntity(Date startTime, Date endTime, FacilityEntity facilityEntity, String userId) {
+	public ReservationEntity(int id, Date startTime, Date endTime, FacilityEntity facilityEntity, String userId) {
+		this.id = id;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.facilityEntity = facilityEntity;

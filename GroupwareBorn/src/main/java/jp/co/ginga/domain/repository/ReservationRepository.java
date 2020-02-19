@@ -73,20 +73,12 @@ public interface ReservationRepository {
 	public List<ReservationEntity> findListByFacilityId(int facilityId, int year, int month);
 
 	/**
-	 * (登録)施設ID、年月日による検索処理
-	 *
-	 * @throws SQLException
-	 */
-	@Select("select count(id) from reservation where start_time < #{endTime} and end_time > #{startTime} and facility_id = #{facilityEntity.id}")
-	public int checkAdd(ReservationEntity reservationEntity);
-
-	/**
-	 * (更新)施設ID、年月日による検索処理
+	 * 施設ID、年月日による検索処理
 	 *
 	 * @throws SQLException
 	 */
 	@Select("select count(id) from reservation where id != #{id} and start_time < #{endTime} and end_time > #{startTime} and facility_id = #{facilityEntity.id}")
-	public int checkUpdate(ReservationEntity reservationEntity);
+	public int check(ReservationEntity reservationEntity);
 
 	/**
 	 * 新規予約処理

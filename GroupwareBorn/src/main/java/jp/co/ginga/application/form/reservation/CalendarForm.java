@@ -16,6 +16,11 @@ public class CalendarForm implements Serializable {
 
 	}
 
+	public CalendarForm(int year, int month) {
+		this.year = year;
+		this.month = month;
+	}
+
 	public CalendarForm(int year, int month, String[] weekName, List<DayForm> dayFormList, int today) {
 		this.year = year;
 		this.month = month;

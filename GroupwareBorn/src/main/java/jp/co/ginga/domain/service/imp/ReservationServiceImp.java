@@ -41,16 +41,8 @@ public class ReservationServiceImp implements ReservationService {
 	}
 
 	@Override
-	public int checkAdd(ReservationEntity reservation) {
-		if (reservationRepository.checkAdd(reservation) != 0) {
-			return 1;
-		}
-		return 0;
-	}
-
-	@Override
-	public int checkUpdate(ReservationEntity reservation) {
-		if (reservationRepository.checkUpdate(reservation) != 0) {
+	public int check(ReservationEntity reservation) {
+		if (reservationRepository.check(reservation) != 0) {
 			return 1;
 		}
 		return 0;

@@ -8,20 +8,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import jp.co.ginga.application.form.facility.FacilityForm;
 import jp.co.ginga.application.form.facility.FacilityListForm;
+import jp.co.ginga.application.form.reservation.CalendarForm;
 import jp.co.ginga.application.form.reservation.ReservationForm;
 import jp.co.ginga.application.form.reservation.ReservationStatusForm;
-import jp.co.ginga.application.form.reservation.YearAndMonthForm;
 import jp.co.ginga.application.form.session.AccountSessionForm;
 import jp.co.ginga.application.helper.facility.FacilityHelper;
 import jp.co.ginga.application.helper.reservation.ReservationHelper;
@@ -37,6 +37,7 @@ import jp.co.ginga.domain.service.ReservationService;
  *
  */
 @Controller
+@SessionAttributes(names = "reservationForm")
 public class ReservationController {
 
 	@Autowired
@@ -90,14 +91,14 @@ public class ReservationController {
 	 */
 	@RequestMapping(path = "/facility-reservation-list", method = RequestMethod.POST)
 	@ResponseBody
-	public List<FacilityForm> remakeFacilityList(@RequestBody FacilityForm session) {
+	public List<FacilityForm> remakeFacilityList(@RequestBody FacilityForm facilityForm) {
 
 		List<FacilityEntity> listEntity;
 
-		if (session.getFacilityTypeForm().getId() == 0) {
+		if (facilityForm.getFacilityTypeForm().getId() == 0) {
 			listEntity = facilityService.getFacilityList();
 		} else {
-			listEntity = facilityService.getFacilityList(session.getFacilityTypeForm().getId());
+			listEntity = facilityService.getFacilityList(facilityForm.getFacilityTypeForm().getId());
 		}
 
 		List<FacilityForm> listForm = facilityHelper.convertFromEntityListToFormList(listEntity);
@@ -108,7 +109,9 @@ public class ReservationController {
 	 * カレンダー表示
 	 */
 	@RequestMapping(path = "/facility-reservation/{facilityId}", method = RequestMethod.GET)
-	public String createCalendarListGet(@PathVariable int facilityId, Model model) {
+	public String createCalendarListGet(@PathVariable int facilityId, SessionStatus sessionStatus, Model model) {
+
+		sessionStatus.setComplete();
 
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
@@ -127,18 +130,18 @@ public class ReservationController {
 	 */
 	@RequestMapping(path = "/facility-reservation/change-calendar", method = RequestMethod.POST)
 	@ResponseBody
-	public ReservationStatusForm changeCalendarList(@RequestBody ReservationStatusForm session) {
+	public ReservationStatusForm changeCalendarList(@RequestBody ReservationStatusForm status) {
 
-		YearAndMonthForm yearAndMonthForm = reservationHelper.setYearAndMonthByFlag(
-				session.getCalendarForm().getYear(), session.getCalendarForm().getMonth(),
-				session.getCalendarForm().getChangeCalFlag());
+		CalendarForm calendarForm = reservationHelper.setYearAndMonthByFlag(
+				status.getCalendarForm().getYear(), status.getCalendarForm().getMonth(),
+				status.getCalendarForm().getChangeCalFlag());
 
-		FacilityEntity entity = facilityService.getFacility(session.getFacilityForm().getId());
+		FacilityEntity entity = facilityService.getFacility(status.getFacilityForm().getId());
 		List<ReservationEntity> reservEntityList = reservationService.getReservationList(
-				session.getFacilityForm().getId(), yearAndMonthForm.getYear(), yearAndMonthForm.getMonth());
+				status.getFacilityForm().getId(), calendarForm.getYear(), calendarForm.getMonth());
 
 		ReservationStatusForm statusForm = reservationHelper.createStatusForm(entity, reservEntityList,
-				yearAndMonthForm.getYear(), yearAndMonthForm.getMonth());
+				calendarForm.getYear(), calendarForm.getMonth());
 
 		return statusForm;
 	}
@@ -147,14 +150,13 @@ public class ReservationController {
 	 * 新規予約
 	 */
 	@RequestMapping(path = "/facility-reservation/{facilityId}/add", method = RequestMethod.GET)
-	public String createReservAddFormGet(@PathVariable int facilityId, ReservationForm session, ModelMap model) {
+	public String createReservAddFormGet(@PathVariable int facilityId, ReservationForm session, Model model) {
 
-		FacilityForm facilityForm = facilityHelper.convertFromEntityToForm(facilityService.getFacility(facilityId));
+		FacilityForm facilityForm = facilityHelper
+				.convertFromEntityToForm(facilityService.getFacility(facilityId));
 		session.setFacilityForm(facilityForm);
 
-		System.out.println(session.getStartHour());
-
-		model.addAttribute("session", session);
+		model.addAttribute("reservationForm", session);
 
 		return "reservation/reservation-add";
 	}
@@ -163,41 +165,25 @@ public class ReservationController {
 	 * 予約詳細
 	 */
 	@RequestMapping(path = "/facility-reservation/{facilityId}/detail/{reservationId}", method = RequestMethod.GET)
-	public String createReservDetailFormGet(@PathVariable int reservationId, ReservationForm session, ModelMap model) {
+	public String createReservDetailFormGet(@PathVariable int reservationId, Model model) {
 
 		ReservationForm reservationForm = reservationHelper
 				.convertFromReservEntityToReservForm(reservationService.getReservation(reservationId));
 
-		model.addAttribute("session", reservationForm);
+		model.addAttribute("reservationForm", reservationForm);
 
 		return "reservation/reservation-detail";
 	}
 
 	/*
-	 * (登録)予約時間チェック
+	 * 予約時間チェック
 	 */
-	@RequestMapping(path = "/facility-reservation/check-add", method = RequestMethod.POST)
+	@RequestMapping(path = "/facility-reservation/check", method = RequestMethod.POST)
 	@ResponseBody
 	public int checkReservationAdd(@RequestBody ReservationForm session) throws ParseException {
 
-		ReservationEntity reservationEntity = reservationHelper.checkReservationAdd(session);
-		int result = reservationService.checkAdd(reservationEntity);
-		if (result == 1) {
-			return 1;
-		} else {
-			return 0;
-		}
-	}
-
-	/*
-	 * (更新)予約時間チェック
-	 */
-	@RequestMapping(path = "/facility-reservation/check-update", method = RequestMethod.POST)
-	@ResponseBody
-	public int checkReservationUpdate(@RequestBody ReservationForm session) throws ParseException {
-
-		ReservationEntity reservationEntity = reservationHelper.checkReservationUpdate(session);
-		int result = reservationService.checkUpdate(reservationEntity);
+		ReservationEntity reservationEntity = reservationHelper.checkReservation(session);
+		int result = reservationService.check(reservationEntity);
 		if (result == 1) {
 			return 1;
 		} else {
@@ -210,8 +196,8 @@ public class ReservationController {
 	 */
 	@RequestMapping(path = "/facility-reservation/confirm", method = RequestMethod.POST)
 	public String createReservConfirmPost(@ModelAttribute ReservationForm session, Model model) {
-		System.out.println(session.getStartHour());
-		model.addAttribute("session", session);
+
+		model.addAttribute("reservationForm", session);
 
 		return "reservation/reservation-confirm";
 	}
@@ -223,7 +209,7 @@ public class ReservationController {
 	public String createReservCompleteAddPost(ReservationForm session, SessionStatus sessionStatus, Model model)
 			throws ParseException {
 
-		ReservationEntity reservationEntity = reservationHelper.convertFromReservFormToReservEntityForAdd(session,
+		ReservationEntity reservationEntity = reservationHelper.convertFromReservFormToReservEntity(session,
 				accountSession);
 		int result = reservationService.add(reservationEntity);
 		if (result != 1) {
@@ -246,7 +232,7 @@ public class ReservationController {
 	public String createReservCompleteUpdatePost(ReservationForm session, SessionStatus sessionStatus, Model model)
 			throws ParseException {
 
-		ReservationEntity reservationEntity = reservationHelper.convertFromReservFormToReservEntityForUpdate(session,
+		ReservationEntity reservationEntity = reservationHelper.convertFromReservFormToReservEntity(session,
 				accountSession);
 
 		int result = reservationService.update(reservationEntity);

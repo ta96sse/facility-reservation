@@ -17,7 +17,6 @@ import jp.co.ginga.application.form.reservation.CalendarForm;
 import jp.co.ginga.application.form.reservation.DayForm;
 import jp.co.ginga.application.form.reservation.ReservationForm;
 import jp.co.ginga.application.form.reservation.ReservationStatusForm;
-import jp.co.ginga.application.form.reservation.YearAndMonthForm;
 import jp.co.ginga.application.form.session.AccountSessionForm;
 import jp.co.ginga.domain.entity.FacilityEntity;
 import jp.co.ginga.domain.entity.ReservationEntity;
@@ -145,7 +144,7 @@ public class ReservationHelper {
 				entity.getUserId());
 	}
 
-	public YearAndMonthForm setYearAndMonthByFlag(int year, int month, boolean changeCalFlag) {
+	public CalendarForm setYearAndMonthByFlag(int year, int month, boolean changeCalFlag) {
 
 		if (changeCalFlag == true) {
 			if (month == 12) {
@@ -163,10 +162,10 @@ public class ReservationHelper {
 			}
 		}
 
-		return new YearAndMonthForm(year, month);
+		return new CalendarForm(year, month);
 	}
 
-	public ReservationEntity convertFromReservFormToReservEntityForAdd(ReservationForm form,
+	public ReservationEntity convertFromReservFormToReservEntity(ReservationForm form,
 			AccountSessionForm accountSession) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Date startTime = sdf.parse(form.getYear() + "-" + form.getMonth() + "-" + form.getDate() + " "
@@ -174,24 +173,12 @@ public class ReservationHelper {
 		Date endTime = sdf.parse(form.getYear() + "-" + form.getMonth() + "-" + form.getDate() + " "
 				+ form.getEndHour() + ":" + form.getEndMinute());
 
-		return new ReservationEntity(startTime, endTime, new FacilityEntity(form.getFacilityForm().getId()),
-				accountSession.getAccountName());
+		return new ReservationEntity(form.getId(), startTime, endTime,
+				new FacilityEntity(form.getFacilityForm().getId()), accountSession.getAccountName());
 
 	}
 
-	public ReservationEntity convertFromReservFormToReservEntityForUpdate(ReservationForm form,
-			AccountSessionForm accountSession) throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		Date startTime = sdf.parse(form.getYear() + "-" + form.getMonth() + "-" + form.getDate() + " "
-				+ form.getStartHour() + ":" + form.getStartMinute());
-		Date endTime = sdf.parse(form.getYear() + "-" + form.getMonth() + "-" + form.getDate() + " "
-				+ form.getEndHour() + ":" + form.getEndMinute());
-
-		return new ReservationEntity(form.getId(), startTime, endTime, accountSession.getAccountName());
-
-	}
-
-	public ReservationEntity checkReservationAdd(ReservationForm form) throws ParseException {
+	public ReservationEntity checkReservation(ReservationForm form) throws ParseException {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Date startTime = sdf.parse(form.getYear() + "-" + form.getMonth() + "-" + form.getDate() + " "
@@ -199,19 +186,8 @@ public class ReservationHelper {
 		Date endTime = sdf.parse(form.getYear() + "-" + form.getMonth() + "-" + form.getDate() + " "
 				+ form.getEndHour() + ":" + form.getEndMinute());
 
-		return new ReservationEntity(startTime, endTime, new FacilityEntity(form.getFacilityForm().getId()));
-
-	}
-
-	public ReservationEntity checkReservationUpdate(ReservationForm form) throws ParseException {
-
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		Date startTime = sdf.parse(form.getYear() + "-" + form.getMonth() + "-" + form.getDate() + " "
-				+ form.getStartHour() + ":" + form.getStartMinute());
-		Date endTime = sdf.parse(form.getYear() + "-" + form.getMonth() + "-" + form.getDate() + " "
-				+ form.getEndHour() + ":" + form.getEndMinute());
-
-		return new ReservationEntity(form.getId(), startTime, endTime, new FacilityEntity(form.getFacilityForm().getId()));
+		return new ReservationEntity(form.getId(), startTime, endTime,
+				new FacilityEntity(form.getFacilityForm().getId()));
 
 	}
 

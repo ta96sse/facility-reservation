@@ -3,6 +3,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -28,7 +30,7 @@
 				<table style="margin: auto;">
 					<tr>
 						<th>予約ID：</th>
-						<td><font size="5">${session.id}</font></td>
+						<td><font size="5">${reservationForm.id}</font></td>
 					</tr>
 				</table>
 			</div>
@@ -36,7 +38,7 @@
 				<table style="margin: auto;">
 					<tr>
 						<th>予約ID：</th>
-						<td><font size="5">${session.id}</font></td>
+						<td><font size="5">${reservationForm.id}</font></td>
 					</tr>
 				</table>
 			</div>
@@ -48,10 +50,10 @@
              -->
 
 			<p id="contents-title">予約情報の更新、削除を行えます</p>
-			<form:form modelAttribute="session"
+			<form:form modelAttribute="reservationForm"
 				action="/facility-reservation/complete" method="post">
-				<p>${session.facilityForm.name}</p>
-				<p>${session.year}年${session.month}月${session.date}日</p>
+				<p>${reservationForm.facilityForm.name}</p>
+				<p>${reservationForm.year}年${reservationForm.month}月${reservationForm.date}日</p>
 				<p class="timeCheck1" style="color: red"></p>
 				<p class="timeCheck2" style="color: red"></p>
 				<table id="facility-info">
@@ -70,25 +72,25 @@
 					<tr>
 						<td>
 							<form:select class="selectObj" path="startHour"
-								value="${session.startHour}" varStatus="status">
+								value="${reservationForm.startHour}" varStatus="status">
 								<c:forEach var="startHour" begin="09" end="21">
-									<c:if test="${session.startHour == startHour}">
+									<c:if test="${reservationForm.startHour == startHour}">
 										<option selected="selected">${startHour}</option>
 									</c:if>
-									<c:if test="${session.startHour != startHour}">
+									<c:if test="${reservationForm.startHour != startHour}">
 										<option>${startHour}</option>
 									</c:if>
 								</c:forEach>
 							</form:select>
 							時
 							<form:select class="selectObj" path="startMinute"
-								value="${session.startMinute}">
+								value="${reservationForm.startMinute}">
 								<c:forEach var="startMinute" begin="00" end="45" step="15">
-									<c:if test="${session.startMinute == startMinute}">
-										<option selected="selected">${startMinute}</option>
+									<c:if test="${reservationForm.startMinute == startMinute}">
+										<option selected="selected"><fmt:formatNumber value="${startMinute}" pattern="00" /></option>
 									</c:if>
-									<c:if test="${session.startMinute != startMinute}">
-										<option>${startMinute}</option>
+									<c:if test="${reservationForm.startMinute != startMinute}">
+										<option><fmt:formatNumber value="${startMinute}" pattern="00" /></option>
 									</c:if>
 								</c:forEach>
 							</form:select>
@@ -101,25 +103,25 @@
 					<tr>
 						<td>
 							<form:select class="selectObj" path="endHour"
-								value="${session.endHour}">
+								value="${reservationForm.endHour}">
 								<c:forEach var="endHour" begin="09" end="21">
-									<c:if test="${session.endHour == endHour}">
+									<c:if test="${reservationForm.endHour == endHour}">
 										<option selected="selected">${endHour}</option>
 									</c:if>
-									<c:if test="${session.endHour != endHour}">
+									<c:if test="${reservationForm.endHour != endHour}">
 										<option>${endHour}</option>
 									</c:if>
 								</c:forEach>
 							</form:select>
 							時
 							<form:select class="selectObj" path="endMinute"
-								value="${session.endMinute}">
+								value="${reservationForm.endMinute}">
 								<c:forEach var="endMinute" begin="00" end="45" step="15">
-									<c:if test="${session.endMinute == endMinute}">
-										<option selected="selected">${endMinute}</option>
+									<c:if test="${reservationForm.endMinute == endMinute}">
+										<option selected="selected"><fmt:formatNumber value="${endMinute}" pattern="00" /></option>
 									</c:if>
-									<c:if test="${session.endMinute != endMinute}">
-										<option>${endMinute}</option>
+									<c:if test="${reservationForm.endMinute != endMinute}">
+										<option><fmt:formatNumber value="${endMinute}" pattern="00" /></option>
 									</c:if>
 								</c:forEach>
 							</form:select>
@@ -128,17 +130,17 @@
 					</tr>
 				</table>
 
-				<form:input type="hidden" path="id" value="${session.id}" />
-				<form:input type="hidden" path="year" value="${session.year}" />
-				<form:input type="hidden" path="month" value="${session.month}" />
-				<form:input type="hidden" path="date" value="${session.date}" />
+				<form:input type="hidden" path="id" value="${reservationForm.id}" />
+				<form:input type="hidden" path="year" value="${reservationForm.year}" />
+				<form:input type="hidden" path="month" value="${reservationForm.month}" />
+				<form:input type="hidden" path="date" value="${reservationForm.date}" />
 				<form:input type="hidden" path="facilityForm.id"
-					value="${session.facilityForm.id}" />
+					value="${reservationForm.facilityForm.id}" />
 
 				<input type="button" class="update" name="update" value="更新">
 				<input type="button" class="delete" name="delete" value="削除">
 				<input type="button" value="戻る"
-					onClick="location.href='/facility-reservation/${session.facilityForm.id}'" />
+					onClick="location.href='/facility-reservation/${reservationForm.facilityForm.id}'" />
 			</form:form>
 		</div>
 		<jsp:include page="/WEB-INF/views/footer/footer.jsp" flush="true" />
@@ -148,13 +150,8 @@
 	<script type="text/javascript">
 		$(function() {
 			$('.update').click(function() {
-				var startTime = parseInt($('#startHour').val()
-						+ $('#startMinute').val());
-				var endTime = parseInt($('#endHour').val()
-						+ $('#endMinute').val());
-				/*var facilityId = $('#facilityForm.id').val();*/
-				var facilityId = document.getElementById("facilityForm.id").value;
-				console.log(facilityId);
+				var startTime = parseInt($('#startHour').val() + $('#startMinute').val());
+				var endTime = parseInt($('#endHour').val() + $('#endMinute').val());
 
 				$('.timeCheck1').text('');
 				$('.timeCheck2').text('');
@@ -165,7 +162,7 @@
 
 					$(function(){
 						$.ajax({
-							url : "/facility-reservation/check-update",
+							url : "/facility-reservation/check",
 							type : "POST",
 							data : JSON.stringify({
 								"id" : $('#id').val(),
@@ -176,7 +173,7 @@
 								"startMinute" : $('#startMinute').val(),
 								"endHour" : $('#endHour').val(),
 								"endMinute" : $('#endMinute').val(),
-								"facilityForm" : {"id" : facilityId}
+								"facilityForm" : {"id" : $('#facilityForm\\.id').val()}
 							}),
 							dataType : "json",
 							contentType : "application/json ; charset=utf-8"

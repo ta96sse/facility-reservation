@@ -35,6 +35,7 @@
 			-->
 
 			<p id="contents-title">${statusForm.facilityForm.name}</p>
+			<spring:eval var="accountSessionForm" expression="@accountSessionForm" />
 			<input type="hidden" id="facilityId" name="facilityId"
 				value="${statusForm.facilityForm.id}">
 			<div id="calendar-menu">
@@ -85,9 +86,18 @@
 										<li class="calendar-cell-li">${day.date}</li>
 										<c:forEach var="reservation"
 											items="${day.reservationFormList}">
-											<li class="calendar-cell-li"><a
-												href="/facility-reservation/${statusForm.facilityForm.id}/detail/${reservation.id}">${reservation.startHour}:${reservation.startMinute}～${reservation.endHour}:${reservation.endMinute}<br>(${reservation.userId})
-											</a></li>
+											<li class="calendar-cell-li">
+												<c:if test="${accountSessionForm.permissionLevel == 1}">
+													<a href="/facility-reservation/${statusForm.facilityForm.id}/detail/${reservation.id}">
+														${reservation.startHour}:${reservation.startMinute}～${reservation.endHour}:${reservation.endMinute}<br>(${reservation.userId})
+													</a>
+												</c:if>
+												<c:if test="${accountSessionForm.permissionLevel != 1}">
+													<a>
+														${reservation.startHour}:${reservation.startMinute}～${reservation.endHour}:${reservation.endMinute}<br>(${reservation.userId})
+													</a>
+												</c:if>
+											</li>
 										</c:forEach>
 										<c:if
 											test="${day.yearMonthDate >= statusForm.calendarForm.today}">
@@ -197,7 +207,20 @@
 												+ dayForm[i].date + "</li>"
 										var reservationForm = dayForm[i].reservationFormList;
 										for ( var j in reservationForm) {
-											htmlData += '<li class="calendar-cell-li"><a href="/facility-reservation/' + result.facilityForm.id + "/detail/" + reservationForm[j].id + '">'
+											htmlData += '<li class="calendar-cell-li">
+											
+												<c:if test="${accountSessionForm.permissionLevel == 1}">
+											<a href="/facility-reservation/${statusForm.facilityForm.id}/detail/${reservation.id}">
+												${reservation.startHour}:${reservation.startMinute}～${reservation.endHour}:${reservation.endMinute}<br>(${reservation.userId})
+											</a>
+										</c:if>
+										<c:if test="${accountSessionForm.permissionLevel != 1}">
+											<a>
+												${reservation.startHour}:${reservation.startMinute}～${reservation.endHour}:${reservation.endMinute}<br>(${reservation.userId})
+											</a>
+										</c:if>
+										
+											<a href="/facility-reservation/' + result.facilityForm.id + "/detail/" + reservationForm[j].id + '">'
 													+ reservationForm[j].startHour
 													+ ":"
 													+ reservationForm[j].startMinute
@@ -208,7 +231,9 @@
 													+ "<br>"
 													+ "("
 													+ reservationForm[j].userId
-													+ ")</a></li>";
+													+ ")</a>
+													
+													</li>";
 										}
 
 										if (dayForm[i].yearMonthDate >= result.calendarForm.today) {

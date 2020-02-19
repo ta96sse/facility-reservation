@@ -17,42 +17,42 @@
 			<div id="view-title">予約内容確認</div>
 
 			<p id="contents-title">以下の内容で予約します。よろしいですか？</p>
-			<form:form modelAttribute="session"
+			<form:form modelAttribute="reservationForm"
 				action="/facility-reservation/complete" method="post">
 				<spring:eval var="accountSessionForm"
 					expression="@accountSessionForm" />
 				<table id="reservation-info">
 					<tr>
 						<th class="reservation-info-th">予約施設</th>
-						<td><c:out value="${session.facilityForm.name}" /></td>
+						<td><c:out value="${reservationForm.facilityForm.name}" /></td>
 					</tr>
 					<tr>
 						<th class="reservation-info-th">予約日</th>
 
 						<td><c:out
-								value="${session.year}年${session.month}月${session.date}日" /></td>
+								value="${reservationForm.year}年${reservationForm.month}月${reservationForm.date}日" /></td>
 					</tr>
 					<tr>
 						<th class="reservation-info-th">予約時間</th>
 						<td><c:out
-								value="${session.startHour}:${session.startMinute}～${session.endHour}:${session.endMinute}" /></td>
+								value="${reservationForm.startHour}:${reservationForm.startMinute}～${reservationForm.endHour}:${reservationForm.endMinute}" /></td>
 					</tr>
 				</table>
 				<form:input type="hidden" path="facilityForm.id"
-					value="${session.facilityForm.id}" />
-				<form:input type="hidden" path="year" value="${session.year}" />
-				<form:input type="hidden" path="month" value="${session.month}" />
-				<form:input type="hidden" path="date" value="${session.date}" />
+					value="${reservationForm.facilityForm.id}" />
+				<form:input type="hidden" path="year" value="${reservationForm.year}" />
+				<form:input type="hidden" path="month" value="${reservationForm.month}" />
+				<form:input type="hidden" path="date" value="${reservationForm.date}" />
 				<form:input type="hidden" path="startHour"
-					value="${session.startHour}" />
+					value="${reservationForm.startHour}" />
 				<form:input type="hidden" path="startMinute"
-					value="${session.startMinute}" />
-				<form:input type="hidden" path="endHour" value="${session.endHour}" />
+					value="${reservationForm.startMinute}" />
+				<form:input type="hidden" path="endHour" value="${reservationForm.endHour}" />
 				<form:input type="hidden" path="endMinute"
-					value="${session.endMinute}" />
+					value="${reservationForm.endMinute}" />
 
 				<input type="button" class="back" value="戻る"
-					onClick="location.href='/facility-reservation/${session.facilityForm.id}/add/?year=${session.year}&month=${session.month}&date=${session.date}'" />
+					onClick="location.href='/facility-reservation/${reservationForm.facilityForm.id}/add/?year=${reservationForm.year}&month=${reservationForm.month}&date=${reservationForm.date}'" />
 				<input type="submit" name="add" value="確定" />
 			</form:form>
 		</div>
