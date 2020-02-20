@@ -170,7 +170,7 @@ public class ReservationController {
 				.convertFromReservEntityToReservForm(reservationService.getReservation(reservationId));
 
 		model.addAttribute("reservationForm", reservationForm);
-
+System.out.println(reservationForm.getUserForm().getLoginName());
 		return "reservation/reservation-detail";
 	}
 

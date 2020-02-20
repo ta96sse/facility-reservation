@@ -10,7 +10,7 @@
 <head>
 <title>予約情報更新・削除</title>
 <meta charset="UTF-8">
-<link rel="stylesheet" type="text/css" href="/css/style.css" />
+<link rel="stylesheet" type="text/css" href="/css/style-new.css" />
 <!-- jQueryの読み込み -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -56,18 +56,16 @@
 				<p>${reservationForm.year}年${reservationForm.month}月${reservationForm.date}日</p>
 				<p class="timeCheck1" style="color: red"></p>
 				<p class="timeCheck2" style="color: red"></p>
-				<table id="facility-info">
+				<table id="reservation-info">
 					<tr>
-						<th class="facility-info-th">最終更新者<br> <font size="1px"
+						<th class="reservation-info-th">最終更新者<br> <font size="1px"
 							style="color: red;">※ユーザー名は変更できません</font></th>
 					</tr>
 					<tr>
-						<td><a class="facilityCheck" style="color: red"></a> <a
-							style="color: red"><form:errors path="userId" /></a> <form:input
-								class="userId" path="userId" readonly="true" /></td>
+						<td><form:input class="userId" path="userForm.loginName" readonly="true" /></td>
 					</tr>
 					<tr>
-						<th class="facility-info-th">予約開始時間</th>
+						<th class="reservation-info-th">予約開始時間</th>
 					</tr>
 					<tr>
 						<td>
@@ -98,7 +96,7 @@
 						</td>
 					</tr>
 					<tr>
-						<th class="facility-info-th">予約終了時間</th>
+						<th class="reservation-info-th">予約終了時間</th>
 					</tr>
 					<tr>
 						<td>

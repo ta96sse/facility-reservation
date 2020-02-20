@@ -18,8 +18,10 @@ import jp.co.ginga.application.form.reservation.DayForm;
 import jp.co.ginga.application.form.reservation.ReservationForm;
 import jp.co.ginga.application.form.reservation.ReservationStatusForm;
 import jp.co.ginga.application.form.session.AccountSessionForm;
+import jp.co.ginga.application.form.user.UserForm;
 import jp.co.ginga.domain.entity.FacilityEntity;
 import jp.co.ginga.domain.entity.ReservationEntity;
+import jp.co.ginga.domain.entity.UserEntity;
 
 /**
  *
@@ -141,7 +143,7 @@ public class ReservationHelper {
 				sdfMinute.format(entity.getStartTime()), sdfHour.format(entity.getEndTime()),
 				sdfMinute.format(entity.getEndTime()),
 				new FacilityForm(entity.getFacilityEntity().getId(), entity.getFacilityEntity().getName()),
-				entity.getUserId());
+				new UserForm(entity.getUserEntity().getId()));
 	}
 
 	public CalendarForm changeYearAndMonth(int year, int month, boolean changeCalFlag) {
@@ -173,7 +175,7 @@ public class ReservationHelper {
 		} else {
 			disabledFlagLast = false;
 		}
-		if (currentMonth+100 == yearMonth) {
+		if (currentMonth + 100 == yearMonth) {
 			disabledFlagNext = true;
 		} else {
 			disabledFlagNext = false;
@@ -207,7 +209,7 @@ public class ReservationHelper {
 				+ form.getEndHour() + ":" + form.getEndMinute());
 
 		return new ReservationEntity(form.getId(), startTime, endTime,
-				new FacilityEntity(form.getFacilityForm().getId()), accountSession.getAccountName());
+				new FacilityEntity(form.getFacilityForm().getId()), new UserEntity(accountSession.getAccountName()));
 
 	}
 

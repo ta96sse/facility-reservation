@@ -36,7 +36,7 @@ public interface ReservationRepository {
 			@Result(property = "startTime", column = "start_time"),
 			@Result(property = "endTime", column = "end_time"),
 			@Result(property = "facilityEntity", column = "facility_id", one = @One(select = "jp.co.ginga.domain.repository.FacilityRepository.findOneById", fetchType = FetchType.EAGER)),
-			@Result(property = "userId", column = "user_id")
+			@Result(property = "userEntity", column = "user_id", one = @One(select = "jp.co.ginga.domain.repository.UserRepository.findOneById", fetchType = FetchType.EAGER))
 	})
 	public ReservationEntity findOneById(int id);
 
@@ -51,8 +51,8 @@ public interface ReservationRepository {
 	@Results({
 			@Result(property = "startTime", column = "start_time"),
 			@Result(property = "endTime", column = "end_time"),
-			@Result(property = "facilityId", column = "facility_id"),
-			@Result(property = "userId", column = "user_id")
+			@Result(property = "facilityEntity", column = "facility_id", one = @One(select = "jp.co.ginga.domain.repository.FacilityRepository.findOneById", fetchType = FetchType.EAGER)),
+			@Result(property = "userEntity", column = "user_id", one = @One(select = "jp.co.ginga.domain.repository.UserRepository.findOneById", fetchType = FetchType.EAGER))
 	})
 	public List<ReservationEntity> findAll();
 
@@ -68,7 +68,7 @@ public interface ReservationRepository {
 			@Result(property = "startTime", column = "start_time"),
 			@Result(property = "endTime", column = "end_time"),
 			@Result(property = "facilityEntity", column = "facility_id", one = @One(select = "jp.co.ginga.domain.repository.FacilityRepository.findOneById", fetchType = FetchType.EAGER)),
-			@Result(property = "userId", column = "user_id")
+			@Result(property = "userEntity", column = "user_id", one = @One(select = "jp.co.ginga.domain.repository.UserRepository.findOneById", fetchType = FetchType.EAGER))
 	})
 	public List<ReservationEntity> findListByFacilityId(int facilityId, int year, int month);
 
@@ -85,7 +85,7 @@ public interface ReservationRepository {
 	 *
 	 * @throws SQLException
 	 */
-	@Insert("insert into reservation (start_time,end_time,facility_id,user_id) values (#{startTime},#{endTime},#{facilityEntity.id},#{userId}) ")
+	@Insert("insert into reservation (start_time,end_time,facility_id,user_id) values (#{startTime},#{endTime},#{facilityEntity.id},#{userEntity.id}) ")
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	public boolean add(ReservationEntity reservationEntity);
 
@@ -94,7 +94,7 @@ public interface ReservationRepository {
 	 *
 	 * @throws Exception
 	 */
-	@Update("update reservation set start_time = #{startTime}, end_time = #{endTime}, user_id = #{userId} where id = #{id}")
+	@Update("update reservation set start_time = #{startTime}, end_time = #{endTime}, user_id = #{userEntity.id} where id = #{id}")
 	public boolean update(ReservationEntity reservationEntity);
 
 	/**

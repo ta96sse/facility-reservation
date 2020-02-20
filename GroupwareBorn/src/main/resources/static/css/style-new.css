@@ -246,9 +246,18 @@ li.calendar-cell-li {
 }
 
 table#reservation-info {
-	width: 500px;
+	text-align: center;
+	width: 450px;
 	margin-left: auto;
 	margin-right: auto;
+	border-collapse: collapse;
+	margin-top: 20px;
+}
+
+table#reservation-info th.reservation-info-th {
+	background-color: #4040ff;
+	color: white;
+	width: 150px;
 }
 
 table#reservation-info, table#reservation-info td, th.reservation-info-th

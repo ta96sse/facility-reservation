@@ -30,15 +30,12 @@ public class UserEntity {
 	 */
 	private String note;
 
-
-
 	/**
 	 * @return id
 	 */
 	public String getId() {
 		return id;
 	}
-
 
 	/**
 	 * @param id セットする id
@@ -47,14 +44,12 @@ public class UserEntity {
 		this.id = id;
 	}
 
-
 	/**
 	 * @return password
 	 */
 	public String getPassword() {
 		return password;
 	}
-
 
 	/**
 	 * @param password セットする password
@@ -63,14 +58,12 @@ public class UserEntity {
 		this.password = password;
 	}
 
-
 	/**
 	 * @return permissionLevel
 	 */
 	public int getPermissionLevel() {
 		return permissionLevel;
 	}
-
 
 	/**
 	 * @param permissionLevel セットする permissionLevel
@@ -79,14 +72,12 @@ public class UserEntity {
 		this.permissionLevel = permissionLevel;
 	}
 
-
 	/**
 	 * @return note
 	 */
 	public String getNote() {
 		return note;
 	}
-
 
 	/**
 	 * @param note セットする note
@@ -95,11 +86,14 @@ public class UserEntity {
 		this.note = note;
 	}
 
-
 	/**
 	 * コンストラクタ (デフォルト)
 	 */
 	public UserEntity() {
+	}
+
+	public UserEntity(String id) {
+		this.id = id;
 	}
 
 	/**
@@ -112,7 +106,6 @@ public class UserEntity {
 		this.id = id;
 		this.password = password;
 	}
-
 
 	/**
 	 * コンストラクタ
@@ -129,9 +122,6 @@ public class UserEntity {
 		this.note = note;
 	}
 
-
-
-
 	/**
 	 * オブジェクトの文字列表現処理。
 	 */
@@ -141,8 +131,5 @@ public class UserEntity {
 				+ note + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
 				+ super.toString() + "]";
 	}
-
-
-
 
 }

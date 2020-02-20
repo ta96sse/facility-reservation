@@ -36,7 +36,8 @@
 
 			<p id="contents-title">${statusForm.facilityForm.name}</p>
 			<spring:eval var="accountSessionForm" expression="@accountSessionForm" />
-			<input type="hidden" id="accountSession" value="${accountSessionForm.permissionLevel}">
+			<input type="hidden" id="permissionLevel" value="${accountSessionForm.permissionLevel}">
+			<input type="hidden" id="accountName" value="${accountSessionForm.accountName}">
 			<input type="hidden" id="facilityId" name="facilityId"
 				value="${statusForm.facilityForm.id}">
 			<div id="calendar-menu">
@@ -87,16 +88,18 @@
 										<li class="calendar-cell-li">${day.date}</li>
 										<c:forEach var="reservation" items="${day.reservationFormList}">
 											<li class="calendar-cell-li">
-												<c:if test="${accountSessionForm.permissionLevel == 1}">
-													<a href="/facility-reservation/${statusForm.facilityForm.id}/detail/${reservation.id}">
-														${reservation.startHour}:${reservation.startMinute}～${reservation.endHour}:${reservation.endMinute}<br>(${reservation.userId})
+											<c:choose>
+  												<c:when test="${accountSessionForm.permissionLevel == 1 || accountSessionForm.accountName == reservation.userForm.loginName}">
+    												<a href="/facility-reservation/${statusForm.facilityForm.id}/detail/${reservation.id}">
+														${reservation.startHour}:${reservation.startMinute}～${reservation.endHour}:${reservation.endMinute}<br>(${reservation.userForm.loginName})
 													</a>
-												</c:if>
-												<c:if test="${accountSessionForm.permissionLevel != 1}">
-													<a>
-														${reservation.startHour}:${reservation.startMinute}～${reservation.endHour}:${reservation.endMinute}<br>(${reservation.userId})
+  												</c:when>
+  												<c:otherwise>
+    												<a>
+														${reservation.startHour}:${reservation.startMinute}～${reservation.endHour}:${reservation.endMinute}<br>(${reservation.userForm.loginName})
 													</a>
-												</c:if>
+  												</c:otherwise>
+											</c:choose>
 											</li>
 										</c:forEach>
 										<c:if test="${day.yearMonthDate >= statusForm.calendarForm.today}">
@@ -214,7 +217,7 @@
 						for ( var j in reservationForm) {
 							htmlData += '<li class="calendar-cell-li">'
 
-							if($("#accountSession").val() == 1) {
+							if($("#permissionLevel").val() == 1 || $("#accountName").val() == reservationForm[j].userForm.loginName) {
 								htmlData += '<a href="/facility-reservation/' + result.facilityForm.id + "/detail/" + reservationForm[j].id + '">'
 							} else {
 								htmlData += "<a>"
@@ -228,7 +231,7 @@
 										+ reservationForm[j].endMinute
 										+ "<br>"
 										+ "("
-										+ reservationForm[j].userId
+										+ reservationForm[j].userForm.loginName
 										+ ")</a></li>";
 						}
 

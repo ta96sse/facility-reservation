@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 
 /**
  * ユーザー情報フォーム
- * 
+ *
  * @author yoshi
  *
  */
@@ -82,9 +82,13 @@ public class UserForm implements Serializable {
 
 	}
 
+	public UserForm(String loginName) {
+		this.loginName = loginName;
+	}
+
 	/**
 	 * コンストラクタ
-	 * 
+	 *
 	 * @param loginName
 	 * @param password
 	 * @param parmissionLevel

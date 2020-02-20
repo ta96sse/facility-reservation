@@ -3,6 +3,7 @@ package jp.co.ginga.application.form.reservation;
 import java.io.Serializable;
 
 import jp.co.ginga.application.form.facility.FacilityForm;
+import jp.co.ginga.application.form.user.UserForm;
 
 public class ReservationForm implements Serializable {
 
@@ -18,7 +19,7 @@ public class ReservationForm implements Serializable {
 	private String startTime;
 	private String endTime;
 	private FacilityForm facilityForm;
-	private String userId;
+	private UserForm userForm;
 	private int startDate;
 
 	public ReservationForm() {
@@ -26,7 +27,7 @@ public class ReservationForm implements Serializable {
 	}
 
 	public ReservationForm(int id, int year, int month, int date, String startHour, String startMinute, String endHour,
-			String endMinute, FacilityForm facilityForm, String userId) {
+			String endMinute, FacilityForm facilityForm, UserForm userForm) {
 		super();
 		this.id = id;
 		this.year = year;
@@ -37,7 +38,7 @@ public class ReservationForm implements Serializable {
 		this.endHour = endHour;
 		this.endMinute = endMinute;
 		this.facilityForm = facilityForm;
-		this.userId = userId;
+		this.userForm = userForm;
 	}
 
 	public int getId() {
@@ -128,12 +129,12 @@ public class ReservationForm implements Serializable {
 		this.facilityForm = facilityForm;
 	}
 
-	public String getUserId() {
-		return userId;
+	public UserForm getUserForm() {
+		return userForm;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setUserForm(UserForm userForm) {
+		this.userForm = userForm;
 	}
 
 	public int getStartDate() {
