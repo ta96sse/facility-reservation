@@ -36,14 +36,14 @@ public class ReservationHelper {
 			int month) {
 
 		/*
-		//	 * FacilityForm
-		//	 */
+		 * FacilityForm
+		 */
 		FacilityForm facilityForm = new FacilityForm(entity.getId(), entity.getName(), entity.getCapacity(),
 				new FacilityTypeForm(entity.getFacilityTypeEntity().getId(), entity.getFacilityTypeEntity().getName()));
 
 		/*
-		//	 * CalendarForm
-		//	 */
+		 * CalendarForm
+		 */
 		String[] weekName = { "月", "火", "水", "木", "金", "土", "日" };
 		List<DayForm> dayFormList = createDayFormList(entityList, year, month);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -144,7 +144,7 @@ public class ReservationHelper {
 				entity.getUserId());
 	}
 
-	public CalendarForm setYearAndMonthByFlag(int year, int month, boolean changeCalFlag) {
+	public CalendarForm changeYearAndMonth(int year, int month, boolean changeCalFlag) {
 
 		if (changeCalFlag == true) {
 			if (month == 12) {
@@ -162,7 +162,40 @@ public class ReservationHelper {
 			}
 		}
 
-		return new CalendarForm(year, month);
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdfYearMonth = new SimpleDateFormat("yyyyMM");
+		int currentMonth = Integer.parseInt(sdfYearMonth.format(cal.getTime()));
+		int yearMonth = Integer.parseInt(year + String.format("%02d", month));
+		boolean disabledFlagLast = false;
+		boolean disabledFlagNext = false;
+		if (currentMonth == yearMonth) {
+			disabledFlagLast = true;
+		} else {
+			disabledFlagLast = false;
+		}
+		if (currentMonth+100 == yearMonth) {
+			disabledFlagNext = true;
+		} else {
+			disabledFlagNext = false;
+		}
+
+		SimpleDateFormat sdfToday = new SimpleDateFormat("yyyyMMdd");
+		int today = Integer.parseInt(sdfToday.format(new Date()));
+
+		return new CalendarForm(year, month, disabledFlagLast, disabledFlagNext, today);
+	}
+
+	public ReservationStatusForm changeCalendar(FacilityEntity entity, List<ReservationEntity> entityList,
+			CalendarForm calendarForm) {
+
+		FacilityForm facilityForm = new FacilityForm(entity.getId(), entity.getName(), entity.getCapacity(),
+				new FacilityTypeForm(entity.getFacilityTypeEntity().getId(), entity.getFacilityTypeEntity().getName()));
+
+		List<DayForm> dayFormList = createDayFormList(entityList, calendarForm.getYear(), calendarForm.getMonth());
+
+		calendarForm.setDayFormList(dayFormList);
+
+		return new ReservationStatusForm(facilityForm, calendarForm);
 	}
 
 	public ReservationEntity convertFromReservFormToReservEntity(ReservationForm form,

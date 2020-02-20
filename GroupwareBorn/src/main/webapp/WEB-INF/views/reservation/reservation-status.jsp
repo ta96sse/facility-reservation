@@ -36,15 +36,16 @@
 
 			<p id="contents-title">${statusForm.facilityForm.name}</p>
 			<spring:eval var="accountSessionForm" expression="@accountSessionForm" />
+			<input type="hidden" id="accountSession" value="${accountSessionForm.permissionLevel}">
 			<input type="hidden" id="facilityId" name="facilityId"
 				value="${statusForm.facilityForm.id}">
 			<div id="calendar-menu">
-				<input type="button" id="last-month" value="前月"> <span>${statusForm.calendarForm.year}年${statusForm.calendarForm.month}月
-				</span> <input type="button" id="next-month" value="次月"> <input
-					type="hidden" id="year" name="year"
-					value="${statusForm.calendarForm.year}"> <input
-					type="hidden" id="month" name="month"
-					value="${statusForm.calendarForm.month}">
+				<input type=button id="last-month" value="前月" disabled>
+				<span>${statusForm.calendarForm.year}年${statusForm.calendarForm.month}月</span>
+				<input type="button" id="next-month" value="次月">
+				<div><input type="button" id="this-month" value="当月"></div>
+				<input type="hidden" id="year" name="year" value="${statusForm.calendarForm.year}">
+				<input type="hidden" id="month" name="month" value="${statusForm.calendarForm.month}">
 			</div>
 
 			<table id="calendar">
@@ -84,8 +85,7 @@
 								<td class="calendar-td">
 									<ul class="calendar-cell-ul">
 										<li class="calendar-cell-li">${day.date}</li>
-										<c:forEach var="reservation"
-											items="${day.reservationFormList}">
+										<c:forEach var="reservation" items="${day.reservationFormList}">
 											<li class="calendar-cell-li">
 												<c:if test="${accountSessionForm.permissionLevel == 1}">
 													<a href="/facility-reservation/${statusForm.facilityForm.id}/detail/${reservation.id}">
@@ -99,8 +99,7 @@
 												</c:if>
 											</li>
 										</c:forEach>
-										<c:if
-											test="${day.yearMonthDate >= statusForm.calendarForm.today}">
+										<c:if test="${day.yearMonthDate >= statusForm.calendarForm.today}">
 
 											<li class="calendar-cell-li"><input type="image"
 												src="/img/add.png" alt="新規予約" title="新規予約"
@@ -123,6 +122,10 @@
 	</div>
 
 	<script type="text/javascript">
+		$("#this-month").click(function() {
+			location.reload();
+		});
+
 		$("#next-month").click(function() {
 			var facilityId = $("#facilityId").val();
 			var year = $("#year").val();
@@ -172,90 +175,84 @@
 		});
 
 		function calendar(data) {
-			$
-					.ajax({
-						url : "/facility-reservation/change-calendar",
-						type : "POST",
-						data : JSON.stringify(data),
-						dataType : "json",
-						contentType : "application/json ; charset=utf-8"
-					})
-					.done(
-							function(result, status, jqxhr) {
-								$("span")
-										.text(
-												result.calendarForm.year
-														+ "年"
-														+ Number(result.calendarForm.month)
-														+ "月");
-								$("#year").val(result.calendarForm.year);
-								$("#month").val(result.calendarForm.month);
-								$("table#calendar tbody").empty();
-								var htmlData = "<tr>";
-								var dayForm = result.calendarForm.dayFormList;
-								for ( var i in dayForm) {
-									if (i % 7 == 0) {
-										htmlData += "<tr>"
-									}
-									if (dayForm[i].date == "-") {
-										htmlData += '<td class="blank-td"><ul class="calendar-cell-ul"><li class="calendar-cell-li">'
-												+ dayForm[i].date
-												+ "</li></ul></td>"
-									}
-									if (dayForm[i].date != "-") {
-										htmlData += '<td class="calendar-td"><ul class="calendar-cell-ul"><li class="calendar-cell-li">'
-												+ dayForm[i].date + "</li>"
-										var reservationForm = dayForm[i].reservationFormList;
-										for ( var j in reservationForm) {
-											htmlData += '<li class="calendar-cell-li">
-											
-												<c:if test="${accountSessionForm.permissionLevel == 1}">
-											<a href="/facility-reservation/${statusForm.facilityForm.id}/detail/${reservation.id}">
-												${reservation.startHour}:${reservation.startMinute}～${reservation.endHour}:${reservation.endMinute}<br>(${reservation.userId})
-											</a>
-										</c:if>
-										<c:if test="${accountSessionForm.permissionLevel != 1}">
-											<a>
-												${reservation.startHour}:${reservation.startMinute}～${reservation.endHour}:${reservation.endMinute}<br>(${reservation.userId})
-											</a>
-										</c:if>
-										
-											<a href="/facility-reservation/' + result.facilityForm.id + "/detail/" + reservationForm[j].id + '">'
-													+ reservationForm[j].startHour
-													+ ":"
-													+ reservationForm[j].startMinute
-													+ "～"
-													+ reservationForm[j].endHour
-													+ ":"
-													+ reservationForm[j].endMinute
-													+ "<br>"
-													+ "("
-													+ reservationForm[j].userId
-													+ ")</a>
-													
-													</li>";
-										}
+			$.ajax({
+				url : "/facility-reservation/change-calendar",
+				type : "POST",
+				data : JSON.stringify(data),
+				dataType : "json",
+				contentType : "application/json ; charset=utf-8"
+			})
+			.done(function(result, status, jqxhr) {
+				if (result.calendarForm.disabledFlagLast) {
+					$("#last-month").attr('disabled', true);
+				} else {
+					$("#last-month").attr('disabled', false);
+				}
+				if (result.calendarForm.disabledFlagNext) {
+					$("#next-month").attr('disabled', true);
+				} else {
+					$("#next-month").attr('disabled', false);
+				}
+				$("span").text(result.calendarForm.year + "年" + Number(result.calendarForm.month) + "月");
+				$("#year").val(result.calendarForm.year);
+				$("#month").val(result.calendarForm.month);
+				$("table#calendar tbody").empty();
+				var htmlData = "<tr>";
+				var dayForm = result.calendarForm.dayFormList;
+				for ( var i in dayForm) {
+					if (i % 7 == 0) {
+						htmlData += "<tr>"
+					}
+					if (dayForm[i].date == "-") {
+						htmlData += '<td class="blank-td"><ul class="calendar-cell-ul"><li class="calendar-cell-li">'
+									+ dayForm[i].date + "</li></ul></td>"
+					}
+					if (dayForm[i].date != "-") {
+						htmlData += '<td class="calendar-td"><ul class="calendar-cell-ul"><li class="calendar-cell-li">'
+									+ dayForm[i].date + "</li>"
+						var reservationForm = dayForm[i].reservationFormList;
+						for ( var j in reservationForm) {
+							htmlData += '<li class="calendar-cell-li">'
 
-										if (dayForm[i].yearMonthDate >= result.calendarForm.today) {
-											htmlData += '<li class="calendar-cell-li"><input type="image" src="/img/add.png" alt="新規予約" title="新規予約" onclick=location.href='
-													+ '"/facility-reservation/'
-													+ result.facilityForm.id
-													+ "/add/?year="
-													+ result.calendarForm.year
-													+ "&month="
-													+ result.calendarForm.month
-													+ "&date="
-													+ dayForm[i].date
-													+ '"></li>';
-										}
-										htmlData += "</ul></td>"
-									}
-								}
-								htmlData += "</tr>";
-								$('table#calendar tbody').append(htmlData);
-							}).fail(function(jqXHR, textStatus, errorThrown) {
-						console.log('エラー');
-					})
+							if($("#accountSession").val() == 1) {
+								htmlData += '<a href="/facility-reservation/' + result.facilityForm.id + "/detail/" + reservationForm[j].id + '">'
+							} else {
+								htmlData += "<a>"
+							}
+							htmlData += reservationForm[j].startHour
+										+ ":"
+										+ reservationForm[j].startMinute
+										+ "～"
+										+ reservationForm[j].endHour
+										+ ":"
+										+ reservationForm[j].endMinute
+										+ "<br>"
+										+ "("
+										+ reservationForm[j].userId
+										+ ")</a></li>";
+						}
+
+						if (dayForm[i].yearMonthDate >= result.calendarForm.today && dayForm[i].yearMonthDate <= result.calendarForm.today+10000) {
+							htmlData += '<li class="calendar-cell-li"><input type="image" src="/img/add.png" alt="新規予約" title="新規予約" onclick=location.href='
+										+ '"/facility-reservation/'
+										+ result.facilityForm.id
+										+ "/add/?year="
+										+ result.calendarForm.year
+										+ "&month="
+										+ result.calendarForm.month
+										+ "&date="
+										+ dayForm[i].date
+										+ '"></li>';
+						}
+						htmlData += "</ul></td>"
+					}
+				}
+				htmlData += "</tr>";
+				$('table#calendar tbody').append(htmlData);
+			})
+			.fail(function(jqXHR, textStatus, errorThrown) {
+				console.log('エラー');
+			})
 		}
 	</script>
 

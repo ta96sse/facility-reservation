@@ -10,15 +10,20 @@ public class CalendarForm implements Serializable {
 	private String[] weekName;
 	private List<DayForm> dayFormList;
 	private boolean changeCalFlag;
+	private boolean disabledFlagLast;
+	private boolean disabledFlagNext;
 	private int today;
 
 	public CalendarForm() {
 
 	}
 
-	public CalendarForm(int year, int month) {
+	public CalendarForm(int year, int month, boolean disabledFlagLast, boolean disabledFlagNext, int today) {
 		this.year = year;
 		this.month = month;
+		this.disabledFlagLast = disabledFlagLast;
+		this.disabledFlagNext = disabledFlagNext;
+		this.today = today;
 	}
 
 	public CalendarForm(int year, int month, String[] weekName, List<DayForm> dayFormList, int today) {
@@ -67,6 +72,22 @@ public class CalendarForm implements Serializable {
 
 	public void setChangeCalFlag(boolean changeCalFlag) {
 		this.changeCalFlag = changeCalFlag;
+	}
+
+	public boolean getDisabledFlagLast() {
+		return disabledFlagLast;
+	}
+
+	public void setDisabledFlagLast(boolean disabledFlagLast) {
+		this.disabledFlagLast = disabledFlagLast;
+	}
+
+	public boolean getDisabledFlagNext() {
+		return disabledFlagNext;
+	}
+
+	public void setDisabledFlagNext(boolean disabledFlagNext) {
+		this.disabledFlagNext = disabledFlagNext;
 	}
 
 	public int getToday() {

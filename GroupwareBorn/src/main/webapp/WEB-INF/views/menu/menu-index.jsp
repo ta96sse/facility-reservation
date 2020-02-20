@@ -28,20 +28,16 @@
 				<spring:eval var="accountSessionForm"
 					expression="@accountSessionForm" />
 				<ul id="menu">
-					<li class="menu-list">
-						<a class="function-button" href="/facility-reservation/list">施設予約</a>
-					<c:if test="${accountSessionForm.permissionLevel == 1}">
-						<li class="menu-list">
-						<a class="function-button" href="/facility/list">施設情報管理</a>
-						</li>
-						<li class="menu-list">
-							<a class="function-button" href="/user/list">ユーザー情報管理</a>
-
-						</li>
-						<li class="menu-list">
-							<a class="function-button" >データ初期化</a>
-						</li>
-					</c:if>
+					<li class="menu-list"><a class="function-button"
+						href="/facility-reservation/list">施設予約</a>
+						<c:if test="${accountSessionForm.permissionLevel == 1}">
+							<li class="menu-list"><a class="function-button"
+								href="/facility/list">施設情報管理</a></li>
+							<li class="menu-list"><a class="function-button"
+								href="/user/list">ユーザー情報管理</a></li>
+							<li class="menu-list"><a class="function-button">データ初期化</a>
+							</li>
+						</c:if>
 				</ul>
 			</form:form>
 		</div>

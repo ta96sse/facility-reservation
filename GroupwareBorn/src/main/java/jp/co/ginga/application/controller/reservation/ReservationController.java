@@ -132,16 +132,15 @@ public class ReservationController {
 	@ResponseBody
 	public ReservationStatusForm changeCalendarList(@RequestBody ReservationStatusForm status) {
 
-		CalendarForm calendarForm = reservationHelper.setYearAndMonthByFlag(
-				status.getCalendarForm().getYear(), status.getCalendarForm().getMonth(),
-				status.getCalendarForm().getChangeCalFlag());
+		CalendarForm calendarForm = reservationHelper.changeYearAndMonth(status.getCalendarForm().getYear(),
+				status.getCalendarForm().getMonth(), status.getCalendarForm().getChangeCalFlag());
 
-		FacilityEntity entity = facilityService.getFacility(status.getFacilityForm().getId());
+		FacilityEntity facilityEntity = facilityService.getFacility(status.getFacilityForm().getId());
 		List<ReservationEntity> reservEntityList = reservationService.getReservationList(
 				status.getFacilityForm().getId(), calendarForm.getYear(), calendarForm.getMonth());
 
-		ReservationStatusForm statusForm = reservationHelper.createStatusForm(entity, reservEntityList,
-				calendarForm.getYear(), calendarForm.getMonth());
+		ReservationStatusForm statusForm = reservationHelper.changeCalendar(facilityEntity, reservEntityList,
+				calendarForm);
 
 		return statusForm;
 	}
