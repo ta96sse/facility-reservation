@@ -93,6 +93,12 @@ public class FacilityEntity {
 		this.id = id;
 	}
 
+	public FacilityEntity(int id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
 	public FacilityEntity(int id, String name, FacilityTypeEntity facilityTypeEntity, String capacity,
 			String userId) {
 		super();

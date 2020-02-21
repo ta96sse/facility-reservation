@@ -74,7 +74,7 @@ public class FacilityController {
 	@RequestMapping(path = "/facility/list", method = RequestMethod.GET)
 	public String createFacilityListFormGet(SessionStatus sessionStatus, Model model, Integer page)
 			throws SQLException {
-
+		System.out.println("xxx" + page);
 		sessionStatus.setComplete();
 
 		// 施設一覧データ取得処理
@@ -83,23 +83,19 @@ public class FacilityController {
 		// データ変換処理
 		List<FacilityForm> listForm = helper.convertFromEntityListToFormList(listEntity);
 
-		// ビューへの値設定処理
-		model.addAttribute("facilityListForm", listForm);
-
 		// ページネーション
 		PagedListHolder<FacilityForm> pagedListHolder = new PagedListHolder<>(listForm);
-		pagedListHolder.setPageSize(10); // 10件毎に表示
+		pagedListHolder.setPageSize(4); // 10件毎に表示
 		model.addAttribute("maxPages", pagedListHolder.getPageCount());
-		if (page == null || page < 1 || page > pagedListHolder.getPageCount())
-			page = 1;
-		model.addAttribute("page", page);
 		if (page == null || page < 1 || page > pagedListHolder.getPageCount()) {
+			page = 1;
+			model.addAttribute("page", page);
 			pagedListHolder.setPage(0);
-			model.addAttribute("facilityListForm", pagedListHolder.getPageList());
 		} else if (page <= pagedListHolder.getPageCount()) {
 			pagedListHolder.setPage(page - 1);
-			model.addAttribute("facilityListForm", pagedListHolder.getPageList());
 		}
+		System.out.println(page);
+		model.addAttribute("facilityListForm", pagedListHolder.getPageList());
 
 		return "facility/facility-list";
 	}

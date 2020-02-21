@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -69,7 +70,7 @@ public class ReservationController {
 	 * @return
 	 */
 	@RequestMapping(path = "/facility-reservation/list", method = RequestMethod.GET)
-	public String createFacilityList(Model model) {
+	public String createFacilityList(Model model, Integer page) {
 
 		//施設一覧取得
 		List<FacilityEntity> listEntity = facilityService.getFacilityList();
@@ -78,6 +79,21 @@ public class ReservationController {
 
 		//施設一覧をEntityからFormへコンバート処理の後FacilityListFormへ
 		FacilityListForm facilityListForm = facilityHelper.convertFromEntityToListForm(listEntity, typeListEntity);
+
+		// ページネーション
+		PagedListHolder<FacilityForm> pagedListHolder = new PagedListHolder<>(facilityListForm.getFacilityList());
+		pagedListHolder.setPageSize(5);
+		model.addAttribute("maxPages", pagedListHolder.getPageCount());
+		if (page == null || page < 1 || page > pagedListHolder.getPageCount())
+			page = 1;
+		model.addAttribute("page", page);
+		if (page == null || page < 1 || page > pagedListHolder.getPageCount()) {
+			pagedListHolder.setPage(0);
+			model.addAttribute("facilityListForm", pagedListHolder.getPageList());
+		} else if (page <= pagedListHolder.getPageCount()) {
+			pagedListHolder.setPage(page - 1);
+			model.addAttribute("facilityListForm", pagedListHolder.getPageList());
+		}
 
 		//値にキーをつけてmodelへ格納
 		model.addAttribute("facilityListForm", facilityListForm);
@@ -170,7 +186,7 @@ public class ReservationController {
 				.convertFromReservEntityToReservForm(reservationService.getReservation(reservationId));
 
 		model.addAttribute("reservationForm", reservationForm);
-System.out.println(reservationForm.getUserForm().getLoginName());
+		System.out.println(reservationForm.getUserForm().getLoginName());
 		return "reservation/reservation-detail";
 	}
 
@@ -267,20 +283,5 @@ System.out.println(reservationForm.getUserForm().getLoginName());
 
 		return "reservation/reservation-complete";
 	}
-
-	//		// ページネーション
-	//		PagedListHolder<FacilityForm> pagedListHolder = new PagedListHolder<>(facilityListForm.getFacilityList());
-	//		pagedListHolder.setPageSize(5);
-	//		model.addAttribute("maxPages", pagedListHolder.getPageCount());
-	//		if (page == null || page < 1 || page > pagedListHolder.getPageCount())
-	//			page = 1;
-	//		model.addAttribute("page", page);
-	//		if (page == null || page < 1 || page > pagedListHolder.getPageCount()) {
-	//			pagedListHolder.setPage(0);
-	//			model.addAttribute("facilityListForm", pagedListHolder.getPageList());
-	//		} else if (page <= pagedListHolder.getPageCount()) {
-	//			pagedListHolder.setPage(page - 1);
-	//			model.addAttribute("facilityListForm", pagedListHolder.getPageList());
-	//		}
 
 }
